@@ -1,0 +1,207 @@
+# depslib dependency file v1.0
+1497254123 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\learnopengl.cpp
+	<iostream>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<asset/image/image.h>
+	<asset/shader/shaders.h>
+	<asset/texture/texture.h>
+
+1496644226 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\glad\glad.h
+	<windows.h>
+	<stddef.h>
+	<KHR/khrplatform.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1496644226 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\khr\khrplatform.h
+	<sys/cdefs.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1471545148 c:\mingw_dev_libs\glfw-3.2.1\include\glfw\glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/glcorearb.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<vulkan/vulkan.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1497148469 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\shader\shader.h
+	<glad/glad.h>
+
+1497148462 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\shader\shader.cpp
+	<glad/glad.h>
+	<shader/shader.h>
+	<iostream>
+	<fstream>
+	<sstream>
+
+1496644226 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\glad.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<glad/glad.h>
+	<windows.h>
+	<dlfcn.h>
+
+1497154206 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\shader\shaderprogram.cpp
+	<glad/glad.h>
+	<shader/shaderProgram.h>
+	<shader/shader.h>
+	<vector>
+	<iostream>
+
+1497249883 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\shader\shaderprogram.h
+	<vector>
+	"shader.h"
+
+1497147437 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\shader\shaders.h
+	<shader/shader.h>
+	<shader/shaderProgram.h>
+
+1497149488 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\stb_image.cpp
+	"image/stb_image.h"
+
+1497157807 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\image\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1497249896 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\texture\texture.cpp
+	<asset/image/imageAsset.h>
+	"texture.h"
+
+1497227708 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\image\lodepng.h
+	<string.h>
+	<vector>
+	<string>
+	"lodepng.h"
+	<iostream>
+	"lodepng.h"
+
+1497228115 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\lodepng.cpp
+	"image/lodepng.h"
+	<limits.h>
+	<stdio.h>
+	<stdlib.h>
+
+1497249183 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\util\imageutil.cpp
+	<asset/util/imageUtil.h>
+	<image/stb_image.h>
+	<image/lodepng.h>
+	<vector>
+	<cstring>
+
+1497249891 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\texture\texture.h
+	<glad/glad.h>
+
+1497228115 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\image\lodepng.cpp
+	"image/lodepng.h"
+	<limits.h>
+	<stdio.h>
+	<stdlib.h>
+
+1497149488 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\include\image\stb_image.cpp
+	"image/stb_image.h"
+
+1497249041 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\util\imageutil.h
+
+1497249431 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\util\imageasset.cpp
+	<asset/util/imageAsset.h>
+	<image/stb_image.h>
+	<image/lodepng.h>
+	<vector>
+	<cstring>
+
+1497249374 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\util\imageasset.h
+
+1497249984 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\image\imageasset.cpp
+	<image/stb_image.h>
+	<image/lodepng.h>
+	<vector>
+	<cstring>
+	"imageAsset.h"
+
+1497249374 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\image\imageasset.h
+
+1497251345 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\shader\shader.cpp
+	<glad/glad.h>
+	<asset/shader/shader.h>
+	<iostream>
+	<fstream>
+	<sstream>
+
+1497251322 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\shader\shader.h
+	<glad/glad.h>
+
+1497254317 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\shader\shaderprogram.cpp
+	<glad/glad.h>
+	<asset/shader/shaderProgram.h>
+	<asset/shader/shader.h>
+	<vector>
+	<iostream>
+
+1497251335 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\shader\shaderprogram.h
+	<vector>
+	<asset/shader/shader.h>
+
+1497254179 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\image\image.cpp
+	<image/stb_image.h>
+	<image/lodepng.h>
+	<vector>
+	<cstring>
+	<asset/image/image.h>
+
+1497252308 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\image\image.h
+
+1497253641 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\texture\texture.cpp
+	<glad/glad.h>
+	<asset/image/image.h>
+	<asset/texture/texture.h>
+
+1497252533 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\texture\texture.h
+	<glad/glad.h>
+	<asset/image/image.h>
+
+1497250479 c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\asset\shader\shaders.h
+	<asset/shader/shader.h>
+	<asset/shader/shaderProgram.h>
+
+1497254381 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\learnopengl\learnopengl\src\main.cpp
+	<iostream>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<asset/image/image.h>
+	<asset/shader/shaders.h>
+	<asset/texture/texture.h>
+

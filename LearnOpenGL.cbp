@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OpenGLStuff" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/GL_Debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../LearnOpenGL" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="C:/mingw_dev_libs/glfw-3.2.1/include" />
+					<Add directory="include/glad" />
+					<Add directory="include/KHR" />
+				</Compiler>
+				<Linker>
+					<Add directory="C:/mingw_dev_libs/glfw-3.2.1/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/LearnOpenGL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="C:/mingw_dev_libs/glfw-3.2.1/include" />
+			<Add directory="C:/Users/Shiyang/Documents/OpenGL Tutorials/LearnOpenGL/LearnOpenGL/LearnOpenGL/include" />
+			<Add directory="C:/Users/Shiyang/Documents/OpenGL Tutorials/LearnOpenGL/LearnOpenGL/LearnOpenGL/src" />
+		</Compiler>
+		<Linker>
+			<Add option="-lglfw3 -lopengl32 -lgdi32" />
+			<Add directory="C:/mingw_dev_libs/glfw-3.2.1/lib" />
+		</Linker>
+		<Unit filename="assets/shaders/fragmentShader1.fs" />
+		<Unit filename="assets/shaders/vertexShader1.vs" />
+		<Unit filename="assets/textures/texturesLesson/awesomeface.png" />
+		<Unit filename="assets/textures/texturesLesson/container.jpg" />
+		<Unit filename="assets/textures/texturesLesson/wall.jpg" />
+		<Unit filename="include/glad/glad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/image/lodepng.cpp" />
+		<Unit filename="include/image/stb_image.cpp" />
+		<Unit filename="src/asset/image/image.cpp" />
+		<Unit filename="src/asset/image/image.h" />
+		<Unit filename="src/asset/shader/shader.cpp" />
+		<Unit filename="src/asset/shader/shader.h" />
+		<Unit filename="src/asset/shader/shaderProgram.cpp" />
+		<Unit filename="src/asset/shader/shaderProgram.h" />
+		<Unit filename="src/asset/shader/shaders.h" />
+		<Unit filename="src/asset/texture/texture.cpp" />
+		<Unit filename="src/asset/texture/texture.h" />
+		<Unit filename="src/main.cpp" />
+		<Extensions>
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
