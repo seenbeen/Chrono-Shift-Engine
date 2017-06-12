@@ -39,8 +39,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="C:/mingw_dev_libs/glfw-3.2.1/include" />
-			<Add directory="C:/Users/Shiyang/Documents/OpenGL Tutorials/LearnOpenGL/LearnOpenGL/LearnOpenGL/include" />
-			<Add directory="C:/Users/Shiyang/Documents/OpenGL Tutorials/LearnOpenGL/LearnOpenGL/LearnOpenGL/src" />
+			<Add directory="include" />
+			<Add directory="src" />
 		</Compiler>
 		<Linker>
 			<Add option="-lglfw3 -lopengl32 -lgdi32" />
