@@ -104,9 +104,13 @@ int main() {
     glEnableVertexAttribArray(2);
 
 
+    // matrix glm stuff
+    glm::mat4 trans, temp;
+    trans = glm::translate(trans, glm::vec3(0.5f,-0.5f,0.0f));
+
     // begin program
-    shaderProgram->setInt("tex1",0);
-    shaderProgram->setInt("tex2",1);
+    shaderProgram->setInt("tex1", 0);
+    shaderProgram->setInt("tex2", 1);
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -116,6 +120,9 @@ int main() {
         // Draw stuff
         glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        temp = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+        shaderProgram->setMat4fv("transform", glm::value_ptr(temp));
 
         shaderProgram->use();
         tex1->useActiveTexture(GL_TEXTURE0);

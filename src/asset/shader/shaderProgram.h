@@ -14,8 +14,12 @@ public:
     ~ShaderProgram();
     bool attachShader(Shader *shader);
     bool linkProgram();
-    void setInt(const char *key, int value);
     void use();
+
+    // uniform setters
+    void setInt(const char *key, int value);
+    void setFloat(const char *key, float value);
+    void setMat4fv(const char *key, float *value);
 };
 
 #endif
