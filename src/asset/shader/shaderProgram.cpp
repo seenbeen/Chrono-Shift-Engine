@@ -57,19 +57,16 @@ void ShaderProgram::use() {
 void ShaderProgram::setInt(const char *key, int value) {
     glUseProgram(this->programId);
     glUniform1i(glGetUniformLocation(this->programId, key), value);
-    glUseProgram(0);
 }
 
 void ShaderProgram::setFloat(const char *key, float value) {
     glUseProgram(this->programId);
     glUniform1f(glGetUniformLocation(this->programId, key), value);
-    glUseProgram(0);
 }
 
 void ShaderProgram::setMat4fv(const char *key, float *value) {
     glUseProgram(this->programId);
     glUniformMatrix4fv(glGetUniformLocation(this->programId, key), 1, GL_FALSE, value);
-    glUseProgram(0);
 }
 
 ShaderProgram::~ShaderProgram() {

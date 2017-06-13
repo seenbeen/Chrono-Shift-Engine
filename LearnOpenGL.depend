@@ -837,7 +837,7 @@
 1497251322 c:\users\shiyang\documents\opengl tutorials\learnopengl\src\asset\shader\shader.h
 	<glad/glad.h>
 
-1497256376 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\src\asset\shader\shaderprogram.cpp
+1497257105 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\src\asset\shader\shaderprogram.cpp
 	<glad/glad.h>
 	<asset/shader/shaderProgram.h>
 	<asset/shader/shader.h>
@@ -857,7 +857,7 @@
 	<glad/glad.h>
 	<asset/image/image.h>
 
-1497255326 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\src\main.cpp
+1497257273 source:c:\users\shiyang\documents\opengl tutorials\learnopengl\src\main.cpp
 	<iostream>
 	<glad/glad.h>
 	<GLFW/glfw3.h>

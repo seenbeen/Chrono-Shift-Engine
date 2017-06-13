@@ -19,7 +19,23 @@ void processInput(GLFWwindow *window);
 
 const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
 const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
+ShaderProgram *shaderProgram;
 
+void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
+    glm::mat4 temp;
+    temp = glm::translate(temp, glm::vec3((tx+lx+rx)/3.0f,(ty+ly+ry)/3.0f,0.0f));
+    temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+    temp = glm::scale(temp, glm::vec3(scale,scale,scale));
+    shaderProgram->setMat4fv("transform", glm::value_ptr(temp));
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    if (depth == 1) {
+        return;
+    }
+    serpinski(tx,ty,(tx+lx)/2.0f,(ty+ly)/2.0f,(tx+rx)/2.0f,(ty+ry)/2.0f,depth-1,scale/2.0f);
+    serpinski((tx+lx)/2.0f,(ty+ly)/2.0f,lx,ly,(lx+rx)/2.0f,(ly+ry)/2.0f,depth-1,scale/2.0f);
+    serpinski((tx+rx)/2.0f,(ty+ry)/2.0f,(lx+rx)/2.0f,(ly+ry)/2.0f,rx,ry,depth-1,scale/2.0f);
+}
 int main() {
 
     GLFWwindow *window = NULL;
@@ -38,7 +54,7 @@ int main() {
     Shader *fragmentShader = new Shader("assets/shaders/fragmentShader1.fs",GL_FRAGMENT_SHADER);
     Shader *vertexShader = new Shader("assets/shaders/vertexShader1.vs",GL_VERTEX_SHADER);
 
-    ShaderProgram *shaderProgram = new ShaderProgram();
+    shaderProgram = new ShaderProgram();
 
     shaderProgram->attachShader(vertexShader);
     shaderProgram->attachShader(fragmentShader);
@@ -103,11 +119,6 @@ int main() {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(6*sizeof(float)));
     glEnableVertexAttribArray(2);
 
-
-    // matrix glm stuff
-    glm::mat4 trans, temp;
-    trans = glm::translate(trans, glm::vec3(0.5f,-0.5f,0.0f));
-
     // begin program
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
@@ -121,14 +132,12 @@ int main() {
         glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        temp = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-        shaderProgram->setMat4fv("transform", glm::value_ptr(temp));
-
         shaderProgram->use();
         tex1->useActiveTexture(GL_TEXTURE0);
         tex2->useActiveTexture(GL_TEXTURE1);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        serpinski(0.0f,1.0f,-1.0f,-1.0f,1.0f,-1.0f,5,0.65f);
 
         // display.flip
         glfwSwapBuffers(window);
