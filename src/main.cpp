@@ -1,14 +1,14 @@
 #include <iostream>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <lib/glad/glad.h>
+#include <lib/glfw/glfw3.h>
+#include <lib/glm/glm.hpp>
+#include <lib/glm/gtc/matrix_transform.hpp>
+#include <lib/glm/gtc/type_ptr.hpp>
 
-#include <asset/image/image.h>
-#include <asset/shader/shaders.h>
-#include <asset/texture/texture.h>
+#include <CSE/CSELL/asset/image/image.h>
+#include <CSE/CSELL/renderer/shader/shaders.h>
+#include <CSE/CSELL/renderer/texture/texture.h>
 
 // le initializer
 bool init(const char *windowTitle, const int windowWidth, const int windowHeight, GLFWwindow *&window);
@@ -19,7 +19,8 @@ void processInput(GLFWwindow *window);
 
 const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
 const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
-ShaderProgram *shaderProgram;
+
+CSELL::Renderer::ShaderProgram *shaderProgram;
 
 void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
     glm::mat4 temp;
@@ -52,10 +53,10 @@ int main() {
 
     // Set up shaders :3
 
-    Shader *fragmentShader = new Shader("assets/shaders/fragmentShader1.fs",GL_FRAGMENT_SHADER);
-    Shader *vertexShader = new Shader("assets/shaders/vertexShader1.vs",GL_VERTEX_SHADER);
+    CSELL::Renderer::Shader *fragmentShader = new CSELL::Renderer::Shader("assets/shaders/fragmentShader1.fs",GL_FRAGMENT_SHADER);
+    CSELL::Renderer::Shader *vertexShader = new CSELL::Renderer::Shader("assets/shaders/vertexShader1.vs",GL_VERTEX_SHADER);
 
-    shaderProgram = new ShaderProgram();
+    shaderProgram = new CSELL::Renderer::ShaderProgram();
 
     shaderProgram->attachShader(vertexShader);
     shaderProgram->attachShader(fragmentShader);
@@ -71,13 +72,13 @@ int main() {
     // Set up texture
 
     // number 1
-    ImageAsset *img = new ImageAsset("assets/textures/texturesLesson/container.jpg", false);
-    Texture2D *tex1 = new Texture2D(img);
+    CSELL::Asset::ImageAsset *img = new CSELL::Asset::ImageAsset("assets/textures/texturesLesson/container.jpg", false);
+    CSELL::Renderer::Texture2D *tex1 = new CSELL::Renderer::Texture2D(img);
     delete img;
 
     // number 2
-    img = new ImageAsset("assets/textures/texturesLesson/awesomeface.png", true);
-    Texture2D *tex2 = new Texture2D(img);
+    img = new CSELL::Asset::ImageAsset("assets/textures/texturesLesson/awesomeface.png", true);
+    CSELL::Renderer::Texture2D *tex2 = new CSELL::Renderer::Texture2D(img);
     delete img;
     img = NULL;
 
