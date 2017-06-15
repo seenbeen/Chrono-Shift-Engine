@@ -1,40 +1,27 @@
+#include <string>
+
 #include <lib/glad/glad.h>
 
+#include <CSE/CSU/logger.hpp>
 #include <CSE/CSELL/renderer/shader.hpp>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 
 namespace CSELL { namespace Renderer {
-    Shader::Shader(const char *path, const GLenum shaderType) {
-        const char *charShaderType;
+    Shader::Shader(std::string const &shaderContents, const GLenum shaderType) {
+        std::string strShaderType;
         if (shaderType == GL_VERTEX_SHADER) {
-            charShaderType = "vertex";
+            strShaderType = "Vertex";
         } else if (shaderType == GL_FRAGMENT_SHADER) {
-            charShaderType = "fragment";
+            strShaderType = "Fragment";
         } else {
-            std::cout << "Error compiling Shader! Please specify a valid shader Type!" << std::endl;
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Renderer - Shader Creation", "Please specify a valid shader Type!");
         }
 
         this->shaderId = glCreateShader(shaderType);
 
-        std::ostringstream oss;
-        std::ifstream shaderFile;
+        const char *cstr = shaderContents.c_str();
 
-
-        shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        try {
-            shaderFile.open(path);
-            oss << shaderFile.rdbuf();
-            shaderFile.close();
-        } catch (std::ifstream::failure e) {
-            std::cout << "Failed to read shader file " << path << "." << std::endl;
-        }
-
-        const char *shaderContents = oss.str().c_str();
-
-        glShaderSource(this->shaderId, 1, &shaderContents, NULL);
+        glShaderSource(this->shaderId, 1, &cstr, NULL);
         glCompileShader(this->shaderId);
 
         // check for success
@@ -46,7 +33,7 @@ namespace CSELL { namespace Renderer {
             this->successCompiled = true;
         } else {
             glGetShaderInfoLog(this->shaderId, 512, NULL, statusMsg);
-            std::cout << "Something went wrong with compiling " << charShaderType << " shader:" << std::endl << statusMsg << std::endl;
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Renderer - " + strShaderType + " Shader Compilation", statusMsg);
             this->successCompiled = false;
         }
     }

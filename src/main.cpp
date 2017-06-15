@@ -6,6 +6,7 @@
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
 
+#include <CSE/CSU/logger.hpp>
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
 #include <CSE/CSELL/renderer/shaders.hpp>
@@ -57,8 +58,18 @@ int main() {
 
     // Set up shaders :3
 
-    CSELL::Renderer::Shader *fragmentShader = new CSELL::Renderer::Shader("assets/shaders/fragmentShader1.fs",GL_FRAGMENT_SHADER);
-    CSELL::Renderer::Shader *vertexShader = new CSELL::Renderer::Shader("assets/shaders/vertexShader1.vs",GL_VERTEX_SHADER);
+    CSELL::Assets::TextAsset *shaderContent;
+    CSELL::Renderer::Shader *fragmentShader, *vertexShader;
+
+    shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
+    fragmentShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), GL_FRAGMENT_SHADER);
+
+    CSELL::Assets::AssetManager::freeAsset(shaderContent);
+
+    shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
+    vertexShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), GL_VERTEX_SHADER);
+
+    CSELL::Assets::AssetManager::freeAsset(shaderContent);
 
     shaderProgram = new CSELL::Renderer::ShaderProgram();
 

@@ -1,6 +1,8 @@
 #ifndef CSU_LOGGER_HPP
 #define CSU_LOGGER_HPP
 
+#include <string>
+
 namespace CSU {
     class Logger {
         // should proly save these logs somewhere
@@ -10,7 +12,7 @@ namespace CSU {
         enum LogLevel { FATAL, WARN, DEBUG, INFO, OFF };
         enum EngineLevel { CSELL, CSEA, CSEF };
 
-        static void log(Logger::LogLevel lv, Logger::EngineLevel elv, const char *source, const char *message);
+        static void log(Logger::LogLevel lv, Logger::EngineLevel elv, std::string const &source, std::string const &message);
     };
 }
 

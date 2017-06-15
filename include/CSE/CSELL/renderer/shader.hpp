@@ -1,6 +1,8 @@
 #ifndef CSELL_RENDERER_SHADER_HPP
 #define CSELL_RENDERER_SHADER_HPP
 
+#include <string>
+
 #include <glad/glad.h>
 
 namespace CSELL { namespace Renderer {
@@ -8,7 +10,7 @@ namespace CSELL { namespace Renderer {
         unsigned int shaderId;
         bool successCompiled;
     public:
-        Shader(const char *path, const GLenum shaderType);
+        Shader(std::string const &shaderContents, const GLenum shaderType);
         ~Shader();
         unsigned int getId();
         bool compileSuccess();

@@ -8,9 +8,12 @@ class AssetManager;
 namespace CSELL { namespace Assets {
     class TextAsset : public Asset {
     friend class AssetManager;
+        std::string *contents;
     protected:
-        TextAsset();
+        TextAsset(std::string const &path);
         ~TextAsset();
+    public:
+        std::string *getContents();
     };
 }}
 

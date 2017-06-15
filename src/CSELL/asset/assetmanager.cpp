@@ -1,5 +1,6 @@
 #include <map>
 #include <cstddef>
+#include <string>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/asset.hpp>
@@ -58,7 +59,7 @@ namespace CSELL { namespace Assets {
         AssetManager::assets.erase(it);
     }
 
-    ImageAsset *AssetManager::loadImage(const char *path, bool isPNG) {
+    ImageAsset *AssetManager::loadImage(std::string const &path, bool isPNG) {
         if (!AssetManager::ensureInit())
             return NULL;
         ImageAsset *asset = new ImageAsset(path, isPNG);
@@ -67,10 +68,13 @@ namespace CSELL { namespace Assets {
         return asset;
     }
 
-    TextAsset *AssetManager::loadFile(const char *path) {
+    TextAsset *AssetManager::loadFile(std::string const &path) {
         if (!AssetManager::ensureInit())
             return NULL;
-        return NULL;
+        TextAsset *asset = new TextAsset(path);
+        asset->assetID = AssetManager::assetCount++;
+        AssetManager::assets[asset->assetID] = asset;
+        return asset;
     }
 
 }}

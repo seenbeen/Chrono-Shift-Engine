@@ -2,6 +2,7 @@
 #define CSELL_ASSETS_ASSETMANAGER_HPP
 
 #include <map>
+#include <string>
 
 #include <CSE/CSELL/asset/asset.hpp>
 #include <CSE/CSELL/asset/image.hpp>
@@ -22,8 +23,8 @@ namespace CSELL { namespace Assets {
         static void shutDown();
         static void freeAsset(Asset *asset);
 
-        static ImageAsset *loadImage(const char *path, bool isPNG);
-        static TextAsset *loadFile(const char *path);
+        static ImageAsset *loadImage(std::string const &path, bool isPNG);
+        static TextAsset *loadFile(std::string const &path);
     };
 }}
 #endif

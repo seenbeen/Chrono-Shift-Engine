@@ -1,22 +1,23 @@
-#include <lib/image/stb_image.h>
-#include <lib/image/lodepng.h>
 #include <vector>
+#include <string>
 #include <cstring>
 
+#include <lib/image/stb_image.h>
+#include <lib/image/lodepng.h>
+
 #include <CSE/CSELL/asset/image.hpp>
-#include <CSE/CSELL/asset/asset.hpp>
 
 namespace CSELL { namespace Assets {
-    ImageAsset::ImageAsset(const char *filepath, bool isPNG) {
+    ImageAsset::ImageAsset(std::string const &filepath, bool isPNG) {
         unsigned char *temp;
         std::vector<unsigned char> image;
         if (isPNG) {
-            lodepng::decode(image, this->imgW, this->imgH, filepath);
+            lodepng::decode(image, this->imgW, this->imgH, filepath.c_str());
             this->nrChannels = 4;
             temp = &image[0];
         } else {
             int tw,th,tn;
-            temp = stbi_load(filepath, &tw, &th, &tn, 0);
+            temp = stbi_load(filepath.c_str(), &tw, &th, &tn, 0);
             this->imgW = (unsigned int)tw;
             this->imgH = (unsigned int)th;
             this->nrChannels = (unsigned int)tn;

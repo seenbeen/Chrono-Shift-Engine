@@ -1,6 +1,8 @@
 #ifndef CSELL_ASSETS_IMAGE_HPP
 #define CSELL_ASSETS_IMAGE_HPP
 
+#include <string>
+
 #include <CSE/CSELL/asset/asset.hpp>
 
 class AssetManager;
@@ -11,7 +13,7 @@ namespace CSELL { namespace Assets {
         unsigned char *imgData;
         unsigned int imgW, imgH, nrChannels;
     protected:
-        ImageAsset(const char *filepath, bool isPNG);
+        ImageAsset(std::string const &filepath, bool isPNG);
         ~ImageAsset();
     public:
         void vFlipImageData();
