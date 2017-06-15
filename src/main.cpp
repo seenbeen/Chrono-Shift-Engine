@@ -6,9 +6,10 @@
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
 
-#include <CSE/CSELL/asset/image/image.h>
-#include <CSE/CSELL/renderer/shader/shaders.h>
-#include <CSE/CSELL/renderer/texture/texture.h>
+#include <CSE/CSELL/asset/assetmanager.hpp>
+#include <CSE/CSELL/asset/image.hpp>
+#include <CSE/CSELL/renderer/shaders.hpp>
+#include <CSE/CSELL/renderer/texture.hpp>
 
 // le initializer
 bool init(const char *windowTitle, const int windowWidth, const int windowHeight, GLFWwindow *&window);
@@ -51,6 +52,9 @@ int main() {
 
     glViewport(400, 300, 800/2, 600/2); // Plswerk ;~;
 
+    // init assetManager
+    CSELL::Assets::AssetManager::init();
+
     // Set up shaders :3
 
     CSELL::Renderer::Shader *fragmentShader = new CSELL::Renderer::Shader("assets/shaders/fragmentShader1.fs",GL_FRAGMENT_SHADER);
@@ -72,15 +76,17 @@ int main() {
     // Set up texture
 
     // number 1
-    CSELL::Asset::ImageAsset *img = new CSELL::Asset::ImageAsset("assets/textures/texturesLesson/container.jpg", false);
+    CSELL::Assets::ImageAsset *img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg", false);
     CSELL::Renderer::Texture2D *tex1 = new CSELL::Renderer::Texture2D(img);
-    delete img;
+
+    CSELL::Assets::AssetManager::freeAsset(img);
 
     // number 2
-    img = new CSELL::Asset::ImageAsset("assets/textures/texturesLesson/awesomeface.png", true);
+    img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png", false);
     CSELL::Renderer::Texture2D *tex2 = new CSELL::Renderer::Texture2D(img);
-    delete img;
-    img = NULL;
+
+    CSELL::Assets::AssetManager::freeAsset(img);
+
 
     // set up vertices
     const float vertices[] = {-0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,

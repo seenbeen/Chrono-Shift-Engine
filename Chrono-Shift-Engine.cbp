@@ -50,22 +50,30 @@
 		<Unit filename="assets/textures/texturesLesson/awesomeface.png" />
 		<Unit filename="assets/textures/texturesLesson/container.jpg" />
 		<Unit filename="assets/textures/texturesLesson/wall.jpg" />
-		<Unit filename="include/CSE/CSEA/scene/camera/camera.h" />
-		<Unit filename="include/CSE/CSELL/asset/image/image.h" />
-		<Unit filename="include/CSE/CSELL/renderer/shader/shader.h" />
-		<Unit filename="include/CSE/CSELL/renderer/shader/shaderProgram.h" />
-		<Unit filename="include/CSE/CSELL/renderer/shader/shaders.h" />
-		<Unit filename="include/CSE/CSELL/renderer/texture/texture.h" />
+		<Unit filename="include/CSE/CSEA/scene/camera.hpp" />
+		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
+		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
+		<Unit filename="include/CSE/CSELL/asset/image.hpp" />
+		<Unit filename="include/CSE/CSELL/asset/text.hpp" />
+		<Unit filename="include/CSE/CSELL/renderer/shader.hpp" />
+		<Unit filename="include/CSE/CSELL/renderer/shaderProgram.hpp" />
+		<Unit filename="include/CSE/CSELL/renderer/shaders.hpp" />
+		<Unit filename="include/CSE/CSELL/renderer/texture.hpp" />
+		<Unit filename="include/CSE/CSU/logger.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/lib/image/lodepng.cpp" />
 		<Unit filename="include/lib/image/stb_image.cpp" />
-		<Unit filename="src/CSEA/scene/camera/camera.cpp" />
-		<Unit filename="src/CSELL/asset/image/image.cpp" />
-		<Unit filename="src/CSELL/renderer/shader/shader.cpp" />
-		<Unit filename="src/CSELL/renderer/shader/shaderProgram.cpp" />
-		<Unit filename="src/CSELL/renderer/texture/texture.cpp" />
+		<Unit filename="src/CSEA/scene/camera.cpp" />
+		<Unit filename="src/CSELL/asset/asset.cpp" />
+		<Unit filename="src/CSELL/asset/assetmanager.cpp" />
+		<Unit filename="src/CSELL/asset/image.cpp" />
+		<Unit filename="src/CSELL/asset/text.cpp" />
+		<Unit filename="src/CSELL/renderer/shader.cpp" />
+		<Unit filename="src/CSELL/renderer/shaderProgram.cpp" />
+		<Unit filename="src/CSELL/renderer/texture.cpp" />
+		<Unit filename="src/CSU/logger.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<debugger />
