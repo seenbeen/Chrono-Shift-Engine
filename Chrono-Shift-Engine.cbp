@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="OpenGLStuff" />
+		<Option title="Chrono Shift Engine" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -66,6 +66,8 @@
 		<Unit filename="src/asset/texture/texture.cpp" />
 		<Unit filename="src/asset/texture/texture.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/scene/camera/camera.cpp" />
+		<Unit filename="src/scene/camera/camera.h" />
 		<Extensions>
 			<debugger />
 		</Extensions>

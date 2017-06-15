@@ -36,6 +36,7 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
     serpinski((tx+lx)/2.0f,(ty+ly)/2.0f,lx,ly,(lx+rx)/2.0f,(ly+ry)/2.0f,depth-1,scale/2.0f);
     serpinski((tx+rx)/2.0f,(ty+ry)/2.0f,(lx+rx)/2.0f,(ly+ry)/2.0f,rx,ry,depth-1,scale/2.0f);
 }
+
 int main() {
 
     GLFWwindow *window = NULL;
@@ -47,7 +48,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // register our callback
 
 
-    glViewport(0, 0, 800, 600); // Plswerk ;~;
+    glViewport(400, 300, 800/2, 600/2); // Plswerk ;~;
 
     // Set up shaders :3
 
@@ -187,7 +188,7 @@ bool init(const char *windowTitle, const int windowWidth, const int windowHeight
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height); // simply resize the window accordingly
+    glViewport(width/2, height/2, width/2, height/2); // simply resize the window accordingly
 }
 
 void processInput(GLFWwindow *window) {
