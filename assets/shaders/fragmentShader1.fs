@@ -12,10 +12,11 @@ void main() {
 	vec2 texcoord = vec2(1.0f-texCoord.x,texCoord.y);
    	vec4 texcol1 = texture(tex1, texcoord);
    	vec4 texcol2 = texture(tex2, texcoord);
-   	/*if (texcol2.a != 0) {
+   	if (texcol2.a != 0) {
    		FragColor = mix(texcol1, texcol2, 0.2);
    	} else {
    		FragColor = texcol1;
-   	}*/
-  	FragColor = texcol2;
+   	}
+   	FragColor = texcol2;
+  	//FragColor = mix(texcol1, texcol2, 0.2);
 }

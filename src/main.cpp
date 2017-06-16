@@ -51,7 +51,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // register our callback
 
 
-    glViewport(400, 300, 800/2, 600/2); // Plswerk ;~;
+    glViewport(0, 0, 800, 600); // Plswerk ;~;
 
     // init assetManager
     CSELL::Assets::AssetManager::init();
@@ -62,12 +62,12 @@ int main() {
     CSELL::Renderer::Shader *fragmentShader, *vertexShader;
 
     shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
-    fragmentShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), GL_FRAGMENT_SHADER);
+    fragmentShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), CSELL::Renderer::Shader::FRAGMENT_SHADER);
 
     CSELL::Assets::AssetManager::freeAsset(shaderContent);
 
     shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
-    vertexShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), GL_VERTEX_SHADER);
+    vertexShader = new CSELL::Renderer::Shader(shaderContent->getContents()->c_str(), CSELL::Renderer::Shader::VERTEX_SHADER);
 
     CSELL::Assets::AssetManager::freeAsset(shaderContent);
 
@@ -88,13 +88,13 @@ int main() {
 
     // number 1
     CSELL::Assets::ImageAsset *img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg", false);
-    CSELL::Renderer::Texture2D *tex1 = new CSELL::Renderer::Texture2D(img);
+    CSELL::Renderer::Texture *tex1 = new CSELL::Renderer::Texture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
     // number 2
     img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png", false);
-    CSELL::Renderer::Texture2D *tex2 = new CSELL::Renderer::Texture2D(img);
+    CSELL::Renderer::Texture *tex2 = new CSELL::Renderer::Texture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
@@ -206,7 +206,7 @@ bool init(const char *windowTitle, const int windowWidth, const int windowHeight
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(width/2, height/2, width/2, height/2); // simply resize the window accordingly
+    glViewport(0, 0, width, height); // simply resize the window accordingly
 }
 
 void processInput(GLFWwindow *window) {

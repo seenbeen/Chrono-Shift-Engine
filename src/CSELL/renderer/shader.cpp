@@ -7,17 +7,20 @@
 
 
 namespace CSELL { namespace Renderer {
-    Shader::Shader(std::string const &shaderContents, const GLenum shaderType) {
+    Shader::Shader(const std::string &shaderContents, Shader::ShaderType shaderType) {
         std::string strShaderType;
-        if (shaderType == GL_VERTEX_SHADER) {
+        GLenum glShaderType;
+        if (shaderType == Shader::VERTEX_SHADER) {
             strShaderType = "Vertex";
-        } else if (shaderType == GL_FRAGMENT_SHADER) {
+            glShaderType = GL_VERTEX_SHADER;
+        } else if (shaderType == Shader::FRAGMENT_SHADER) {
             strShaderType = "Fragment";
+            glShaderType = GL_FRAGMENT_SHADER;
         } else {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Renderer - Shader Creation", "Please specify a valid shader Type!");
         }
 
-        this->shaderId = glCreateShader(shaderType);
+        this->shaderId = glCreateShader(glShaderType);
 
         const char *cstr = shaderContents.c_str();
 

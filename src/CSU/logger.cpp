@@ -4,7 +4,7 @@
 #include <string>
 
 namespace CSU {
-    void Logger::log(Logger::LogLevel lv, Logger::EngineLevel elv, std::string const &source, std::string const &message) {
+    void Logger::log(Logger::LogLevel lv, Logger::EngineLevel elv, const std::string &source, const std::string &message) {
         std::cout << "[" << source << "] " << message << std::endl;
     }
 }

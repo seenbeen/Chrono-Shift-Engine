@@ -59,7 +59,7 @@ namespace CSELL { namespace Assets {
         AssetManager::assets.erase(it);
     }
 
-    ImageAsset *AssetManager::loadImage(std::string const &path, bool isPNG) {
+    ImageAsset *AssetManager::loadImage(const std::string &path, bool isPNG) {
         if (!AssetManager::ensureInit())
             return NULL;
         ImageAsset *asset = new ImageAsset(path, isPNG);
@@ -68,7 +68,7 @@ namespace CSELL { namespace Assets {
         return asset;
     }
 
-    TextAsset *AssetManager::loadFile(std::string const &path) {
+    TextAsset *AssetManager::loadFile(const std::string &path) {
         if (!AssetManager::ensureInit())
             return NULL;
         TextAsset *asset = new TextAsset(path);

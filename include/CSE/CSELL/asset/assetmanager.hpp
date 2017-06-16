@@ -23,8 +23,8 @@ namespace CSELL { namespace Assets {
         static void shutDown();
         static void freeAsset(Asset *asset);
 
-        static ImageAsset *loadImage(std::string const &path, bool isPNG);
-        static TextAsset *loadFile(std::string const &path);
+        static ImageAsset *loadImage(const std::string &path, bool isPNG);
+        static TextAsset *loadFile(const std::string &path);
     };
 }}
 #endif

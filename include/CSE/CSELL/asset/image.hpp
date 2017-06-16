@@ -11,15 +11,14 @@ namespace CSELL { namespace Assets {
     class ImageAsset : public Asset {
     friend class AssetManager;
         unsigned char *imgData;
-        unsigned int imgW, imgH, nrChannels;
+        unsigned int imgW, imgH;
     protected:
-        ImageAsset(std::string const &filepath, bool isPNG);
+        ImageAsset(const std::string &filepath, bool isPNG);
         ~ImageAsset();
     public:
         void vFlipImageData();
         unsigned int width();
         unsigned int height();
-        unsigned int nChannels();
         unsigned char *data();
     };
 }}

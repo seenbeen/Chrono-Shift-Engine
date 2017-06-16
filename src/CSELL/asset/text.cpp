@@ -7,7 +7,7 @@
 #include <CSE/CSELL/asset/text.hpp>
 
 namespace CSELL { namespace Assets {
-    TextAsset::TextAsset(std::string const &path) {
+    TextAsset::TextAsset(const std::string &path) {
         std::ostringstream oss;
         std::ifstream file;
 

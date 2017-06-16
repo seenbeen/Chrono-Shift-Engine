@@ -12,7 +12,7 @@ namespace CSU {
         enum LogLevel { FATAL, WARN, DEBUG, INFO, OFF };
         enum EngineLevel { CSELL, CSEA, CSEF };
 
-        static void log(Logger::LogLevel lv, Logger::EngineLevel elv, std::string const &source, std::string const &message);
+        static void log(Logger::LogLevel lv, Logger::EngineLevel elv, const std::string &source, const std::string &message);
     };
 }
 

@@ -1,6 +1,5 @@
 #include <vector>
 #include <string>
-#include <cstring>
 
 #include <lib/image/stb_image.h>
 #include <lib/image/lodepng.h>
@@ -8,25 +7,45 @@
 #include <CSE/CSELL/asset/image.hpp>
 
 namespace CSELL { namespace Assets {
-    ImageAsset::ImageAsset(std::string const &filepath, bool isPNG) {
+    ImageAsset::ImageAsset(const std::string &filepath, bool isPNG) {
         unsigned char *temp;
+        int tw,th,tn;
+
         std::vector<unsigned char> image;
+
         if (isPNG) {
             lodepng::decode(image, this->imgW, this->imgH, filepath.c_str());
-            this->nrChannels = 4;
             temp = &image[0];
         } else {
-            int tw,th,tn;
             temp = stbi_load(filepath.c_str(), &tw, &th, &tn, 0);
             this->imgW = (unsigned int)tw;
             this->imgH = (unsigned int)th;
-            this->nrChannels = (unsigned int)tn;
         }
 
-        unsigned int dataSize = this->imgW*this->imgH*this->nrChannels;
+        unsigned int dataSize = this->imgW*this->imgH*4;
 
         this->imgData = new unsigned char[dataSize];
-        std::memcpy(this->imgData, temp, dataSize);
+
+        unsigned int tempCounter = 0;
+        unsigned int nChan = (unsigned int)tn;
+
+        for (unsigned int i = 0; i < dataSize; i++) {
+            if (i%4 < nChan) {
+                this->imgData[i] = temp[tempCounter++];
+            } else {
+                this->imgData[i] = 255;
+            }
+        }
+
+        dataSize /= 4;
+        // set all invisible pixels to white
+        for (unsigned int i = 0; i < dataSize; i++) {
+            if (this->imgData[i*4+3] == 0) {
+                for (unsigned int j = 0; j < 3; j++) {
+                    this->imgData[i*4+j] = 255;
+                }
+            }
+        }
 
         if (!isPNG) {
             stbi_image_free(temp);
@@ -42,7 +61,7 @@ namespace CSELL { namespace Assets {
     void ImageAsset::vFlipImageData() {
         unsigned char temp;
         unsigned int lHeight = this->imgH/2;
-        unsigned int lWidth = this->imgW*this->nrChannels;
+        unsigned int lWidth = this->imgW*4;
 
         for (unsigned int i = 0; i < lHeight; i++) {
             for (unsigned int j = 0; j < lWidth; j++) {
@@ -55,6 +74,5 @@ namespace CSELL { namespace Assets {
 
     unsigned int ImageAsset::width() { return this->imgW; }
     unsigned int ImageAsset::height() { return this->imgH; }
-    unsigned int ImageAsset::nChannels() { return this->nrChannels; }
     unsigned char *ImageAsset::data() { return this->imgData; }
 }}

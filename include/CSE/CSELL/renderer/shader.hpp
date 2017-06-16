@@ -10,7 +10,8 @@ namespace CSELL { namespace Renderer {
         unsigned int shaderId;
         bool successCompiled;
     public:
-        Shader(std::string const &shaderContents, const GLenum shaderType);
+        enum ShaderType { VERTEX_SHADER, FRAGMENT_SHADER };
+        Shader(const std::string &shaderContents, Shader::ShaderType shaderType);
         ~Shader();
         unsigned int getId();
         bool compileSuccess();
