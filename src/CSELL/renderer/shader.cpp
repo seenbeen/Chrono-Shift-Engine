@@ -17,7 +17,7 @@ namespace CSELL { namespace Renderer {
             strShaderType = "Fragment";
             glShaderType = GL_FRAGMENT_SHADER;
         } else {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Renderer - Shader Creation", "Please specify a valid shader Type!");
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - Shader", "Please specify a valid shader Type!");
         }
 
         this->shaderId = glCreateShader(glShaderType);
@@ -36,7 +36,8 @@ namespace CSELL { namespace Renderer {
             this->successCompiled = true;
         } else {
             glGetShaderInfoLog(this->shaderId, 512, NULL, statusMsg);
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Renderer - " + strShaderType + " Shader Compilation", statusMsg);
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - Shader",
+                             "Error compiling " + strShaderType + ":\n" + statusMsg);
             this->successCompiled = false;
         }
     }

@@ -19,8 +19,8 @@ namespace CSELL { namespace Assets {
         AssetManager();
         ~AssetManager();
     public:
-        static void init();
-        static void shutDown();
+        static bool initialize();
+        static void shutdown();
         static void freeAsset(Asset *asset);
 
         static ImageAsset *loadImage(const std::string &path, bool isPNG);

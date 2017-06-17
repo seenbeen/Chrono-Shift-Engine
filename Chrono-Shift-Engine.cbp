@@ -12,7 +12,6 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="../Chrono-Shift-Engine" />
@@ -54,6 +53,9 @@
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/image.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/text.hpp" />
+		<Unit filename="include/CSE/CSELL/core/glfwwindow.hpp" />
+		<Unit filename="include/CSE/CSELL/core/inputcallbackhandler.hpp" />
+		<Unit filename="include/CSE/CSELL/core/window.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/camera.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/engine.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/mesh.hpp" />
@@ -71,6 +73,11 @@
 		<Unit filename="src/CSELL/asset/assetmanager.cpp" />
 		<Unit filename="src/CSELL/asset/image.cpp" />
 		<Unit filename="src/CSELL/asset/text.cpp" />
+		<Unit filename="src/CSELL/core/glfwwindow.cpp" />
+		<Unit filename="src/CSELL/core/inputcallbackhandler.cpp" />
+		<Unit filename="src/CSELL/core/window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/CSELL/renderer/camera.cpp" />
 		<Unit filename="src/CSELL/renderer/engine.cpp" />
 		<Unit filename="src/CSELL/renderer/mesh.cpp" />

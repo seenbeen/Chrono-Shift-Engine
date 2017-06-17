@@ -1,12 +1,14 @@
 #include <iostream>
 
-#include <lib/glad/glad.h>
-#include <lib/glfw/glfw3.h>
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
 
 #include <CSE/CSU/logger.hpp>
+
+#include <CSE/CSELL/core/window.hpp>
+#include <CSE/CSELL/core/glfwwindow.hpp>
+
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
 #include <CSE/CSELL/renderer/shaders.hpp>
@@ -41,20 +43,29 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
 }
 
 int main() {
+    glfwInit();
 
-    GLFWwindow *window = NULL;
+    CSELL::Core::Window *window = new CSELL::Core::GlfwWindow();
 
-    if (!init(WINDOW_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, window)) {
+    CSELL::Core::Window::Settings windowSettings;
+    windowSettings.width = SCREEN_WIDTH;
+    windowSettings.height = SCREEN_HEIGHT;
+    windowSettings.title = WINDOW_TITLE;
+    windowSettings.resizeable = false;
+
+    if (!window->initialize(windowSettings)) {
+        window->destroy();
+        glfwTerminate();
         return -1;
     }
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // register our callback
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0, 0, 800, 600); // Plswerk ;~;
 
     // init assetManager
-    CSELL::Assets::AssetManager::init();
+    CSELL::Assets::AssetManager::initialize();
 
     // Set up shaders :3
 
@@ -142,11 +153,7 @@ int main() {
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
 
-    while(!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        processInput(window);
-
+    while(true) {
         // Draw stuff
         glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -159,7 +166,7 @@ int main() {
         serpinski(0.0f,1.0f,-1.0f,-1.0f,1.0f,-1.0f,5,0.65f);
 
         // display.flip
-        glfwSwapBuffers(window);
+        window->update();
     }
 
     delete shaderProgram;
@@ -171,51 +178,9 @@ int main() {
     delete tex2;
     tex2 = NULL;
 
+    CSELL::Assets::AssetManager::shutdown();
+
     glfwTerminate();
 
     return 0;
-}
-
-bool init(const char *windowTitle, const int windowWidth, const int windowHeight, GLFWwindow *&window) {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // Set up GL Window
-
-    window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
-
-    if (window == NULL) {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return false;
-    }
-    glfwMakeContextCurrent(window);
-
-    // Set up glad loader to load in gl procs
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return false;
-    }
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    return true;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height); // simply resize the window accordingly
-}
-
-void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window,true);
-    }
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
 }

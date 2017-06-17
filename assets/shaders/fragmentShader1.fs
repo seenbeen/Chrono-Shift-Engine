@@ -18,5 +18,5 @@ void main() {
    		FragColor = texcol1;
    	}
    	FragColor = texcol2;
-  	//FragColor = mix(texcol1, texcol2, 0.2);
+  	// FragColor = mix(texcol2, texcol1, 0.8);
 }

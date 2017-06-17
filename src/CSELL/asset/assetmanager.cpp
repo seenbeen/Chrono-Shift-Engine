@@ -15,7 +15,7 @@ namespace CSELL { namespace Assets {
 
     bool AssetManager::ensureInit() {
         if (!AssetManager::isInitialized) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "AssetManager", "AssetManager not Initialized!");
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Assets - AssetManager", "AssetManager not Initialized!");
             return false;
         }
         return true;
@@ -24,14 +24,16 @@ namespace CSELL { namespace Assets {
     AssetManager::AssetManager() {}
     AssetManager::~AssetManager() {}
 
-    void AssetManager::init() {
-        if (!AssetManager::isInitialized) {
-            // doesn't do much for now
-            AssetManager::isInitialized = true;
+    bool AssetManager::initialize() {
+        if (AssetManager::isInitialized) {
+            return false;
         }
+        // doesn't do much for now
+        AssetManager::isInitialized = true;
+        return true;
     }
 
-    void AssetManager::shutDown() {
+    void AssetManager::shutdown() {
         if (!AssetManager::ensureInit())
             return;
         // prevent leakage
@@ -50,7 +52,7 @@ namespace CSELL { namespace Assets {
         it = AssetManager::assets.find(asset->assetID);
 
         if (it == AssetManager::assets.end()) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "AssetManager", "Attempting to free a non-existent asset!");
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Assets - AssetManager", "Attempting to free a non-existent asset!");
             return;
         }
 

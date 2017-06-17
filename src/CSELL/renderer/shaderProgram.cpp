@@ -1,10 +1,12 @@
+#include <vector>
+
 #include <glad/glad.h>
+
+#include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSELL/renderer/shaderProgram.hpp>
 #include <CSE/CSELL/renderer/shader.hpp>
 
-#include <vector>
-#include <iostream>
 
 namespace CSELL { namespace Renderer {
     ShaderProgram::ShaderProgram() {
@@ -18,7 +20,8 @@ namespace CSELL { namespace Renderer {
             glAttachShader(this->programId,shader->getId());
             return true;
         } else {
-            std::cout << "WARNING: Trying to attach shader to a linked program!" << std::endl;
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - Shader",
+                             "Trying to attach shader to a linked program!");
             return false;
         }
     }
@@ -39,14 +42,16 @@ namespace CSELL { namespace Renderer {
 
             if (!linkSuccess) {
                 glGetProgramInfoLog(this->programId, 512, NULL, statusMsg);
-                std::cout << "Error linking Shader Program!" << std::endl << statusMsg << std::endl;
+                CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - ShaderProgram",
+                                 std::string("Error linking Shader Program:\n") + statusMsg);
                 return false;
             }
 
             this->finalized = true;
             return true;
         } else {
-            std::cout << "WARNING: Trying to re-link a linked program!" << std::endl;
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - ShaderProgram",
+                             "Trying to re-link a linked program!");
             return false;
         }
     }
