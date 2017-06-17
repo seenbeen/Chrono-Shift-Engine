@@ -1,10 +1,7 @@
-#ifndef CSELL_RENDERER_ENGINE_HPP
-#define CSELL_RENDERER_ENGINE_HPP
+#ifndef CSELL_RENDERER_RENDERENGINE_HPP
+#define CSELL_RENDERER_RENDERENGINE_HPP
 
 #include <string>
-
-#include <lib/glad/glad.h>
-#include <lib/glfw/glfw3.h>
 
 #include <CSE/CSELL/renderer/mesh.hpp>
 #include <CSE/CSELL/renderer/shaders.hpp>

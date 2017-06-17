@@ -63,6 +63,12 @@ namespace CSELL { namespace Core {
 
         glfwWindowManager[this->window] = this;
 
+        glfwSetKeyCallback(this->window, keyCallback);
+        glfwSetCursorPosCallback(this->window, mousePosCallback);
+        glfwSetMouseButtonCallback(this->window, mouseButtonCallback);
+        glfwSetScrollCallback(this->window, mouseScrollCallback);
+        glfwSetCursorEnterCallback(this->window, mouseEnterLeaveCallback);
+
         return true;
     }
 

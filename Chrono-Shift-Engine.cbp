@@ -57,8 +57,8 @@
 		<Unit filename="include/CSE/CSELL/core/inputcallbackhandler.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/camera.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/engine.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/mesh.hpp" />
+		<Unit filename="include/CSE/CSELL/renderer/renderengine.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/shader.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/shaderProgram.hpp" />
 		<Unit filename="include/CSE/CSELL/renderer/shaders.hpp" />
@@ -79,8 +79,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/CSELL/renderer/camera.cpp" />
-		<Unit filename="src/CSELL/renderer/engine.cpp" />
 		<Unit filename="src/CSELL/renderer/mesh.cpp" />
+		<Unit filename="src/CSELL/renderer/renderengine.cpp" />
 		<Unit filename="src/CSELL/renderer/shader.cpp" />
 		<Unit filename="src/CSELL/renderer/shaderProgram.cpp" />
 		<Unit filename="src/CSELL/renderer/texture.cpp" />

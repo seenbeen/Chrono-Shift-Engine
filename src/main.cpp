@@ -8,11 +8,15 @@
 
 #include <CSE/CSELL/core/window.hpp>
 #include <CSE/CSELL/core/glfwwindow.hpp>
+#include <CSE/CSELL/core/inputcallbackhandler.hpp>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
+
 #include <CSE/CSELL/renderer/shaders.hpp>
 #include <CSE/CSELL/renderer/texture.hpp>
+
+#include <lib/glfw/glfw3.h>
 
 // le initializer
 bool init(const char *windowTitle, const int windowWidth, const int windowHeight, GLFWwindow *&window);
@@ -42,6 +46,25 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
     serpinski((tx+rx)/2.0f,(ty+ry)/2.0f,(lx+rx)/2.0f,(ly+ry)/2.0f,rx,ry,depth-1,scale/2.0f);
 }
 
+class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
+    void handleKeyInput(int key, int action, int mods) {
+        //if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        //    glfwSetWindowShouldClose(window,true);
+        //}
+        if (key == GLFW_KEY_SPACE) {
+            if (action == GLFW_PRESS) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            } else if (action == GLFW_RELEASE) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+        }
+    }
+    void handleMousePosInput(double xpos, double ypos) {}
+    void handleMouseButtonInput(int button, int action, int mods) {}
+    void handleMouseScrollInput(double xoffset, double yoffset) {}
+    void handleMouseEnterLeaveInput(int entered) {}
+};
+
 int main() {
     glfwInit();
 
@@ -58,6 +81,11 @@ int main() {
         glfwTerminate();
         return -1;
     }
+
+    window->useContext();
+
+    TestCallbackHandler handler;
+    window->registerInputCallbackHandler(&handler);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
