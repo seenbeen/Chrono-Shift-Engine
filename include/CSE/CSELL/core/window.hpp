@@ -35,15 +35,19 @@ namespace CSELL { namespace Core {
 
         void registerInputCallbackHandler(InputCallbackHandler *cbh);
 
-        void handleKeyInput(int key, int action, int mods);
+        void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action);
         void handleMousePosInput(double xpos, double ypos);
-        void handleMouseButtonInput(int button, int action, int mods);
+        void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action);
         void handleMouseScrollInput(double xoffset, double yoffset);
-        void handleMouseEnterLeaveInput(int entered);
+        void handleMouseEnterLeaveInput(bool entered);
+
+        void handleWindowResizeInput(unsigned int width, unsigned int height);
+        void handleWindowCloseInput();
 
         void update();
         double getTime();
         void useContext();
+        bool shouldClose();
     };
 }}
 

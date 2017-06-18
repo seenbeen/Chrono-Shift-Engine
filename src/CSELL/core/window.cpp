@@ -32,11 +32,11 @@ namespace CSELL { namespace Core {
         this->callbackHandler = cbh;
     }
 
-    void Window::handleKeyInput(int key, int action, int mods) {
+    void Window::handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
         if (this->callbackHandler == NULL) {
             return;
         }
-        this->callbackHandler->handleKeyInput(key, action, mods);
+        this->callbackHandler->handleKeyInput(key, action);
     }
 
     void Window::handleMousePosInput(double xpos, double ypos) {
@@ -46,11 +46,11 @@ namespace CSELL { namespace Core {
         this->callbackHandler->handleMousePosInput(xpos, ypos);
     }
 
-    void Window::handleMouseButtonInput(int button, int action, int mods) {
+    void Window::handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
         if (this->callbackHandler == NULL) {
             return;
         }
-        this->callbackHandler->handleMouseButtonInput(button, action, mods);
+        this->callbackHandler->handleMouseButtonInput(button, action);
     }
 
     void Window::handleMouseScrollInput(double xoffset, double yoffset) {
@@ -60,11 +60,25 @@ namespace CSELL { namespace Core {
         this->callbackHandler->handleMouseScrollInput(xoffset, yoffset);
     }
 
-    void Window::handleMouseEnterLeaveInput(int entered) {
+    void Window::handleMouseEnterLeaveInput(bool entered) {
         if (this->callbackHandler == NULL) {
             return;
         }
         this->callbackHandler->handleMouseEnterLeaveInput(entered);
+    }
+
+    void Window::handleWindowResizeInput(unsigned int width, unsigned int height) {
+        if (this->callbackHandler == NULL) {
+            return;
+        }
+        this->callbackHandler->handleWindowResizeInput(width, height);
+    }
+
+    void Window::handleWindowCloseInput() {
+        if (this->callbackHandler == NULL) {
+            return;
+        }
+        this->callbackHandler->handleWindowCloseInput();
     }
 
     void Window::update() {

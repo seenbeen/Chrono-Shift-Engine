@@ -16,19 +16,11 @@
 #include <CSE/CSELL/renderer/shaders.hpp>
 #include <CSE/CSELL/renderer/texture.hpp>
 
-#include <lib/glfw/glfw3.h>
+static bool running = true;
+static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
+static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 
-// le initializer
-bool init(const char *windowTitle, const int windowWidth, const int windowHeight, GLFWwindow *&window);
-// le window resizer
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-// input handler
-void processInput(GLFWwindow *window);
-
-const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
-const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
-
-CSELL::Renderer::ShaderProgram *shaderProgram;
+static CSELL::Renderer::ShaderProgram *shaderProgram;
 
 void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
     glm::mat4 temp;
@@ -47,22 +39,33 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
 }
 
 class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
-    void handleKeyInput(int key, int action, int mods) {
-        //if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        //    glfwSetWindowShouldClose(window,true);
-        //}
-        if (key == GLFW_KEY_SPACE) {
-            if (action == GLFW_PRESS) {
+    void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
+        if (key == InputCallbackHandler::K_ESCAPE && action == InputCallbackHandler::ACTION_PRESS) {
+            running = false;
+        }
+        if (key == InputCallbackHandler::K_SPACE) {
+            if (action == InputCallbackHandler::ACTION_PRESS) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            } else if (action == GLFW_RELEASE) {
+            } else if (action == InputCallbackHandler::ACTION_RELEASE) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
         }
     }
     void handleMousePosInput(double xpos, double ypos) {}
-    void handleMouseButtonInput(int button, int action, int mods) {}
+    void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
+        if (button == InputCallbackHandler::MOUSE_UNKNOWN) {
+            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSELL, "Main", "Random Mouse Pressed");
+        }
+    }
     void handleMouseScrollInput(double xoffset, double yoffset) {}
-    void handleMouseEnterLeaveInput(int entered) {}
+    void handleMouseEnterLeaveInput(bool entered) {}
+
+    void handleWindowResizeInput(unsigned int width, unsigned int height) {
+        glViewport(0, 0, width, height);
+    }
+    void handleWindowCloseInput() {
+        running = false;
+    };
 };
 
 int main() {
@@ -181,7 +184,7 @@ int main() {
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
 
-    while(true) {
+    while(running) {
         // Draw stuff
         glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -208,6 +211,7 @@ int main() {
 
     CSELL::Assets::AssetManager::shutdown();
 
+    window->destroy();
     glfwTerminate();
 
     return 0;
