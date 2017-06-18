@@ -1,7 +1,7 @@
 #ifndef CSELL_ASSETS_ASSETMANAGER_HPP
 #define CSELL_ASSETS_ASSETMANAGER_HPP
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include <CSE/CSELL/asset/asset.hpp>
@@ -12,7 +12,7 @@ namespace CSELL { namespace Assets {
     class AssetManager {
         static unsigned int assetCount;
         static bool isInitialized;
-        static std::map<unsigned int, Asset*> assets;
+        static std::unordered_map<unsigned int, Asset*> assets;
 
         static bool ensureInit();
 

@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
-#include <CSE/CSELL/renderer/texture.hpp>
+#include <CSE/CSELL/render/texture.hpp>
 
-namespace CSELL { namespace Renderer {
+namespace CSELL { namespace Render {
     Texture::Texture(unsigned int imgW, unsigned int imgH, const unsigned char *imgData) {
         glGenTextures(1,&this->textureId);
         glBindTexture(GL_TEXTURE_2D, this->textureId);
@@ -16,12 +16,8 @@ namespace CSELL { namespace Renderer {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
-    void Texture::bindTexture() {
-        glBindTexture(GL_TEXTURE_2D, this->textureId);
-    }
-
-    void Texture::useActiveTexture(GLenum textureNumber) {
-        glActiveTexture(textureNumber);
+    void Texture::useActiveTexture(unsigned int textureNumber) {
+        glActiveTexture(GL_TEXTURE0 + textureNumber);
         glBindTexture(GL_TEXTURE_2D, this->textureId);
     }
 

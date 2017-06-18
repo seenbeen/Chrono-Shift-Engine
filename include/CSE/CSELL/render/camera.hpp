@@ -1,10 +1,10 @@
-#ifndef CSELL_RENDERER_CAMERA_HPP
-#define CSELL_RENDERER_CAMERA_HPP
+#ifndef CSELL_RENDER_CAMERA_HPP
+#define CSELL_RENDER_CAMERA_HPP
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 // TODO: Swap to quaternions x.x
-namespace CSELL { namespace Renderer {
+namespace CSELL { namespace Render {
     class Camera {
         glm::mat4 projectionMatrix, viewMatrix;
         glm::vec3 positionVector, targetVector, rightVector;

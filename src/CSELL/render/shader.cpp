@@ -3,11 +3,13 @@
 #include <lib/glad/glad.h>
 
 #include <CSE/CSU/logger.hpp>
-#include <CSE/CSELL/renderer/shader.hpp>
+#include <CSE/CSELL/render/shader.hpp>
 
 
-namespace CSELL { namespace Renderer {
-    Shader::Shader(const std::string &shaderContents, Shader::ShaderType shaderType) {
+namespace CSELL { namespace Render {
+    Shader::Shader(const std::string &shaderName, const std::string &shaderContents, Shader::ShaderType shaderType) {
+        this->shaderName = shaderName;
+
         std::string strShaderType;
         GLenum glShaderType;
         if (shaderType == Shader::VERTEX_SHADER) {
@@ -16,8 +18,6 @@ namespace CSELL { namespace Renderer {
         } else if (shaderType == Shader::FRAGMENT_SHADER) {
             strShaderType = "Fragment";
             glShaderType = GL_FRAGMENT_SHADER;
-        } else {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - Shader", "Please specify a valid shader Type!");
         }
 
         this->shaderId = glCreateShader(glShaderType);
@@ -33,24 +33,20 @@ namespace CSELL { namespace Renderer {
         char statusMsg[512];
         glGetShaderiv(this->shaderId, GL_COMPILE_STATUS, &compileSuccess);
         if (compileSuccess) {
-            this->successCompiled = true;
+            this->successfulCompile = true;
         } else {
             glGetShaderInfoLog(this->shaderId, 512, NULL, statusMsg);
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Renderer - Shader",
-                             "Error compiling " + strShaderType + ":\n" + statusMsg);
-            this->successCompiled = false;
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Shader",
+                             "Error compiling " + strShaderType + " Shader \"" + this->shaderName + "\":\n" + statusMsg);
+            this->successfulCompile = false;
         }
-    }
-
-    unsigned int Shader::getId() {
-        return this->shaderId;
-    }
-
-    bool Shader::compileSuccess() {
-        return this->successCompiled;
     }
 
     Shader::~Shader() {
         glDeleteShader(this->shaderId);
+    }
+
+    std::string Shader::getName() {
+        return this->shaderName;
     }
 }}

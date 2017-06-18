@@ -1,4 +1,4 @@
-#include <map>
+#include <unordered_map>
 #include <cstddef>
 #include <string>
 
@@ -11,7 +11,7 @@
 namespace CSELL { namespace Assets {
     unsigned int AssetManager::assetCount = 0;
     bool AssetManager::isInitialized = false;
-    std::map<unsigned int, Asset*> AssetManager::assets;
+    std::unordered_map<unsigned int, Asset*> AssetManager::assets;
 
     bool AssetManager::ensureInit() {
         if (!AssetManager::isInitialized) {
@@ -37,7 +37,7 @@ namespace CSELL { namespace Assets {
         if (!AssetManager::ensureInit())
             return;
         // prevent leakage
-        std::map<unsigned int, Asset*>::iterator it;
+        std::unordered_map<unsigned int, Asset*>::iterator it;
         for (it = AssetManager::assets.begin(); it != AssetManager::assets.end(); it++) {
             delete it->second;
         }
@@ -48,7 +48,7 @@ namespace CSELL { namespace Assets {
         if (!AssetManager::ensureInit())
             return;
 
-        std::map<unsigned int, Asset*>::iterator it;
+        std::unordered_map<unsigned int, Asset*>::iterator it;
         it = AssetManager::assets.find(asset->assetID);
 
         if (it == AssetManager::assets.end()) {

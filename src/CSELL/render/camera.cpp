@@ -1,7 +1,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <CSE/CSELL/renderer/camera.hpp>
+#include <CSE/CSELL/render/camera.hpp>
 /*
 // TODO: Swap to quaternions x.x
 namespace CSELL { namespace Renderer {

@@ -1,9 +1,9 @@
-#ifndef CSELL_RENDERER_MESH_HPP
-#define CSELL_RENDERER_MESH_HPP
+#ifndef CSELL_RENDER_MESH_HPP
+#define CSELL_RENDER_MESH_HPP
 
 #include <lib/glm/glm.hpp>
 
-namespace CSELL { namespace Renderer {
+namespace CSELL { namespace Render {
     class Mesh {
     public:
         struct Vertex {

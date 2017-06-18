@@ -57,13 +57,13 @@
 		<Unit filename="include/CSE/CSELL/core/glfwwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/inputcallbackhandler.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/camera.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/mesh.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/renderengine.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/shader.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/shaderProgram.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/shaders.hpp" />
-		<Unit filename="include/CSE/CSELL/renderer/texture.hpp" />
+		<Unit filename="include/CSE/CSELL/render/camera.hpp" />
+		<Unit filename="include/CSE/CSELL/render/mesh.hpp" />
+		<Unit filename="include/CSE/CSELL/render/renderer.hpp" />
+		<Unit filename="include/CSE/CSELL/render/shader.hpp" />
+		<Unit filename="include/CSE/CSELL/render/shaderProgram.hpp" />
+		<Unit filename="include/CSE/CSELL/render/shaders.hpp" />
+		<Unit filename="include/CSE/CSELL/render/texture.hpp" />
 		<Unit filename="include/CSE/CSU/logger.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
 			<Option compilerVar="CC" />
@@ -79,12 +79,12 @@
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/CSELL/renderer/camera.cpp" />
-		<Unit filename="src/CSELL/renderer/mesh.cpp" />
-		<Unit filename="src/CSELL/renderer/renderengine.cpp" />
-		<Unit filename="src/CSELL/renderer/shader.cpp" />
-		<Unit filename="src/CSELL/renderer/shaderProgram.cpp" />
-		<Unit filename="src/CSELL/renderer/texture.cpp" />
+		<Unit filename="src/CSELL/render/camera.cpp" />
+		<Unit filename="src/CSELL/render/mesh.cpp" />
+		<Unit filename="src/CSELL/render/renderer.cpp" />
+		<Unit filename="src/CSELL/render/shader.cpp" />
+		<Unit filename="src/CSELL/render/shaderProgram.cpp" />
+		<Unit filename="src/CSELL/render/texture.cpp" />
 		<Unit filename="src/CSU/logger.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
