@@ -75,7 +75,6 @@
 		<Unit filename="src/CSELL/asset/image.cpp" />
 		<Unit filename="src/CSELL/asset/text.cpp" />
 		<Unit filename="src/CSELL/core/glfwwindow.cpp" />
-		<Unit filename="src/CSELL/core/inputcallbackhandler.cpp" />
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
