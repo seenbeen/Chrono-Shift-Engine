@@ -4,13 +4,24 @@
 #include <lib/glm/glm.hpp>
 
 namespace CSELL { namespace Render {
+    class Renderer;
+
     class Mesh {
+    friend class Renderer;
     public:
         struct Vertex {
             glm::vec3 pos;
             glm::vec3 normal;
             glm::vec2 texCoord;
         };
+    private:
+        Renderer *renderer;
+        Renderer **activeRenderer;
+    protected:
+        Mesh();
+        virtual ~Mesh();
+        virtual bool initMesh(unsigned int nVertices, const Mesh::Vertex *vertices,
+                              unsigned int nElements, const unsigned int *elements) = 0;
     };
 }}
 

@@ -2,25 +2,19 @@
 #include <string>
 
 #include <lib/image/stb_image.h>
-#include <lib/image/lodepng.h>
 
 #include <CSE/CSELL/asset/image.hpp>
 
 namespace CSELL { namespace Assets {
-    ImageAsset::ImageAsset(const std::string &filepath, bool isPNG) {
+    ImageAsset::ImageAsset(const std::string &filepath) {
         unsigned char *temp;
         int tw,th,tn;
 
         std::vector<unsigned char> image;
 
-        if (isPNG) {
-            lodepng::decode(image, this->imgW, this->imgH, filepath.c_str());
-            temp = &image[0];
-        } else {
-            temp = stbi_load(filepath.c_str(), &tw, &th, &tn, 0);
-            this->imgW = (unsigned int)tw;
-            this->imgH = (unsigned int)th;
-        }
+        temp = stbi_load(filepath.c_str(), &tw, &th, &tn, 0);
+        this->imgW = (unsigned int)tw;
+        this->imgH = (unsigned int)th;
 
         unsigned int dataSize = this->imgW*this->imgH*4;
 
@@ -37,6 +31,8 @@ namespace CSELL { namespace Assets {
             }
         }
 
+        stbi_image_free(temp);
+
         dataSize /= 4;
         // set all invisible pixels to white
         for (unsigned int i = 0; i < dataSize; i++) {
@@ -45,10 +41,6 @@ namespace CSELL { namespace Assets {
                     this->imgData[i*4+j] = 255;
                 }
             }
-        }
-
-        if (!isPNG) {
-            stbi_image_free(temp);
         }
 
         this->vFlipImageData();

@@ -61,10 +61,10 @@ namespace CSELL { namespace Assets {
         AssetManager::assets.erase(it);
     }
 
-    ImageAsset *AssetManager::loadImage(const std::string &path, bool isPNG) {
+    ImageAsset *AssetManager::loadImage(const std::string &path) {
         if (!AssetManager::ensureInit())
             return NULL;
-        ImageAsset *asset = new ImageAsset(path, isPNG);
+        ImageAsset *asset = new ImageAsset(path);
         asset->assetID = AssetManager::assetCount++;
         AssetManager::assets[asset->assetID] = asset;
         return asset;

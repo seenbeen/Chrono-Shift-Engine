@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <glad/glad.h>
+
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
@@ -12,10 +14,13 @@
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
+#include <CSE/CSELL/asset/text.hpp>
 
 #include <CSE/CSELL/render/renderer.hpp>
-#include <CSE/CSELL/render/shaders.hpp>
-#include <CSE/CSELL/render/texture.hpp>
+#include <CSE/CSELL/render/gl/glrenderercomponentfactory.hpp>
+#include <CSE/CSELL/render/gl/glshader.hpp>
+#include <CSE/CSELL/render/gl/glshaderprogram.hpp>
+#include <CSE/CSELL/render/gl/gltexture.hpp>
 
 static bool running = true;
 static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
@@ -28,7 +33,7 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
     temp = glm::translate(temp, glm::vec3((tx+lx+rx)/3.0f,(ty+ly+ry)/3.0f,0.0f));
     temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
     temp = glm::scale(temp, glm::vec3(scale,scale,scale));
-    shaderProgram->setMat4fv("transform", glm::value_ptr(temp));
+    shaderProgram->setMat4f("transform", glm::value_ptr(temp));
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     if (depth == 1) {
@@ -91,11 +96,13 @@ int main() {
     }
 
     TestCallbackHandler handler;
+
     window->registerInputCallbackHandler(&handler);
 
-    CSELL::Render::Renderer *renderer = CSELL::Render::Renderer::newRenderer("Main Renderer", window);
+    CSELL::Render::GLRendererComponentFactory rcompfactory;
+    CSELL::Render::Renderer *renderer = CSELL::Render::Renderer::newRenderer(window, &rcompfactory);
 
-    window->useContext();
+    renderer->makeActiveRenderer();
 
     // render stuff
     glEnable(GL_BLEND);
@@ -108,20 +115,21 @@ int main() {
     CSELL::Render::Shader *fragmentShader, *vertexShader;
 
     shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
-    fragmentShader = renderer->newShader("FragShader1", shaderContent->getContents()->c_str(),
-                                                        CSELL::Render::Shader::FRAGMENT_SHADER);
+    fragmentShader = renderer->newShader(shaderContent->getContents()->c_str(),
+                                         CSELL::Render::Shader::FRAGMENT_SHADER);
 
     CSELL::Assets::AssetManager::freeAsset(shaderContent);
 
     shaderContent = CSELL::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
-    vertexShader = renderer->newShader("VertShader1", shaderContent->getContents()->c_str(),
-                                                      CSELL::Render::Shader::VERTEX_SHADER);
+    vertexShader = renderer->newShader(shaderContent->getContents()->c_str(),
+                                       CSELL::Render::Shader::VERTEX_SHADER);
 
     CSELL::Assets::AssetManager::freeAsset(shaderContent);
 
-    const CSELL::Render::Shader *shaders[2] = { fragmentShader, vertexShader };
-
-    shaderProgram = renderer->newShaderProgram("MuhProgram", 2, shaders);
+    shaderProgram = renderer->newShaderProgram();
+    shaderProgram->attachShader(vertexShader);
+    shaderProgram->attachShader(fragmentShader);
+    shaderProgram->linkShaderProgram();
 
     renderer->deleteShader(fragmentShader);
     fragmentShader = NULL;
@@ -131,12 +139,12 @@ int main() {
 
     // Set up texture
 
-    CSELL::Assets::ImageAsset *img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg", false);
+    CSELL::Assets::ImageAsset *img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
     CSELL::Render::Texture *tex1 = renderer->newTexture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
-    img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png", false);
+    img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");
     CSELL::Render::Texture *tex2 = renderer->newTexture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
@@ -184,7 +192,7 @@ int main() {
 
 
     // begin program
-
+    shaderProgram->useShaderProgram();
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
 
@@ -193,7 +201,6 @@ int main() {
         glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        shaderProgram->use();
         tex1->useActiveTexture(0);
         tex2->useActiveTexture(1);
         glBindVertexArray(VAO);

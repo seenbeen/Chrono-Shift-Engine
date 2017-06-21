@@ -4,6 +4,10 @@
 #include <CSE/CSELL/render/camera.hpp>
 /*
 // TODO: Swap to quaternions x.x
+OrthographicCamera *newOrthographicCamera(int screenWidth, int screenHeight, float unitsW, float unitsH);
+
+PerspectiveCamera *newPerspectiveCamera(int screenWidth, int screenHeight,
+                                        float fov, float aspectRatio, float near, float far);
 namespace CSELL { namespace Renderer {
     class Camera {
         friend class RenderEngine;

@@ -1,78 +1,78 @@
-#include <string>
-
-#include <glad/glad.h>
-
 #include <CSE/CSU/logger.hpp>
 
-#include <CSE/CSELL/render/shaderProgram.hpp>
+#include <cstddef>
 
+#include <CSE/CSELL/render/shaderprogram.hpp>
+#include <CSE/CSELL/render/shader.hpp>
 
 namespace CSELL { namespace Render {
-    unsigned int ShaderProgram::activeProgram = 0;
+    ShaderProgram *ShaderProgram::activeShaderProgram = NULL;
 
-    ShaderProgram::ShaderProgram(const std::string &programName, unsigned int nShaders, const Shader **shaders) {
-        this->programName = programName;
-        this->programId = glCreateProgram();
-
-        for (unsigned int i = 0; i < nShaders; i++) {
-            glAttachShader(this->programId, shaders[i]->shaderId);
-        }
-
-        glLinkProgram(this->programId);
-        // check for errors
-        int linkSuccess;
-        char statusMsg[512];
-        glGetProgramiv(this->programId, GL_LINK_STATUS, &linkSuccess);
-
-        if (linkSuccess) {
-            for (unsigned int i = 0; i < nShaders; i++) {
-                glDetachShader(this->programId, shaders[i]->shaderId);
-            }
-
-            this->successfulLink = true;
-        } else {
-            glGetProgramInfoLog(this->programId, 512, NULL, statusMsg);
+    bool ShaderProgram::ensureContext() {
+        if (this->renderer != *this->activeRenderer) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
-                             std::string("Error linking Shader Program \"" + this->programName + "\":\n") + statusMsg);
-
-            this->successfulLink = false;
+                             "ShaderProgram does not belong to active Renderer!");
+            return false;
         }
-    }
-
-    ShaderProgram::~ShaderProgram() {
-        glDeleteProgram(this->programId);
-    }
-
-    std::string ShaderProgram::getName() {
-        return this->programName;
-    }
-
-    void ShaderProgram::use() {
-        if (ShaderProgram::activeProgram == this->programId) {
-            return;
+        if (ShaderProgram::activeShaderProgram != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
+                             "ShaderProgram is not currently active ShaderProgram!");
+            return false;
         }
-        glUseProgram(this->programId);
-        ShaderProgram::activeProgram = this->programId;
+        return true;
     }
 
-    void ShaderProgram::setInt(const char *key, int value) {
-        if (ShaderProgram::activeProgram != this->programId) {
-            this->use();
+    ShaderProgram::ShaderProgram() {}
+    ShaderProgram::~ShaderProgram() {}
+
+    bool ShaderProgram::attachShader(Shader *shader) {
+        if (this->renderer == *this->activeRenderer) {
+            return this->attachShaderImplementation(shader);
         }
-        glUniform1i(glGetUniformLocation(this->programId, key), value);
+        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
+                         "ShaderProgram does not belong to active Renderer!");
+        return false;
     }
 
-    void ShaderProgram::setFloat(const char *key, float value) {
-        if (ShaderProgram::activeProgram != this->programId) {
-            this->use();
+    bool ShaderProgram::linkShaderProgram() {
+        if (this->renderer == *this->activeRenderer) {
+            return this->linkShaderProgramImplementation();
         }
-        glUniform1f(glGetUniformLocation(this->programId, key), value);
+        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
+                         "ShaderProgram does not belong to active Renderer!");
+        return false;
     }
 
-    void ShaderProgram::setMat4fv(const char *key, float *value) {
-        if (ShaderProgram::activeProgram != this->programId) {
-            this->use();
+    bool ShaderProgram::useShaderProgram() {
+        if (ShaderProgram::activeShaderProgram != this) {
+            if (this->useShaderProgramImplementation()) {
+                ShaderProgram::activeShaderProgram = this;
+                return true;
+            }
         }
-        glUniformMatrix4fv(glGetUniformLocation(this->programId, key), 1, GL_FALSE, value);
+        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
+                         "ShaderProgram is already active!");
+        return false;
+    }
+
+    bool ShaderProgram::setInt(const char *key, int value) {
+        if (this->ensureContext()) {
+            return this->setIntImplementation(key, value);
+        }
+        return false;
+    }
+
+    bool ShaderProgram::setFloat(const char *key, float value) {
+        if (this->ensureContext()) {
+            return this->setFloatImplementation(key, value);
+        }
+        return false;
+    }
+
+    bool ShaderProgram::setMat4f(const char *key, float *value) {
+        if (this->ensureContext()) {
+            return this->setMat4fImplementation(key, value);
+        }
+        return false;
     }
 }}

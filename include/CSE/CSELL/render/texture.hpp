@@ -1,21 +1,22 @@
 #ifndef CSELL_RENDER_TEXTURE_HPP
 #define CSELL_RENDER_TEXTURE_HPP
 
-#include <glad/glad.h>
-
 namespace CSELL { namespace Render {
     class Renderer;
 
     class Texture {
     friend class Renderer;
-        static unsigned int activeTexture;
-        unsigned int textureId;
-        Texture(unsigned int imgW, unsigned int imgH, const unsigned char *imgData);
-        ~Texture();
-    public:
-        void useActiveTexture(unsigned int textureNumber);
-    };
+        Renderer *renderer;
+        Renderer **activeRenderer;
+    protected:
+        Texture();
+        virtual ~Texture();
 
+        virtual bool initTexture(unsigned int imgW, unsigned int imgH, const unsigned char *imgData) = 0;
+        virtual bool useActiveTextureImplementation(unsigned int textureNumber) = 0;
+    public:
+        bool useActiveTexture(unsigned int textureNumber);
+    };
 }}
 
 #endif

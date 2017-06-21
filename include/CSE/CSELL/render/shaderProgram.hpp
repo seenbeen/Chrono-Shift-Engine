@@ -1,31 +1,43 @@
-#ifndef CSELL_RENDER_SHADER_PROGRAM_HPP
-#define CSELL_RENDER_SHADER_PROGRAM_HPP
-
-#include <string>
-
-#include <CSE/CSELL/render/shader.hpp>
+#ifndef CSELL_RENDER_SHADERPROGRAM_HPP
+#define CSELL_RENDER_SHADERPROGRAM_HPP
 
 namespace CSELL { namespace Render {
     class Renderer;
+    class Shader;
 
     class ShaderProgram {
     friend class Renderer;
-        static unsigned int activeProgram;
+        static ShaderProgram *activeShaderProgram;
 
-        std::string programName;
-        unsigned int programId;
-        bool successfulLink;
+        Renderer *renderer;
+        Renderer **activeRenderer;
 
-        ShaderProgram(const std::string &programName, unsigned int nShaders, const Shader **shaders);
-        ~ShaderProgram();
+        bool ensureContext();
+
+    protected:
+        ShaderProgram();
+        virtual ~ShaderProgram();
+
+        virtual bool initShaderProgram() = 0;
+
+        virtual bool attachShaderImplementation(Shader *shader) = 0;
+        virtual bool linkShaderProgramImplementation() = 0;
+        virtual bool useShaderProgramImplementation() = 0;
+
+        // uniform setter implementations
+        virtual bool setIntImplementation(const char *key, int value) = 0;
+        virtual bool setFloatImplementation(const char *key, float value) = 0;
+        virtual bool setMat4fImplementation(const char *key, float *value) = 0;
     public:
-        std::string getName();
-        void use();
+
+        bool attachShader(Shader *shader);
+        bool linkShaderProgram();
+        bool useShaderProgram();
 
         // uniform setters
-        void setInt(const char *key, int value);
-        void setFloat(const char *key, float value);
-        void setMat4fv(const char *key, float *value);
+        bool setInt(const char *key, int value);
+        bool setFloat(const char *key, float value);
+        bool setMat4f(const char *key, float *value);
     };
 }}
 

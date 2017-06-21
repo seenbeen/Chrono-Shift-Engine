@@ -1,17 +1,16 @@
 #ifndef CSELL_RENDER_RENDERER_HPP
 #define CSELL_RENDER_RENDERER_HPP
 
-#include <string>
 #include <set>
 #include <map>
 
 #include <CSE/CSELL/core/window.hpp>
 
-#include <CSE/CSELL/render/mesh.hpp>
-#include <CSE/CSELL/render/shaders.hpp>
+#include <CSE/CSELL/render/renderercomponentfactory.hpp>
+#include <CSE/CSELL/render/shader.hpp>
+#include <CSE/CSELL/render/shaderprogram.hpp>
 #include <CSE/CSELL/render/texture.hpp>
-#include <CSE/CSELL/render/camera.hpp>
-
+#include <CSE/CSELL/render/mesh.hpp>
 /*
     NOTE: This class assumes that an OPENGL context has been set up before use.
     Normally, if one were sticking with the prescribed interface, this should already be the case.
@@ -20,48 +19,37 @@
 namespace CSELL { namespace Render {
     class Renderer {
         static std::map<CSELL::Core::Window *, Renderer *> windows;
-        static CSELL::Core::Window *activeWindowContext;
 
-        std::string name;
+        static Renderer *activeRenderer;
 
         std::set<Shader *> shaders;
         std::set<ShaderProgram *> shaderPrograms;
         std::set<Texture *> textures;
         std::set<Mesh *> meshes;
-        std::set<Camera *> cameras;
 
         CSELL::Core::Window *window;
+        RendererComponentFactory *factory;
 
-        Renderer(const std::string &name, CSELL::Core::Window *window);
+        Renderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
 
-        void ensureActiveContext();
+        bool ensureActiveRenderer();
+
     public:
-        static Renderer *newRenderer(const std::string &name, CSELL::Core::Window *window);
-
-        std::string getName();
-
+        static Renderer *newRenderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
         ~Renderer();
 
-        Shader *newShader(const std::string &shaderName, const std::string &shaderSource, Shader::ShaderType shaderType);
+        void makeActiveRenderer();
 
-        ShaderProgram *newShaderProgram(const std::string &programName, unsigned int nShaders, const Shader **shaders);
-
+        Shader *newShader(const char *shaderSource, Shader::ShaderType shaderType);
+        ShaderProgram *newShaderProgram();
         Texture *newTexture(unsigned int imgW, unsigned int imgH, const unsigned char *imgData);
-
         Mesh *newMesh(unsigned int nVertices, const Mesh::Vertex *vertices,
                       unsigned int nElements, const unsigned int *elements);
 
-        OrthographicCamera *newOrthographicCamera(int screenWidth, int screenHeight, float unitsW, float unitsH);
-
-        PerspectiveCamera *newPerspectiveCamera(int screenWidth, int screenHeight,
-                                                 float fov, float aspectRatio, float near, float far);
-
-        void deleteShader(Shader *shader);
-        void deleteShaderProgram(ShaderProgram *shaderProgram);
-        void deleteTexture(Texture *texture);
-        void deleteCamera(Camera *camera);
-
-        void renderState();
+        bool deleteShader(Shader *shader);
+        bool deleteShaderProgram(ShaderProgram *shaderProgram);
+        bool deleteTexture(Texture *texture);
+        bool deleteMesh(Mesh *mesh);
     };
 }}
 #endif
