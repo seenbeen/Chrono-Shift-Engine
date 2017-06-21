@@ -7,12 +7,8 @@ namespace CSELL { namespace Render {
 
     class ShaderProgram {
     friend class Renderer;
-        static ShaderProgram *activeShaderProgram;
-
         Renderer *renderer;
         Renderer **activeRenderer;
-
-        bool ensureContext();
 
     protected:
         ShaderProgram();
