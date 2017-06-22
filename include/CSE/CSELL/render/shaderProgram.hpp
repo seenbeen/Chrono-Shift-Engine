@@ -1,14 +1,27 @@
 #ifndef CSELL_RENDER_SHADERPROGRAM_HPP
 #define CSELL_RENDER_SHADERPROGRAM_HPP
 
+/*
+Notes:
+The ShaderProgram abstract class interface - enforces implementing ShaderPrograms.
+- "forces" implementing classes to comply to working as a state machine
+- (much like OpenGL, where the renderer/shaderprogram must be the active one).
+- Chosen so extra code didn't have to be introduced in gl shaders to
+    ensure proper state prior to doing work.
+*/
+
 namespace CSELL { namespace Render {
     class Renderer;
     class Shader;
 
     class ShaderProgram {
     friend class Renderer;
+        #if RENDERER_WARNING_CHECKS == true
+        static ShaderProgram *activeShaderProgram;
         Renderer *renderer;
         Renderer **activeRenderer;
+        bool isLinked;
+        #endif
 
     protected:
         ShaderProgram();

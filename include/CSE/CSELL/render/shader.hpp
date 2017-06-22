@@ -6,8 +6,11 @@ namespace CSELL { namespace Render {
 
     class Shader {
     friend class Renderer;
+        #if RENDERER_WARNING_CHECKS == true
         Renderer *renderer;
         Renderer **activeRenderer;
+        #endif
+
     public:
         enum ShaderType { VERTEX_SHADER, FRAGMENT_SHADER };
         virtual unsigned int getShaderId() = 0;

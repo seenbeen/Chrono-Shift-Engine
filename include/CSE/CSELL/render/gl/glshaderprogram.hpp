@@ -9,10 +9,8 @@ namespace CSELL { namespace Render {
     class Shader;
 
     class GLShaderProgram: public ShaderProgram {
-        static GLShaderProgram *activeShaderProgram;
         unsigned int programId;
         std::vector<Shader *> shaders;
-        bool isLinked;
 
     protected:
         ~GLShaderProgram();

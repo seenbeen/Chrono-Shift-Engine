@@ -15,8 +15,11 @@ namespace CSELL { namespace Render {
             glm::vec2 texCoord;
         };
     private:
+        #if RENDERER_WARNING_CHECKS == true
         Renderer *renderer;
         Renderer **activeRenderer;
+        #endif
+
     protected:
         Mesh();
         virtual ~Mesh();

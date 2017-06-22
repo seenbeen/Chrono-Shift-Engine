@@ -12,10 +12,10 @@ namespace CSELL { namespace Render {
     class RendererComponentFactory {
     friend class Renderer;
     protected:
-        virtual Shader *makeNewShader();
-        virtual ShaderProgram *makeNewShaderProgram();
-        virtual Texture *makeNewTexture();
-        virtual Mesh *makeNewMesh();
+        virtual Shader *makeNewShader() = 0;
+        virtual ShaderProgram *makeNewShaderProgram() = 0;
+        virtual Texture *makeNewTexture() = 0;
+        virtual Mesh *makeNewMesh() = 0;
     };
 }}
 

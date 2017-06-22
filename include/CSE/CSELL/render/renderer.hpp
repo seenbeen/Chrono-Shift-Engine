@@ -18,9 +18,10 @@
 
 namespace CSELL { namespace Render {
     class Renderer {
+        #if RENDERER_WARNING_CHECKS == true
         static std::map<CSELL::Core::Window *, Renderer *> windows;
-
         static Renderer *activeRenderer;
+        #endif
 
         std::set<Shader *> shaders;
         std::set<ShaderProgram *> shaderPrograms;
@@ -32,13 +33,11 @@ namespace CSELL { namespace Render {
 
         Renderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
 
-        bool ensureActiveRenderer();
-
     public:
         static Renderer *newRenderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
         ~Renderer();
 
-        void makeActiveRenderer();
+        bool makeActiveRenderer();
 
         Shader *newShader(const char *shaderSource, Shader::ShaderType shaderType);
         ShaderProgram *newShaderProgram();

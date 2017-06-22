@@ -17,41 +17,45 @@
 
 
 namespace CSELL { namespace Render {
+    #if RENDERER_WARNING_CHECKS == true
     std::map<CSELL::Core::Window *, Renderer *> Renderer::windows;
     Renderer *Renderer::activeRenderer = NULL;
+    #endif
 
     Renderer::Renderer(CSELL::Core::Window *window, RendererComponentFactory *factory)
                     : window(window), factory(factory) {}
 
-    bool Renderer::ensureActiveRenderer() {
-        if (Renderer::activeRenderer == this) {
-            return true;
-        }
-
-        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
-                         "Render - Renderer",
-                         "Renderer is not the active renderer!");
-        return false;
-    }
-
     Renderer *Renderer::newRenderer(CSELL::Core::Window *window, RendererComponentFactory *factory) {
+        #if RENDERER_WARNING_CHECKS == true
         if (Renderer::windows.find(window) != Renderer::windows.end()) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
                              "Render - Renderer",
                              "Failed to create Renderer! Window context already occupied!");
             return NULL;
         }
+
         Renderer *renderer = new Renderer(window, factory);
         Renderer::windows[window] = renderer;
+
+        #else
+        Renderer *renderer = new Renderer(window, factory);
+        #endif
+
         return renderer;
     }
 
     Renderer::~Renderer() {
+        #if RENDERER_WARNING_CHECKS == true
         Renderer *activeRendererBack = Renderer::activeRenderer;
-
+        if (activeRendererBack != Renderer::activeRenderer) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Deleting renderer whose context isn't active!");
+        }
         // ensure renderer context matches
         Renderer::activeRenderer = this;
         this->window->useContext();
+        #endif
 
         std::set<Shader *>::iterator shaderIt;
         for (shaderIt = shaders.begin(); shaderIt != shaders.end(); shaderIt++) {
@@ -73,6 +77,7 @@ namespace CSELL { namespace Render {
             delete (*meshIt);
         }
 
+        #if RENDERER_WARNING_CHECKS == true
         Renderer::windows.erase(Renderer::windows.find(this->window));
 
         // restore context if we didn't delete the currently active renderer
@@ -81,25 +86,38 @@ namespace CSELL { namespace Render {
         } else {
             activeRendererBack->makeActiveRenderer();
         }
+        #endif
     }
 
-    void Renderer::makeActiveRenderer() {
+    bool Renderer::makeActiveRenderer() {
+        #if RENDERER_WARNING_CHECKS == true
         if (this == Renderer::activeRenderer) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
                  "Render - Renderer",
                  "Window context already active!");
+            return false;
         }
 
         Renderer::activeRenderer = this;
+        #endif
+
         this->window->useContext();
+        return true;
     }
 
     Shader *Renderer::newShader(const char *shaderSource, Shader::ShaderType shaderType) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return NULL;
         }
+        #endif
 
         Shader *shader = this->factory->makeNewShader();
+
+        #if RENDERER_WARNING_CHECKS == true
         if (!shader->initShader(shaderSource, shaderType)) {
             delete shader;
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Renderer",
@@ -108,34 +126,57 @@ namespace CSELL { namespace Render {
         }
         shader->renderer = this;
         shader->activeRenderer = &Renderer::activeRenderer;
+        #else
+        shader->initShader(shaderSource, shaderType);
+        #endif
+
         this->shaders.insert(shader);
         return shader;
     }
 
     ShaderProgram *Renderer::newShaderProgram() {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return NULL;
         }
+        #endif
 
         ShaderProgram *shaderProgram = this->factory->makeNewShaderProgram();
+
+        #if RENDERER_WARNING_CHECKS == true
         if (!shaderProgram->initShaderProgram()) {
             delete shaderProgram;
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Renderer",
                              "Failed to initialize ShaderProgram!");
             return NULL;
         }
+
         shaderProgram->renderer = this;
         shaderProgram->activeRenderer = &Renderer::activeRenderer;
+        #else
+        shaderProgram->initShaderProgram();
+        #endif
+
         this->shaderPrograms.insert(shaderProgram);
         return shaderProgram;
     }
 
     Texture *Renderer::newTexture(unsigned int imgW, unsigned int imgH, const unsigned char *imgData) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return NULL;
         }
+        #endif
 
         Texture *texture = this->factory->makeNewTexture();
+
+        #if RENDERER_WARNING_CHECKS == true
         if (!texture->initTexture(imgW, imgH, imgData)) {
             delete texture;
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Renderer",
@@ -144,17 +185,28 @@ namespace CSELL { namespace Render {
         }
         texture->renderer = this;
         texture->activeRenderer = &Renderer::activeRenderer;
+        #else
+        texture->initTexture(imgW, imgH, imgData);
+        #endif
+
         this->textures.insert(texture);
         return texture;
     }
 
     Mesh *Renderer::newMesh(unsigned int nVertices, const Mesh::Vertex *vertices,
                             unsigned int nElements, const unsigned int *elements) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return NULL;
         }
+        #endif
 
         Mesh *mesh = this->factory->makeNewMesh();
+
+        #if RENDERER_WARNING_CHECKS == true
         if (!mesh->initMesh(nVertices, vertices, nElements, elements)) {
             delete mesh;
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Renderer",
@@ -163,15 +215,27 @@ namespace CSELL { namespace Render {
         }
         mesh->renderer = this;
         mesh->activeRenderer = &Renderer::activeRenderer;
+        #else
+        mesh->initMesh(nVertices, vertices, nElements, elements);
+        #endif
+
         this->meshes.insert(mesh);
         return mesh;
     }
 
     bool Renderer::deleteShader(Shader *shader) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return false;
         }
+        #endif
+
         std::set<Shader *>::iterator it = this->shaders.find(shader);
+
+        #if RENDERER_WARNING_CHECKS == true
         if (it == this->shaders.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
                              "Render - Renderer",
@@ -182,13 +246,26 @@ namespace CSELL { namespace Render {
             this->shaders.erase(it);
             return true;
         }
+        #else
+        delete shader;
+        this->shaders.erase(it);
+        return true;
+        #endif
     }
 
     bool Renderer::deleteShaderProgram(ShaderProgram *shaderProgram) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return false;
         }
+        #endif
+
         std::set<ShaderProgram *>::iterator it = this->shaderPrograms.find(shaderProgram);
+
+        #if RENDERER_WARNING_CHECKS == true
         if (it == this->shaderPrograms.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
                              "Render - Renderer",
@@ -199,13 +276,26 @@ namespace CSELL { namespace Render {
             this->shaderPrograms.erase(it);
             return true;
         }
+        #else
+        delete shaderProgram;
+        this->shaderPrograms.erase(it);
+        return true;
+        #endif
     }
 
     bool Renderer::deleteTexture(Texture *texture) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return false;
         }
+        #endif
+
         std::set<Texture *>::iterator it = this->textures.find(texture);
+
+        #if RENDERER_WARNING_CHECKS == true
         if (it == this->textures.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
                              "Render - Renderer",
@@ -216,13 +306,26 @@ namespace CSELL { namespace Render {
             this->textures.erase(it);
             return true;
         }
+        #else
+        delete texture;
+        this->textures.erase(it);
+        return true;
+        #endif
     }
 
     bool Renderer::deleteMesh(Mesh *mesh) {
-        if (!this->ensureActiveRenderer()) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
             return false;
         }
+        #endif
+
         std::set<Mesh *>::iterator it = this->meshes.find(mesh);
+
+        #if RENDERER_WARNING_CHECKS == true
         if (it == this->meshes.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
                              "Render - Renderer",
@@ -233,5 +336,10 @@ namespace CSELL { namespace Render {
             this->meshes.erase(it);
             return true;
         }
+        #else
+        delete mesh;
+        this->meshes.erase(it);
+        return true;
+        #endif
     }
 }}

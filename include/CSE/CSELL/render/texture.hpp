@@ -6,8 +6,10 @@ namespace CSELL { namespace Render {
 
     class Texture {
     friend class Renderer;
+        #if RENDERER_WARNING_CHECKS == true
         Renderer *renderer;
         Renderer **activeRenderer;
+        #endif
     protected:
         Texture();
         virtual ~Texture();
