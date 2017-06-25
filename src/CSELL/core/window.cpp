@@ -24,69 +24,77 @@ namespace CSELL { namespace Core {
     }
 
     /* Input Callback Stuff */
-    void Window::registerInputCallbackHandler(InputCallbackHandler *cbh) {
+    bool Window::registerInputCallbackHandler(InputCallbackHandler *cbh) {
         if (!this->successfulInit) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is not initialized!");
-            return;
+            return false;
         }
         this->callbackHandler = cbh;
+        return true;
     }
 
-    void Window::handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
+    bool Window::handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleKeyInput(key, action);
+        return true;
     }
 
-    void Window::handleMousePosInput(double xpos, double ypos) {
+    bool Window::handleMousePosInput(double xpos, double ypos, double xrel, double yrel) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
-        this->callbackHandler->handleMousePosInput(xpos, ypos);
+        this->callbackHandler->handleMousePosInput(xpos, ypos, xrel, yrel);
+        return true;
     }
 
-    void Window::handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
+    bool Window::handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleMouseButtonInput(button, action);
+        return true;
     }
 
-    void Window::handleMouseScrollInput(double xoffset, double yoffset) {
+    bool Window::handleMouseScrollInput(double xoffset, double yoffset) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleMouseScrollInput(xoffset, yoffset);
+        return true;
     }
 
-    void Window::handleMouseEnterLeaveInput(bool entered) {
+    bool Window::handleMouseEnterLeaveInput(bool entered) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleMouseEnterLeaveInput(entered);
+        return true;
     }
 
-    void Window::handleWindowResizeInput(unsigned int width, unsigned int height) {
+    bool Window::handleWindowResizeInput(unsigned int width, unsigned int height) {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleWindowResizeInput(width, height);
+        return true;
     }
 
-    void Window::handleWindowCloseInput() {
+    bool Window::handleWindowCloseInput() {
         if (this->callbackHandler == NULL) {
-            return;
+            return false;
         }
         this->callbackHandler->handleWindowCloseInput();
+        return true;
     }
 
-    void Window::update() {
+    bool Window::update() {
         if (!this->successfulInit) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is not initialized!");
-            return;
+            return false;
         }
-        this->updateImplementation();
+        return this->updateImplementation();
     }
 
     double Window::getTime() {
@@ -97,11 +105,19 @@ namespace CSELL { namespace Core {
         return this->getTimeImplementation();
     }
 
-    void Window::useContext() {
+    bool Window::useContext() {
         if (!this->successfulInit) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is not initialized!");
-            return;
+            return false;
         }
-        this->useContextImplementation();
+        return this->useContextImplementation();
+    }
+
+    bool Window::setCursorMode(bool enable) {
+        if (!this->successfulInit) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is not initialized!");
+            return false;
+        }
+        return this-setCursorModeImplementation(enable);
     }
 }}

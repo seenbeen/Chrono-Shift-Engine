@@ -25,29 +25,30 @@ namespace CSELL { namespace Core {
         virtual ~Window();
         virtual bool initializeImplementation(Window::Settings settings) = 0;
         virtual void destroyImplementation() = 0;
-        virtual void updateImplementation() = 0;
+        virtual bool updateImplementation() = 0;
         virtual double getTimeImplementation() = 0;
-        virtual void useContextImplementation() = 0;
+        virtual bool useContextImplementation() = 0;
+        virtual bool setCursorModeImplementation(bool enable) = 0;
 
     public:
         bool initialize(Window::Settings settings);
         void destroy();
 
-        void registerInputCallbackHandler(InputCallbackHandler *cbh);
+        bool registerInputCallbackHandler(InputCallbackHandler *cbh);
 
-        void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action);
-        void handleMousePosInput(double xpos, double ypos);
-        void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action);
-        void handleMouseScrollInput(double xoffset, double yoffset);
-        void handleMouseEnterLeaveInput(bool entered);
+        bool handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action);
+        bool handleMousePosInput(double xpos, double ypos, double xrel, double yrel);
+        bool handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action);
+        bool handleMouseScrollInput(double xoffset, double yoffset);
+        bool handleMouseEnterLeaveInput(bool entered);
 
-        void handleWindowResizeInput(unsigned int width, unsigned int height);
-        void handleWindowCloseInput();
+        bool handleWindowResizeInput(unsigned int width, unsigned int height);
+        bool handleWindowCloseInput();
 
-        void update();
+        bool update();
         double getTime();
-        void useContext();
-        bool shouldClose();
+        bool useContext();
+        bool setCursorMode(bool enable);
     };
 }}
 

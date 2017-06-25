@@ -59,7 +59,7 @@ namespace CSELL { namespace Core {
             enum MouseButton { MOUSE_UNKNOWN, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT };
         protected:
             virtual void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) = 0;
-            virtual void handleMousePosInput(double xpos, double ypos) = 0;
+            virtual void handleMousePosInput(double xpos, double ypos, double xrel, double yrel) = 0;
             virtual void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) = 0;
             virtual void handleMouseScrollInput(double xoffset, double yoffset) = 0;
             virtual void handleMouseEnterLeaveInput(bool entered) = 0;

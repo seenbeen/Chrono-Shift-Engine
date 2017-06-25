@@ -39,11 +39,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add directory="include/" />
 			<Add directory="include/lib" />
 		</Compiler>
 		<Linker>
-			<Add option="-lglfw3 -lopengl32 -lgdi32" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net" />
 			<Add directory="lib" />
 		</Linker>
 		<Unit filename="assets/shaders/fragmentShader1.fs" />
@@ -55,8 +56,8 @@
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/image.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/text.hpp" />
-		<Unit filename="include/CSE/CSELL/core/glfwwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/inputcallbackhandler.hpp" />
+		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glrenderercomponentfactory.hpp" />
@@ -79,7 +80,7 @@
 		<Unit filename="src/CSELL/asset/assetmanager.cpp" />
 		<Unit filename="src/CSELL/asset/image.cpp" />
 		<Unit filename="src/CSELL/asset/text.cpp" />
-		<Unit filename="src/CSELL/core/glfwwindow.cpp" />
+		<Unit filename="src/CSELL/core/sdlwindow.cpp" />
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>

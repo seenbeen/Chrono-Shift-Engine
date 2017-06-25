@@ -3,24 +3,27 @@
 
 #include <string>
 
-#include <lib/glad/glad.h>
 #include <lib/glfw/glfw3.h>
 
 #include <CSE/CSELL/core/window.hpp>
-#include <CSE/CSELL/core/inputcallbackhandler.hpp>
 
 namespace CSELL { namespace Core {
     class GlfwWindow : public Window {
         unsigned int windowWidth, windowHeight;
         std::string windowTitle;
         GLFWwindow *window;
-
+        double oMouseX, oMouseY;
+        bool firstMouseMove;
     protected:
         bool initializeImplementation(Window::Settings settings);
         void destroyImplementation();
-        void updateImplementation();
+        bool updateImplementation();
         double getTimeImplementation();
-        void useContextImplementation();
+        bool useContextImplementation();
+        bool setCursorModeImplementation(bool enable);
+    public:
+        GlfwWindow();
+        bool callMouseCallback(double mx, double my);
     };
 }}
 

@@ -2,6 +2,8 @@
 
 #include <glad/glad.h>
 
+#include <SDL2/SDL.h>
+
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
@@ -9,7 +11,7 @@
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSELL/core/window.hpp>
-#include <CSE/CSELL/core/glfwwindow.hpp>
+#include <CSE/CSELL/core/sdlwindow.hpp>
 #include <CSE/CSELL/core/inputcallbackhandler.hpp>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
@@ -28,10 +30,12 @@ static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 
 static CSELL::Render::ShaderProgram *shaderProgram;
 
+static CSELL::Core::Window *window;
+
 void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
     glm::mat4 temp;
     temp = glm::translate(temp, glm::vec3((tx+lx+rx)/3.0f,(ty+ly+ry)/3.0f,0.0f));
-    temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+    temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)window->getTime(), glm::vec3(0.0, 0.0, 1.0));
     temp = glm::scale(temp, glm::vec3(scale,scale,scale));
     shaderProgram->setMat4f("transform", glm::value_ptr(temp));
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -56,8 +60,19 @@ class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
         }
+        if (key == InputCallbackHandler::K_TAB) {
+            if (action == InputCallbackHandler::ACTION_PRESS) {
+                window->setCursorMode(false);
+            } else if (action == InputCallbackHandler::ACTION_RELEASE) {
+                window->setCursorMode(true);
+            }
+        }
     }
-    void handleMousePosInput(double xpos, double ypos) {}
+
+    void handleMousePosInput(double xpos, double ypos, double xrel, double yrel) {
+        //std::cout << xpos << ", " << ypos << " | " << xrel << ", " << yrel << std::endl;
+    }
+
     void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
         if (button == InputCallbackHandler::MOUSE_UNKNOWN) {
             CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSELL, "Main", "Random Mouse Pressed");
@@ -74,14 +89,13 @@ class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
     };
 };
 
-int main() {
+int main(int argc, char *argv[]) {
     // init assetManager
     CSELL::Assets::AssetManager::initialize();
 
-    // init glfw windows et al.
-    glfwInit();
+    SDL_Init(SDL_INIT_EVERYTHING);
 
-    CSELL::Core::Window *window = new CSELL::Core::GlfwWindow();
+    window = new CSELL::Core::SDLWindow();
 
     CSELL::Core::Window::Settings windowSettings;
     windowSettings.width = SCREEN_WIDTH;
@@ -91,7 +105,7 @@ int main() {
 
     if (!window->initialize(windowSettings)) {
         window->destroy();
-        glfwTerminate();
+        SDL_Quit();
         return -1;
     }
 
@@ -223,7 +237,7 @@ int main() {
     delete renderer;
 
     window->destroy();
-    glfwTerminate();
+    SDL_Quit();
     CSELL::Assets::AssetManager::shutdown();
     return 0;
 }

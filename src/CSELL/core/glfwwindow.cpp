@@ -155,7 +155,7 @@ namespace CSELL { namespace Core {
     }
 
     static void mousePosCallback(GLFWwindow *window, double xpos, double ypos) {
-        glfwWindowManager.find(window)->second->handleMousePosInput(xpos, ypos);
+        glfwWindowManager.find(window)->second->callMouseCallback(xpos, ypos);
     }
 
     static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
@@ -201,7 +201,7 @@ namespace CSELL { namespace Core {
         this->window = glfwCreateWindow(this->windowWidth, this->windowHeight, this->windowTitle.c_str(), NULL, NULL);
 
         if (this->window == NULL) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "RenderEngine", "GLFW Unable to create window!");
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - GlfwWindow", "GLFW Unable to create window!");
             return false;
         }
 
@@ -210,7 +210,7 @@ namespace CSELL { namespace Core {
 
         // Set up glad loader to load in gl procs
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "RenderEngine", "Failed to initialize GLAD!");
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - GlfwWindow", "Failed to initialize GLAD!");
             return false;
         }
 
@@ -232,16 +232,47 @@ namespace CSELL { namespace Core {
         glfwDestroyWindow(window);
     }
 
-    void GlfwWindow::updateImplementation() {
+    bool GlfwWindow::updateImplementation() {
         glfwSwapBuffers(window);
         glfwPollEvents();
+        return true;
     }
 
     double GlfwWindow::getTimeImplementation() {
         return glfwGetTime();
     }
 
-    void GlfwWindow::useContextImplementation() {
+    bool GlfwWindow::useContextImplementation() {
         glfwMakeContextCurrent(this->window);
+        return true;
+    }
+
+    GlfwWindow::GlfwWindow() {
+        this->oMouseX = 0;
+        this->oMouseY = 0;
+        this->firstMouseMove = true;
+    }
+
+    bool GlfwWindow::callMouseCallback(double mx, double my) {
+        if (this->firstMouseMove) {
+            this->oMouseX = mx;
+            this->oMouseY = my;
+            this->firstMouseMove = false;
+        }
+        if (!this->handleMousePosInput(mx, my, mx-this->oMouseX, my-this->oMouseY)) {
+            return false;
+        }
+        this->oMouseX = mx;
+        this->oMouseY = my;
+        return true;
+    }
+
+    bool GlfwWindow::setCursorModeImplementation(bool enable) {
+        if (enable) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        return true;
     }
 }}

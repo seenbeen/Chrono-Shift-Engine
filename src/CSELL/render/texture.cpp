@@ -1,5 +1,3 @@
-#include <glad/glad.h>
-
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSELL/render/texture.hpp>
