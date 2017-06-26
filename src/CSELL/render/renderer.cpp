@@ -363,4 +363,69 @@ namespace CSELL { namespace Render {
 
         return this->rImple->setViewport(x,y,w,h);
     }
+
+    bool Renderer::clearColour(float r, float g, float b, float a) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->clearColour(r,g,b,a);
+    }
+
+    bool Renderer::clearDepth(float d) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->clearDepth(d);
+    }
+
+    bool Renderer::clearStencil(int i) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->clearStencil(i);
+    }
+
+    bool Renderer::clearAccum(float r, float g, float b, float a) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->clearAccum(r,g,b,a);
+    }
+
+    bool Renderer::setPolygonMode(bool enable) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->setPolygonMode(enable);
+    }
 }}

@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <glad/glad.h>
-
 #include <SDL2/SDL.h>
 
 #include <lib/glm/glm.hpp>
@@ -32,6 +30,7 @@ static CSELL::Render::ShaderProgram *shaderProgram;
 
 static CSELL::Core::Window *window;
 static CSELL::Render::Renderer *renderer;
+static CSELL::Render::Mesh *mesh;
 
 void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
     glm::mat4 temp;
@@ -39,7 +38,8 @@ void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int d
     temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)window->getTime(), glm::vec3(0.0, 0.0, 1.0));
     temp = glm::scale(temp, glm::vec3(scale,scale,scale));
     shaderProgram->setMat4f("transform", glm::value_ptr(temp));
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    mesh->renderMesh();
 
     if (depth == 1) {
         return;
@@ -56,9 +56,9 @@ class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
         }
         if (key == InputCallbackHandler::K_SPACE) {
             if (action == InputCallbackHandler::ACTION_PRESS) {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                renderer->setPolygonMode(true);
             } else if (action == InputCallbackHandler::ACTION_RELEASE) {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                renderer->setPolygonMode(false);
             }
         }
         if (key == InputCallbackHandler::K_TAB) {
@@ -160,59 +160,28 @@ int main(int argc, char *argv[]) {
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
-    // set up vertices
-    const float vertices[] = {-0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-                               0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-                               0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-                              -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f};
-    // set up elements
+    // set up mesh
+    const CSELL::Render::Mesh::Vertex vertices[] = {{{-0.5f,  -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+                                                    {{0.5f,  -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
+                                                    {{0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
+                                                    {{-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}};
     unsigned int elements[] = {0,1,2,0,2,3};
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    mesh = renderer->newMesh(4, vertices, 6, elements);
 
+    //begin program
+    mesh->useMesh();
 
-    unsigned int VBO, VAO;
-    glGenBuffers(1, &VBO);
-    glGenVertexArrays(1, &VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // set up vertex array obj
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // colours
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // textures
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(6*sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-
-    // begin program
     shaderProgram->useShaderProgram();
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
 
     while(running) {
         // Draw stuff
-        glClearColor(0.53f, 0.88f, 0.98f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        renderer->clearColour(0.53f, 0.88f, 0.98f, 1.0f);
 
         tex1->useActiveTexture(0);
         tex2->useActiveTexture(1);
-        glBindVertexArray(VAO);
 
         serpinski(0.0f,1.0f,-1.0f,-1.0f,1.0f,-1.0f,5,0.65f);
 
@@ -228,6 +197,9 @@ int main(int argc, char *argv[]) {
 
     renderer->deleteTexture(tex2);
     tex2 = NULL;
+
+    renderer->deleteMesh(mesh);
+    mesh = NULL;
 
     delete renderer;
 

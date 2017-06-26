@@ -51,6 +51,11 @@ namespace CSELL { namespace Render {
         bool deleteMesh(Mesh *mesh);
 
         bool setViewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
+        bool clearColour(float r, float g, float b, float a);
+        bool clearDepth(float d);
+        bool clearStencil(int i);
+        bool clearAccum(float r, float g, float b, float a);
+        bool setPolygonMode(bool enable);
     };
 }}
 #endif

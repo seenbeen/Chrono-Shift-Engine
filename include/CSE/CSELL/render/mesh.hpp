@@ -13,6 +13,7 @@ namespace CSELL { namespace Render {
             float texCoord[2];
         };
     private:
+        static Mesh *activeMesh;
         #if RENDERER_WARNING_CHECKS == true
         Renderer *renderer;
         Renderer **activeRenderer;
@@ -23,8 +24,11 @@ namespace CSELL { namespace Render {
         virtual ~Mesh();
         virtual bool initMesh(unsigned int nVertices, const Mesh::Vertex *vertices,
                               unsigned int nElements, const unsigned int *elements) = 0;
-        //virtual bool useMesh() = 0;
-        //virtual bool renderMesh() = 0;
+        virtual bool useMeshImplementation() = 0;
+        virtual bool renderMeshImplementation() = 0;
+    public:
+        bool useMesh();
+        bool renderMesh();
     };
 }}
 

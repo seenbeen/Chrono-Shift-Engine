@@ -18,6 +18,11 @@ namespace CSELL { namespace Render {
         virtual Texture *makeNewTexture() = 0;
         virtual Mesh *makeNewMesh() = 0;
         virtual bool setViewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h) = 0;
+        virtual bool clearColour(float r, float g, float b, float a) = 0;
+        virtual bool clearDepth(float d) = 0;
+        virtual bool clearStencil(int i) = 0;
+        virtual bool clearAccum(float r, float g, float b, float a) = 0;
+        virtual bool setPolygonMode(bool enable) = 0;
     };
 }}
 
