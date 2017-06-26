@@ -1,8 +1,6 @@
 #ifndef CSELL_RENDER_MESH_HPP
 #define CSELL_RENDER_MESH_HPP
 
-#include <lib/glm/glm.hpp>
-
 namespace CSELL { namespace Render {
     class Renderer;
 
@@ -10,9 +8,9 @@ namespace CSELL { namespace Render {
     friend class Renderer;
     public:
         struct Vertex {
-            glm::vec3 pos;
-            glm::vec3 normal;
-            glm::vec2 texCoord;
+            float pos[3];
+            float normal[3];
+            float texCoord[2];
         };
     private:
         #if RENDERER_WARNING_CHECKS == true
@@ -25,6 +23,8 @@ namespace CSELL { namespace Render {
         virtual ~Mesh();
         virtual bool initMesh(unsigned int nVertices, const Mesh::Vertex *vertices,
                               unsigned int nElements, const unsigned int *elements) = 0;
+        //virtual bool useMesh() = 0;
+        //virtual bool renderMesh() = 0;
     };
 }}
 

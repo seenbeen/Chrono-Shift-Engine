@@ -9,7 +9,7 @@
 #include <CSE/CSELL/core/window.hpp>
 
 #include <CSE/CSELL/render/renderer.hpp>
-#include <CSE/CSELL/render/renderercomponentfactory.hpp>
+#include <CSE/CSELL/render/rendererimple.hpp>
 #include <CSE/CSELL/render/mesh.hpp>
 #include <CSE/CSELL/render/shader.hpp>
 #include <CSE/CSELL/render/shaderprogram.hpp>
@@ -22,10 +22,10 @@ namespace CSELL { namespace Render {
     Renderer *Renderer::activeRenderer = NULL;
     #endif
 
-    Renderer::Renderer(CSELL::Core::Window *window, RendererComponentFactory *factory)
-                    : window(window), factory(factory) {}
+    Renderer::Renderer(CSELL::Core::Window *window, RendererImple *rImple)
+                    : window(window), rImple(rImple) {}
 
-    Renderer *Renderer::newRenderer(CSELL::Core::Window *window, RendererComponentFactory *factory) {
+    Renderer *Renderer::newRenderer(CSELL::Core::Window *window, RendererImple *rImple) {
         #if RENDERER_WARNING_CHECKS == true
         if (Renderer::windows.find(window) != Renderer::windows.end()) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
@@ -34,11 +34,19 @@ namespace CSELL { namespace Render {
             return NULL;
         }
 
-        Renderer *renderer = new Renderer(window, factory);
+        if (!rImple->init()) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Failed to create Renderer! RendererImple failed to initialize!");
+            return NULL;
+        }
+
+        Renderer *renderer = new Renderer(window, rImple);
         Renderer::windows[window] = renderer;
 
         #else
-        Renderer *renderer = new Renderer(window, factory);
+        rImple->init();
+        Renderer *renderer = new Renderer(window, rImple);
         #endif
 
         return renderer;
@@ -115,7 +123,7 @@ namespace CSELL { namespace Render {
         }
         #endif
 
-        Shader *shader = this->factory->makeNewShader();
+        Shader *shader = this->rImple->makeNewShader();
 
         #if RENDERER_WARNING_CHECKS == true
         if (!shader->initShader(shaderSource, shaderType)) {
@@ -144,7 +152,7 @@ namespace CSELL { namespace Render {
         }
         #endif
 
-        ShaderProgram *shaderProgram = this->factory->makeNewShaderProgram();
+        ShaderProgram *shaderProgram = this->rImple->makeNewShaderProgram();
 
         #if RENDERER_WARNING_CHECKS == true
         if (!shaderProgram->initShaderProgram()) {
@@ -174,7 +182,7 @@ namespace CSELL { namespace Render {
         }
         #endif
 
-        Texture *texture = this->factory->makeNewTexture();
+        Texture *texture = this->rImple->makeNewTexture();
 
         #if RENDERER_WARNING_CHECKS == true
         if (!texture->initTexture(imgW, imgH, imgData)) {
@@ -204,7 +212,7 @@ namespace CSELL { namespace Render {
         }
         #endif
 
-        Mesh *mesh = this->factory->makeNewMesh();
+        Mesh *mesh = this->rImple->makeNewMesh();
 
         #if RENDERER_WARNING_CHECKS == true
         if (!mesh->initMesh(nVertices, vertices, nElements, elements)) {
@@ -341,5 +349,18 @@ namespace CSELL { namespace Render {
         this->meshes.erase(it);
         return true;
         #endif
+    }
+
+    bool Renderer::setViewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->setViewport(x,y,w,h);
     }
 }}

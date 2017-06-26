@@ -60,13 +60,13 @@
 		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
-		<Unit filename="include/CSE/CSELL/render/gl/glrenderercomponentfactory.hpp" />
+		<Unit filename="include/CSE/CSELL/render/gl/glrendererimple.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glshader.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glshaderprogram.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/gltexture.hpp" />
 		<Unit filename="include/CSE/CSELL/render/mesh.hpp" />
 		<Unit filename="include/CSE/CSELL/render/renderer.hpp" />
-		<Unit filename="include/CSE/CSELL/render/renderercomponentfactory.hpp" />
+		<Unit filename="include/CSE/CSELL/render/rendererimple.hpp" />
 		<Unit filename="include/CSE/CSELL/render/shader.hpp" />
 		<Unit filename="include/CSE/CSELL/render/shaderProgram.hpp" />
 		<Unit filename="include/CSE/CSELL/render/shaders.hpp" />
@@ -85,7 +85,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/CSELL/render/gl/glmesh.cpp" />
-		<Unit filename="src/CSELL/render/gl/glrenderercomponentfactory.cpp" />
+		<Unit filename="src/CSELL/render/gl/glrendererimple.cpp" />
 		<Unit filename="src/CSELL/render/gl/glshader.cpp" />
 		<Unit filename="src/CSELL/render/gl/glshaderprogram.cpp" />
 		<Unit filename="src/CSELL/render/gl/gltexture.cpp" />

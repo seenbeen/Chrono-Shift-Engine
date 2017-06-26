@@ -6,7 +6,7 @@
 
 #include <CSE/CSELL/core/window.hpp>
 
-#include <CSE/CSELL/render/renderercomponentfactory.hpp>
+#include <CSE/CSELL/render/rendererimple.hpp>
 #include <CSE/CSELL/render/shader.hpp>
 #include <CSE/CSELL/render/shaderprogram.hpp>
 #include <CSE/CSELL/render/texture.hpp>
@@ -29,12 +29,12 @@ namespace CSELL { namespace Render {
         std::set<Mesh *> meshes;
 
         CSELL::Core::Window *window;
-        RendererComponentFactory *factory;
+        RendererImple *rImple;
 
-        Renderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
+        Renderer(CSELL::Core::Window *window, RendererImple *rImple);
 
     public:
-        static Renderer *newRenderer(CSELL::Core::Window *window, RendererComponentFactory *factory);
+        static Renderer *newRenderer(CSELL::Core::Window *window, RendererImple *rImple);
         ~Renderer();
 
         bool makeActiveRenderer();
@@ -49,6 +49,8 @@ namespace CSELL { namespace Render {
         bool deleteShaderProgram(ShaderProgram *shaderProgram);
         bool deleteTexture(Texture *texture);
         bool deleteMesh(Mesh *mesh);
+
+        bool setViewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
     };
 }}
 #endif

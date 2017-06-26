@@ -19,7 +19,7 @@
 #include <CSE/CSELL/asset/text.hpp>
 
 #include <CSE/CSELL/render/renderer.hpp>
-#include <CSE/CSELL/render/gl/glrenderercomponentfactory.hpp>
+#include <CSE/CSELL/render/gl/glrendererimple.hpp>
 #include <CSE/CSELL/render/gl/glshader.hpp>
 #include <CSE/CSELL/render/gl/glshaderprogram.hpp>
 #include <CSE/CSELL/render/gl/gltexture.hpp>
@@ -31,6 +31,7 @@ static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 static CSELL::Render::ShaderProgram *shaderProgram;
 
 static CSELL::Core::Window *window;
+static CSELL::Render::Renderer *renderer;
 
 void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
     glm::mat4 temp;
@@ -82,7 +83,7 @@ class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
     void handleMouseEnterLeaveInput(bool entered) {}
 
     void handleWindowResizeInput(unsigned int width, unsigned int height) {
-        glViewport(0, 0, width, height);
+        renderer->setViewport(0, 0, width, height);
     }
     void handleWindowCloseInput() {
         running = false;
@@ -113,16 +114,12 @@ int main(int argc, char *argv[]) {
 
     window->registerInputCallbackHandler(&handler);
 
-    CSELL::Render::GLRendererComponentFactory rcompfactory;
-    CSELL::Render::Renderer *renderer = CSELL::Render::Renderer::newRenderer(window, &rcompfactory);
+    CSELL::Render::GLRendererImple glrimple;
+    renderer = CSELL::Render::Renderer::newRenderer(window, &glrimple);
 
     renderer->makeActiveRenderer();
 
-    // render stuff
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glViewport(0, 0, 800, 600); // Plswerk ;~;
+    renderer->setViewport(0, 0, 800, 600); // Plswerk ;~;
 
     // Set up shaders :3
     CSELL::Assets::TextAsset *shaderContent;
@@ -162,8 +159,6 @@ int main(int argc, char *argv[]) {
     CSELL::Render::Texture *tex2 = renderer->newTexture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
-
-    // mesh stuff TODO: Finish encapsulating this in mesh laterz
 
     // set up vertices
     const float vertices[] = {-0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
