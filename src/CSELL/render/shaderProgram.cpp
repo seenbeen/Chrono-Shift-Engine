@@ -1,7 +1,5 @@
 #include <CSE/CSU/logger.hpp>
 
-#include <cstddef>
-
 #include <CSE/CSELL/render/shaderprogram.hpp>
 #include <CSE/CSELL/render/shader.hpp>
 

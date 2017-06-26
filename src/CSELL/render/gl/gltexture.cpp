@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include <lib/glad/glad.h>
 
 #include <CSE/CSELL/render/gl/gltexture.hpp>
 

@@ -1,10 +1,9 @@
-#include <cstdint>
 #include <string>
 #include <map>
 
 #include <lib/glad/glad.h>
 
-#include <SDL2/SDL.h>
+#include <lib/SDL2/SDL.h>
 
 #include <CSE/CSU/logger.hpp>
 

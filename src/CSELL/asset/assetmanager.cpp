@@ -1,5 +1,4 @@
 #include <map>
-#include <cstddef>
 #include <string>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>

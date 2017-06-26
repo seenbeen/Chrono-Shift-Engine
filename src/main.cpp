@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include <SDL2/SDL.h>
+#include <lib/SDL2/SDL.h>
 
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
@@ -193,28 +191,31 @@ int main(int argc, char *argv[]) {
     mesh = renderer->newMesh(36, vertices, 36, elements);
 
     //begin program
-    mesh->useMesh();
-
-    shaderProgram->useShaderProgram();
-    shaderProgram->setInt("tex1", 0);
-    shaderProgram->setInt("tex2", 1);
 
     glm::mat4 model, identity;
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), SCREEN_WIDTH / (float) SCREEN_HEIGHT, 0.1f, 100.0f);
-    glm::mat4 view;
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    glm::mat4 view = glm::translate(identity, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    shaderProgram->useShaderProgram();
+
+    shaderProgram->setMat4f("view", glm::value_ptr(view));
+    shaderProgram->setMat4f("projection", glm::value_ptr(projection));
+
+    shaderProgram->setInt("tex1", 0);
+    shaderProgram->setInt("tex2", 1);
+    tex1->useActiveTexture(0);
+    tex2->useActiveTexture(1);
+
+    mesh->useMesh();
 
     while(running) {
         // Draw stuff
         renderer->clearColour(0.53f, 0.88f, 0.98f, 1.0f);
         renderer->clearDepth(1.0f);
 
-        tex1->useActiveTexture(0);
-        tex2->useActiveTexture(1);
         model = glm::rotate(identity, (float)window->getTime() * glm::radians(60.0f), glm::vec3(1.0f, 1.0f, 0.0f));
         shaderProgram->setMat4f("model", glm::value_ptr(model));
-        shaderProgram->setMat4f("view", glm::value_ptr(view));
-        shaderProgram->setMat4f("projection", glm::value_ptr(projection));
+
         mesh->renderMesh();
         // display.flip
         window->update();

@@ -1,6 +1,6 @@
 #include <string>
 
-#include <glad/glad.h>
+#include <lib/glad/glad.h>
 
 #include <CSE/CSU/logger.hpp>
 
@@ -10,7 +10,7 @@
 namespace CSELL { namespace Render {
     bool GLShader::initShader(const char *shaderContents, Shader::ShaderType shaderType) {
         std::string strShaderType;
-        GLenum glShaderType;
+        GLenum glShaderType = Shader::VERTEX_SHADER; // prevent complaining abount un-init
         if (shaderType == Shader::VERTEX_SHADER) {
             strShaderType = "Vertex";
             glShaderType = GL_VERTEX_SHADER;

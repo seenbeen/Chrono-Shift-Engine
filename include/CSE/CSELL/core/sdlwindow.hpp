@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include <SDL2/SDL.h>
+#include <lib/SDL2/SDL.h>
 
 #include <CSE/CSELL/core/window.hpp>
 

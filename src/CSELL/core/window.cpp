@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <string>
 
 #include <CSE/CSELL/core/window.hpp>

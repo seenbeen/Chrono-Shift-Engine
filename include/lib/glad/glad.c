@@ -7,7 +7,7 @@
     APIs: gl=4.5
     Profile: core
     Extensions:
-        
+
     Loader: True
     Local files: False
     Omit khrplatform: False
@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/glad.h>
+#include <lib/glad/glad.h>
 
 static void* get_proc(const char *namez);
 
