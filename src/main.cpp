@@ -32,23 +32,6 @@ static CSELL::Core::Window *window;
 static CSELL::Render::Renderer *renderer;
 static CSELL::Render::Mesh *mesh;
 
-void serpinski(float tx, float ty, float lx, float ly, float rx, float ry, int depth, float scale) {
-    glm::mat4 temp;
-    temp = glm::translate(temp, glm::vec3((tx+lx+rx)/3.0f,(ty+ly+ry)/3.0f,0.0f));
-    temp = glm::rotate(temp, (depth%2 == 1? -1:1)*(float)window->getTime(), glm::vec3(0.0, 0.0, 1.0));
-    temp = glm::scale(temp, glm::vec3(scale,scale,scale));
-    shaderProgram->setMat4f("transform", glm::value_ptr(temp));
-
-    mesh->renderMesh();
-
-    if (depth == 1) {
-        return;
-    }
-    serpinski(tx,ty,(tx+lx)/2.0f,(ty+ly)/2.0f,(tx+rx)/2.0f,(ty+ry)/2.0f,depth-1,scale/2.0f);
-    serpinski((tx+lx)/2.0f,(ty+ly)/2.0f,lx,ly,(lx+rx)/2.0f,(ly+ry)/2.0f,depth-1,scale/2.0f);
-    serpinski((tx+rx)/2.0f,(ty+ry)/2.0f,(lx+rx)/2.0f,(ly+ry)/2.0f,rx,ry,depth-1,scale/2.0f);
-}
-
 class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
     void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
         if (key == InputCallbackHandler::K_ESCAPE && action == InputCallbackHandler::ACTION_PRESS) {
@@ -161,13 +144,53 @@ int main(int argc, char *argv[]) {
     CSELL::Assets::AssetManager::freeAsset(img);
 
     // set up mesh
-    const CSELL::Render::Mesh::Vertex vertices[] = {{{-0.5f,  -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
-                                                    {{0.5f,  -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-                                                    {{0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}},
-                                                    {{-0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}};
-    unsigned int elements[] = {0,1,2,0,2,3};
 
-    mesh = renderer->newMesh(4, vertices, 6, elements);
+    const CSELL::Render::Mesh::Vertex vertices[] = {
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f,}},
+        {{0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 1.0f, 0.0f,}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f,}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, { 0.0f, 1.0f}}
+    };
+
+    unsigned int elements[] = {
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+        12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+        24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35
+    };
+
+    mesh = renderer->newMesh(36, vertices, 36, elements);
 
     //begin program
     mesh->useMesh();
@@ -176,15 +199,23 @@ int main(int argc, char *argv[]) {
     shaderProgram->setInt("tex1", 0);
     shaderProgram->setInt("tex2", 1);
 
+    glm::mat4 model, identity;
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), SCREEN_WIDTH / (float) SCREEN_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 view;
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
     while(running) {
         // Draw stuff
         renderer->clearColour(0.53f, 0.88f, 0.98f, 1.0f);
+        renderer->clearDepth(1.0f);
 
         tex1->useActiveTexture(0);
         tex2->useActiveTexture(1);
-
-        serpinski(0.0f,1.0f,-1.0f,-1.0f,1.0f,-1.0f,5,0.65f);
-
+        model = glm::rotate(identity, (float)window->getTime() * glm::radians(60.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+        shaderProgram->setMat4f("model", glm::value_ptr(model));
+        shaderProgram->setMat4f("view", glm::value_ptr(view));
+        shaderProgram->setMat4f("projection", glm::value_ptr(projection));
+        mesh->renderMesh();
         // display.flip
         window->update();
     }

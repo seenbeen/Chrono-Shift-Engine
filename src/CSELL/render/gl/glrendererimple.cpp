@@ -11,6 +11,7 @@
 
 namespace CSELL { namespace Render {
     bool GLRendererImple::init() {
+        glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         return true;
@@ -44,9 +45,8 @@ namespace CSELL { namespace Render {
     }
 
     bool GLRendererImple::clearDepth(float d) {
-        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
-                         "Render - GLRendererImple",
-                         "Method clearDepth unsupported atm!");
+        glClearDepth(d);
+        glClear(GL_DEPTH_BUFFER_BIT);
         return false;
     }
 

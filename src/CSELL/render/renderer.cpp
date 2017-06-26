@@ -385,6 +385,12 @@ namespace CSELL { namespace Render {
                             "Renderer is not the active renderer!");
             return false;
         }
+        if (d < 0.0f || d > 1.0f) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "clearDepth takes float in range [0,1]!");
+            return false;
+        }
         #endif
 
         return this->rImple->clearDepth(d);
