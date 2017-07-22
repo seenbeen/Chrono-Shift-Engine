@@ -2,6 +2,7 @@
 
 #include <CSE/CSELL/core/window.hpp>
 #include <CSE/CSELL/core/inputcallbackhandler.hpp>
+#include <CSE/CSELL/core/inputenum.hpp>
 
 namespace CSELL { namespace Core {
     Window::~Window() {}
@@ -32,7 +33,7 @@ namespace CSELL { namespace Core {
         return true;
     }
 
-    bool Window::handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
+    bool Window::handleKeyInput(InputEnum::KeyboardKey key, InputEnum::InputAction action) {
         if (this->callbackHandler == NULL) {
             return false;
         }
@@ -48,7 +49,7 @@ namespace CSELL { namespace Core {
         return true;
     }
 
-    bool Window::handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
+    bool Window::handleMouseButtonInput(InputEnum::MouseButton button, InputEnum::InputAction action) {
         if (this->callbackHandler == NULL) {
             return false;
         }

@@ -9,6 +9,7 @@
 #include <CSE/CSELL/core/window.hpp>
 #include <CSE/CSELL/core/sdlwindow.hpp>
 #include <CSE/CSELL/core/inputcallbackhandler.hpp>
+#include <CSE/CSELL/core/inputenum.hpp>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
@@ -20,6 +21,9 @@
 #include <CSE/CSELL/render/gl/glshaderprogram.hpp>
 #include <CSE/CSELL/render/gl/gltexture.hpp>
 
+#include <CSE/CSEA/input/inputmanager.hpp>
+#include <CSE/CSEA/input/inputlistener.hpp>
+
 static bool running = true;
 static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
 static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
@@ -30,43 +34,43 @@ static CSELL::Core::Window *window;
 static CSELL::Render::Renderer *renderer;
 static CSELL::Render::Mesh *mesh;
 
-class TestCallbackHandler : public CSELL::Core::InputCallbackHandler {
-    void handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action) {
-        if (key == InputCallbackHandler::K_ESCAPE && action == InputCallbackHandler::ACTION_PRESS) {
+class TestCallbackHandler : public CSEA::Input::InputListener {
+    void onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
+        if (key == CSELL::Core::InputEnum::K_ESCAPE && action == CSELL::Core::InputEnum::ACTION_PRESS) {
             running = false;
         }
-        if (key == InputCallbackHandler::K_SPACE) {
-            if (action == InputCallbackHandler::ACTION_PRESS) {
+        if (key == CSELL::Core::InputEnum::K_SPACE) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
                 renderer->setPolygonMode(true);
-            } else if (action == InputCallbackHandler::ACTION_RELEASE) {
+            } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
                 renderer->setPolygonMode(false);
             }
         }
-        if (key == InputCallbackHandler::K_TAB) {
-            if (action == InputCallbackHandler::ACTION_PRESS) {
+        if (key == CSELL::Core::InputEnum::K_TAB) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
                 window->setCursorMode(false);
-            } else if (action == InputCallbackHandler::ACTION_RELEASE) {
+            } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
                 window->setCursorMode(true);
             }
         }
     }
 
-    void handleMousePosInput(double xpos, double ypos, double xrel, double yrel) {
+    void onMousePosInput(double xpos, double ypos, double xrel, double yrel) {
         //std::cout << xpos << ", " << ypos << " | " << xrel << ", " << yrel << std::endl;
     }
 
-    void handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action) {
-        if (button == InputCallbackHandler::MOUSE_UNKNOWN) {
+    void onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action) {
+        if (button == CSELL::Core::InputEnum::MOUSE_UNKNOWN) {
             CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSELL, "Main", "Random Mouse Pressed");
         }
     }
-    void handleMouseScrollInput(double xoffset, double yoffset) {}
-    void handleMouseEnterLeaveInput(bool entered) {}
+    void onMouseScrollInput(double xoffset, double yoffset) {}
+    void onMouseEnterLeaveInput(bool entered) {}
 
-    void handleWindowResizeInput(unsigned int width, unsigned int height) {
+    void onWindowResizeInput(unsigned int width, unsigned int height) {
         renderer->setViewport(0, 0, width, height);
     }
-    void handleWindowCloseInput() {
+    void onWindowCloseInput() {
         running = false;
     };
 };
@@ -91,9 +95,13 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    CSEA::Input::InputManager manager;
+
+    window->registerInputCallbackHandler(&manager);
+
     TestCallbackHandler handler;
 
-    window->registerInputCallbackHandler(&handler);
+    manager.registerInputListener(&handler);
 
     CSELL::Render::GLRendererImple glrimple;
     renderer = CSELL::Render::Renderer::newRenderer(window, &glrimple);

@@ -43,11 +43,17 @@
 		<Unit filename="assets/textures/texturesLesson/awesomeface.png" />
 		<Unit filename="assets/textures/texturesLesson/container.jpg" />
 		<Unit filename="assets/textures/texturesLesson/wall.jpg" />
+		<Unit filename="include/CSE/CSEA/core/engine.hpp" />
+		<Unit filename="include/CSE/CSEA/input/inputlistener.hpp" />
+		<Unit filename="include/CSE/CSEA/input/inputmanager.hpp" />
+		<Unit filename="include/CSE/CSEA/ui/ui.hpp" />
+		<Unit filename="include/CSE/CSEA/ui/uicomponent.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/image.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/text.hpp" />
 		<Unit filename="include/CSE/CSELL/core/inputcallbackhandler.hpp" />
+		<Unit filename="include/CSE/CSELL/core/inputenum.hpp" />
 		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
@@ -67,6 +73,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/lib/image/stb_image.cpp" />
+		<Unit filename="src/CSEA/core/engine.cpp" />
+		<Unit filename="src/CSEA/input/inputlayer.cpp" />
+		<Unit filename="src/CSEA/input/inputmanager.cpp" />
+		<Unit filename="src/CSEA/ui/ui.cpp" />
+		<Unit filename="src/CSEA/ui/uicomponent.cpp" />
 		<Unit filename="src/CSELL/asset/asset.cpp" />
 		<Unit filename="src/CSELL/asset/assetmanager.cpp" />
 		<Unit filename="src/CSELL/asset/image.cpp" />

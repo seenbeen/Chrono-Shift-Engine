@@ -6,6 +6,7 @@
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSELL/core/inputcallbackhandler.hpp>
+#include <CSE/CSELL/core/inputenum.hpp>
 
 namespace CSELL { namespace Core {
     class Window {
@@ -36,9 +37,9 @@ namespace CSELL { namespace Core {
 
         bool registerInputCallbackHandler(InputCallbackHandler *cbh);
 
-        bool handleKeyInput(InputCallbackHandler::KeyboardKey key, InputCallbackHandler::InputAction action);
+        bool handleKeyInput(InputEnum::KeyboardKey key, InputEnum::InputAction action);
         bool handleMousePosInput(double xpos, double ypos, double xrel, double yrel);
-        bool handleMouseButtonInput(InputCallbackHandler::MouseButton button, InputCallbackHandler::InputAction action);
+        bool handleMouseButtonInput(InputEnum::MouseButton button, InputEnum::InputAction action);
         bool handleMouseScrollInput(double xoffset, double yoffset);
         bool handleMouseEnterLeaveInput(bool entered);
 
