@@ -14,6 +14,7 @@
 #include <CSE/CSELL/asset/assetmanager.hpp>
 #include <CSE/CSELL/asset/image.hpp>
 #include <CSE/CSELL/asset/text.hpp>
+#include <CSE/CSELL/core/time.hpp>
 
 #include <CSE/CSELL/render/renderer.hpp>
 #include <CSE/CSELL/render/gl/glrendererimple.hpp>
@@ -79,7 +80,9 @@ int main(int argc, char *argv[]) {
     // init assetManager
     CSELL::Assets::AssetManager::initialize();
 
-    SDL_Init(SDL_INIT_EVERYTHING);
+    CSELL::Core::Time::initialize();
+
+    CSELL::Core::SDLWindow::initialize();
 
     window = new CSELL::Core::SDLWindow();
 
@@ -235,7 +238,7 @@ int main(int argc, char *argv[]) {
         renderer->clearDepth(1.0f);
         for(unsigned int i = 0; i < 10; i++) {
             model = glm::translate(identity, cubePositions[i]);
-            float angle = glm::radians(20.0f * i) + window->getTime() * glm::radians(60.0f);
+            float angle = glm::radians(20.0f * i) + CSELL::Core::Time::getTime() * glm::radians(60.0f);
             model = glm::rotate(model, (i%2 ? 1 : -1)*angle, glm::vec3(1.0f, 0.3f, 0.5f));
             shaderProgram->setMat4f("model", glm::value_ptr(model));
             mesh->renderMesh();
@@ -259,7 +262,12 @@ int main(int argc, char *argv[]) {
     delete renderer;
 
     window->destroy();
-    SDL_Quit();
+
+    CSELL::Core::SDLWindow::shutdown();
+
+    CSELL::Core::Time::shutdown();
+
     CSELL::Assets::AssetManager::shutdown();
+
     return 0;
 }

@@ -27,7 +27,6 @@ namespace CSELL { namespace Core {
         virtual bool initializeImplementation(Window::Settings settings) = 0;
         virtual void destroyImplementation() = 0;
         virtual bool updateImplementation() = 0;
-        virtual double getTimeImplementation() = 0;
         virtual bool useContextImplementation() = 0;
         virtual bool setCursorModeImplementation(bool enable) = 0;
 
@@ -47,7 +46,6 @@ namespace CSELL { namespace Core {
         bool handleWindowCloseInput();
 
         bool update();
-        double getTime();
         bool useContext();
         bool setCursorMode(bool enable);
     };

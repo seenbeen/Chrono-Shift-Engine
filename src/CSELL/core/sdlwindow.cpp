@@ -14,6 +14,8 @@
 namespace CSELL { namespace Core {
     std::map<unsigned int, SDLWindow *> SDLWindow::windowMap;
 
+    bool SDLWindow::isInitialized = false;
+
     static std::map<unsigned int, InputEnum::KeyboardKey> keymap;
 
     static std::map<uint8_t, InputEnum::MouseButton> mousebuttonmap;
@@ -139,7 +141,39 @@ namespace CSELL { namespace Core {
         }
     } initMaps;
 
+    bool SDLWindow::initialize() {
+        if (SDLWindow::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Core - SDLWindow", "SDLWindow system is already initialized!");
+            return false;
+        }
+        int success = SDL_InitSubSystem(SDL_INIT_VIDEO);
+        if (success != 0) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Core - SDLWindow", SDL_GetError());
+            return false;
+        }
+        SDLWindow::isInitialized = true;
+        return true;
+    }
+
+    bool SDLWindow::shutdown() {
+        if (!SDLWindow::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Core - SDLWindow", "SDLWindow system is not initialized!");
+            return false;
+        }
+        SDL_QuitSubSystem(SDL_INIT_VIDEO);
+        SDLWindow::isInitialized = false;
+        return true;
+    }
+
     bool SDLWindow::initializeImplementation(Window::Settings settings) {
+        if (!SDLWindow::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL,
+                             "Core - SDLWindow", "SDLWindow system is not initialized!");
+            return false;
+        }
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -244,10 +278,6 @@ namespace CSELL { namespace Core {
             }
 		}
 		return true;
-    }
-
-    double SDLWindow::getTimeImplementation() {
-        return SDL_GetTicks()/1000.0;
     }
 
     bool SDLWindow::useContextImplementation() {

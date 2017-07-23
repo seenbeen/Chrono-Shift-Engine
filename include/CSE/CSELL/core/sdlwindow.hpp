@@ -11,6 +11,7 @@
 namespace CSELL { namespace Core {
     class SDLWindow : public Window {
         static std::map<unsigned int, SDLWindow *> windowMap;
+        static bool isInitialized;
 
         unsigned int windowWidth, windowHeight, windowId;
         std::string windowTitle;
@@ -20,9 +21,11 @@ namespace CSELL { namespace Core {
         bool initializeImplementation(Window::Settings settings);
         void destroyImplementation();
         bool updateImplementation();
-        double getTimeImplementation();
         bool useContextImplementation();
         bool setCursorModeImplementation(bool enable);
+    public:
+        static bool initialize();
+        static bool shutdown();
     };
 }}
 #endif
