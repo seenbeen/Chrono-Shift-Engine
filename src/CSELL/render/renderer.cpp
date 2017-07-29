@@ -62,6 +62,28 @@ namespace CSELL { namespace Render {
         // ensure renderer context matches
         Renderer::activeRenderer = this;
         this->window->useContext();
+
+        if (shaders.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Not all shaders freed on renderer deletion!");
+        }
+        if (shaderPrograms.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Not all shader programs freed on renderer deletion!");
+        }
+        if (textures.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Not all textures freed on renderer deletion!");
+        }
+        if (meshes.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                             "Render - Renderer",
+                             "Not all meshes freed on renderer deletion!");
+        }
+
         #endif
 
         std::set<Shader *>::iterator shaderIt;

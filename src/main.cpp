@@ -1,5 +1,3 @@
-#include <lib/SDL2/SDL.h>
-
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
@@ -29,11 +27,12 @@ static bool running = true;
 static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
 static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 
-static CSELL::Render::ShaderProgram *shaderProgram;
-
 static CSELL::Core::Window *window;
 static CSELL::Render::Renderer *renderer;
+
 static CSELL::Render::Mesh *mesh;
+static CSELL::Render::ShaderProgram *shaderProgram;
+static CSELL::Render::Texture *tex1, *tex2;
 
 class TestCallbackHandler : public CSEA::Input::InputListener {
     void onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
@@ -94,7 +93,9 @@ int main(int argc, char *argv[]) {
 
     if (!window->initialize(windowSettings)) {
         window->destroy();
-        SDL_Quit();
+        CSELL::Core::SDLWindow::shutdown();
+        CSELL::Core::Time::shutdown();
+        CSELL::Assets::AssetManager::shutdown();
         return -1;
     }
 
@@ -143,12 +144,12 @@ int main(int argc, char *argv[]) {
     // Set up texture
 
     CSELL::Assets::ImageAsset *img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
-    CSELL::Render::Texture *tex1 = renderer->newTexture(img->width(), img->height(), img->data());
+    tex1 = renderer->newTexture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
     img = CSELL::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");
-    CSELL::Render::Texture *tex2 = renderer->newTexture(img->width(), img->height(), img->data());
+    tex2 = renderer->newTexture(img->width(), img->height(), img->data());
 
     CSELL::Assets::AssetManager::freeAsset(img);
 
@@ -204,7 +205,12 @@ int main(int argc, char *argv[]) {
     //begin program
 
     glm::mat4 model, identity;
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), SCREEN_WIDTH / (float) SCREEN_HEIGHT, 0.1f, 100.0f);
+    /*glm::mat4 projection = glm::ortho(-SCREEN_WIDTH/2.0f, SCREEN_WIDTH/2.0f,
+                                      -SCREEN_HEIGHT/2.0f, SCREEN_HEIGHT/2.0f,
+                                      0.0f,100.0f);*/
+    float aspect = SCREEN_WIDTH / (float) SCREEN_HEIGHT;
+    glm::mat4 projection = glm::ortho(-5.0f*aspect, 5.0f*aspect, -5.0f, 5.0f, 0.1f, 100.0f);
+  //glm::perspective(glm::radians(45.0f), SCREEN_WIDTH / (float) SCREEN_HEIGHT, 0.1f, 100.0f);
     glm::mat4 view = glm::translate(identity, glm::vec3(0.0f, 0.0f, -4.0f));
 
     shaderProgram->useShaderProgram();
@@ -269,5 +275,6 @@ int main(int argc, char *argv[]) {
 
     CSELL::Assets::AssetManager::shutdown();
 
+    //SDL_Quit()
     return 0;
 }
