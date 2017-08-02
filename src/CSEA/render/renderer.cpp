@@ -1,37 +1,113 @@
-#include <CSE/CSELL/render/gl/glrendererimple.hpp>
-
-#include <CSE/CSELL/core/sdlwindow.hpp>
-
-#include <CSE/CSEA/core/time.hpp>
 #include <CSE/CSEA/render/renderer.hpp>
+
+#include <set>
 
 #include <CSE/CSU/logger.hpp>
 
+#include <CSE/CSELL/render/gl/glrendererimple.hpp>
+
+#include <CSE/CSELL/core/window.hpp>
+#include <CSE/CSELL/core/sdlwindow.hpp>
+
+#include <CSE/CSEA/render/scene.hpp>
+#include <CSE/CSEA/render/overlay.hpp>
+#include <CSE/CSEA/render/viewport.hpp>
+#include <CSE/CSEA/render/renderable.hpp>
+#include <CSE/CSEA/render/overlayrenderable.hpp>
+
+#include <CSE/CSEA/render/cachemanager.hpp>
+
+
 namespace CSEA { namespace Render {
     bool Renderer::isInitialized = false;
-    Window* Renderer::window;
-    CSELL::Render::RendererImple *Renderer::rimple;
+
+    CSELL::Core::Window *Renderer::window = NULL;
+    CSELL::Render::RendererImple *Renderer::rimple = NULL;
+    CSELL::Render::Renderer* Renderer::renderer = NULL;
+    CacheManager *Renderer::cacheManager = NULL;
+
+    std::set<Scene*> Renderer::scenes;
+    std::set<Overlay*> Renderer::overlays;
+    std::set<Viewport*> Renderer::viewports;
 
     Renderer::Renderer() {}
     Renderer::~Renderer() {}
 
-    bool Renderer::initialize() {
+    bool Renderer::initialize(WindowSettings &settings) {
         if (Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Render - Renderer", "Renderer already initialized!");
             return false;
         }
 
-        Renderer::isInitialized = CSELL::Core::SDLWindow::initialize();
-        if (Renderer::isInitialized) {
+        if (CSELL::Core::SDLWindow::initialize()) {
+            CSELL::Core::Window::Settings csellWinSettings;
+            csellWinSettings.width = settings.width;
+            csellWinSettings.height = settings.height;
+            csellWinSettings.title = settings.windowTitle;
+            csellWinSettings.resizeable = settings.isResizeable;
+
+            Renderer::window = new CSELL::Core::SDLWindow();
+
+            if (!Renderer::window->initialize(csellWinSettings)) {
+                Renderer::window->destroy();
+                Renderer::window = NULL;
+                return false;
+            }
+
+            Renderer::window->useContext();
+
             Renderer::rimple = new CSELL::Render::GLRendererImple();
-            return true;
+            Renderer::renderer = CSELL::Render::Renderer::newRenderer(Renderer::window, Renderer::rimple);
+
+            if (Renderer::renderer != NULL) {
+                Renderer::renderer->makeActiveRenderer();
+                Renderer::cacheManager = new CacheManager();
+                Renderer::isInitialized = true;
+                return true;
+            }
+
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Failed to properly initialize renderer.");
+
+            delete Renderer::rimple;
+            Renderer::window->destroy();
+
+            Renderer::rimple = NULL;
+            Renderer::window = NULL;
+
+            CSELL::Core::SDLWindow::shutdown();
         }
+
         return false;
     }
 
-    void Renderer::update() {
-        Renderer::window->update(CSEA::Core::Time::getDeltaTime());
+    void Renderer::update(double deltaTime) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return;
+        }
+
+        std::set<Scene*>::iterator sceneIt;
+        std::set<Overlay*>::iterator overIt;
+        std::set<Viewport*>::iterator viewIt;
+
+        // update active scenes
+        for (sceneIt = Renderer::scenes.begin(); sceneIt != Renderer::scenes.end(); sceneIt++) {
+            (*sceneIt)->update(deltaTime);
+        }
+
+        // update active overlays
+        for (overIt = Renderer::overlays.begin(); overIt != Renderer::overlays.end(); overIt++){
+            (*overIt)->update(deltaTime);
+        }
+
+        // do some rendering
+        for (viewIt = Renderer::viewports.begin(); viewIt != Renderer::viewports.end(); viewIt++) {
+            (*viewIt)->render(Renderer::renderer);
+        }
+        Renderer::window->update();
     }
 
     void Renderer::shutdown() {
@@ -41,50 +117,153 @@ namespace CSEA { namespace Render {
             return;
         }
 
+        delete Renderer::cacheManager;
+        delete Renderer::renderer;
+        delete Renderer::rimple;
+        Renderer::window->destroy();
+
+        Renderer::cacheManager = NULL;
+        Renderer::renderer = NULL;
+        Renderer::rimple = NULL;
+        Renderer::window = NULL;
+
         CSELL::Core::SDLWindow::shutdown();
 
         Renderer::isInitialized = false;
     }
 
-    Window *Renderer::initWindow(Window::Settings &settings) {
+    bool Renderer::registerInputCallbackHandler(CSELL::Core::InputCallbackHandler *handler) {
         if (!Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not initialized!");
+                             "Render - Renderer", "Renderer is not Initialized!");
             return NULL;
         }
-        if (Renderer::window != NULL) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Render - Renderer",
-                             "Unable to init Window - Window has already been initialized!");
-            return NULL;
-        }
-
-        Window *window = new Window(new CSELL::Core::SDLWindow(), Renderer::rimple, settings);
-        if (window->successfulInit) {
-            Renderer::window = window;
-            return window;
-        }
-        delete window;
-
-        CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                         "Render - Renderer", "Failed to properly initialize window in newWindow.");
-
-        return NULL;
+        return Renderer::window->registerInputCallbackHandler(handler);
     }
 
-    void Renderer::deleteWindow() {
+    bool Renderer::addViewport(Viewport *viewport) {
         if (!Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not initialized!");
-            return;
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
         }
+        if (Renderer::viewports.find(viewport) != Renderer::viewports.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Viewport already added!");
+            return false;
+        }
+        Renderer::viewports.insert(viewport);
+        return true;
+    }
 
-        if (Renderer::window == NULL) {
+    bool Renderer::addScene(Scene *scene) {
+        if (!Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Unable to delete Window - Window not initialized!");
-            return;
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
         }
+        if (Renderer::scenes.find(scene) != Renderer::scenes.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Scene already added!");
+            return false;
+        }
+        Renderer::scenes.insert(scene);
+        return true;
+    }
 
-        delete Renderer::window;
-        Renderer::window = NULL;
+    bool Renderer::addOverlay(Overlay *overlay) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
+        }
+        if (Renderer::overlays.find(overlay) != Renderer::overlays.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Overlay already added!");
+            return false;
+        }
+        Renderer::overlays.insert(overlay);
+        return true;
+    }
+
+    bool Renderer::removeViewport(Viewport *viewport) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
+        }
+        if (Renderer::viewports.find(viewport) == Renderer::viewports.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Removing non-existent Viewport!");
+            return false;
+        }
+        Renderer::viewports.erase(Renderer::viewports.find(viewport));
+        return true;
+    }
+
+    bool Renderer::removeScene(Scene *scene) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
+        }
+        if (Renderer::scenes.find(scene) == Renderer::scenes.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Removing non-existent Scene!");
+            return false;
+        }
+        Renderer::scenes.erase(Renderer::scenes.find(scene));
+        return true;
+    }
+
+    bool Renderer::removeOverlay(Overlay *overlay) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return NULL;
+        }
+        if (Renderer::overlays.find(overlay) == Renderer::overlays.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Render - Renderer", "Removing non-existent Overlay!");
+            return false;
+        }
+        Renderer::overlays.erase(Renderer::overlays.find(overlay));
+        return true;
+    }
+
+    bool Renderer::loadRenderable(Renderable *renderable) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return false;
+        }
+        return renderable->load(Renderer::renderer, Renderer::cacheManager);
+    }
+
+    bool Renderer::unloadRenderable(Renderable *renderable) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return false;
+        }
+        return renderable->unload(Renderer::renderer, Renderer::cacheManager);
+    }
+
+    bool Renderer::loadOverlayRenderable(OverlayRenderable *overRend) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return false;
+        }
+        return overRend->load(Renderer::renderer, Renderer::cacheManager);
+    }
+
+    bool Renderer::unloadOverlayRenderable(OverlayRenderable *overRend) {
+        if (!Renderer::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Render - Renderer", "Renderer is not Initialized!");
+            return false;
+        }
+        return overRend->unload(Renderer::renderer, Renderer::cacheManager);
     }
 }}

@@ -8,6 +8,46 @@
 #include <CSE/CSEA/input/inputlistener.hpp>
 
 namespace CSEA { namespace Input {
+    InputManager *InputManager::instance = NULL;
+
+    bool InputManager::initialize() {
+        if (InputManager::instance != NULL) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Input - InputManager",
+                             "InputManager already initialized!");
+            return false;
+        }
+        InputManager::instance = new InputManager();
+        return true;
+    }
+
+    void InputManager::shutdown() {
+        if (InputManager::instance == NULL) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Input - InputManager",
+                             "InputManager not initialized!");
+            return;
+        }
+        delete InputManager::instance;
+        InputManager::instance = NULL;
+    }
+
+    bool InputManager::registerInputListener(InputListener *listener) {
+        if (InputManager::instance == NULL) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Input - InputManager",
+                             "InputManager not initialized!");
+            return false;
+        }
+        return InputManager::instance->onRegisterInputListener(listener);
+    }
+
+    bool InputManager::unregisterInputListener(InputListener *listener) {
+        if (InputManager::instance == NULL) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Input - InputManager",
+                             "InputManager not initialized!");
+            return false;
+        }
+        return InputManager::instance->onUnregisterInputListener(listener);
+    }
+
     InputManager::InputManager() {
 
     }
@@ -18,7 +58,7 @@ namespace CSEA { namespace Input {
 
     // registry functions
 
-    bool InputManager::registerInputListener(InputListener *listener) {
+    bool InputManager::onRegisterInputListener(InputListener *listener) {
         std::set<InputListener*>::iterator it;
         it = listeners.find(listener);
         if (it == listeners.end()) {
@@ -31,7 +71,7 @@ namespace CSEA { namespace Input {
         return false;
     }
 
-    bool InputManager::unregisterInputListener(InputListener *listener) {
+    bool InputManager::onUnregisterInputListener(InputListener *listener) {
         std::set<InputListener*>::iterator it;
         it = listeners.find(listener);
         if (it != listeners.end()) {

@@ -3,16 +3,17 @@
 #include <CSE/CSELL/render/renderer.hpp>
 
 #include <CSE/CSEA/render/overlayrenderable.hpp>
+#include <CSE/CSEA/render/cachemanager.hpp>
 
 namespace CSEA { namespace Render {
-    bool OverlayRenderable::load(CSELL::Render::Renderer *renderer) {
+    bool OverlayRenderable::load(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) {
         if (this->isLoaded) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - OverlayRenderable",
                              "Trying to load already loaded OverlayRenderable!");
             return false;
         }
 
-        if (this->onLoad(renderer)) {
+        if (this->onLoad(renderer, cacheManager)) {
             this->isLoaded = true;
             return true;
         }
@@ -21,13 +22,13 @@ namespace CSEA { namespace Render {
         return false;
     }
 
-    bool OverlayRenderable::unload(CSELL::Render::Renderer *renderer) {
+    bool OverlayRenderable::unload(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) {
         if (!this->isLoaded) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - OverlayRenderable",
                              "Trying to unload already unloaded OverlayRenderable!");
             return false;
         }
-        if (this->onUnload(renderer)) {
+        if (this->onUnload(renderer, cacheManager)) {
             this->isLoaded = false;
             return true;
         }

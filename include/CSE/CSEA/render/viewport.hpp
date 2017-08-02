@@ -8,20 +8,19 @@
 #include <CSE/CSEA/render/overlay.hpp>
 
 namespace CSEA { namespace Render {
-    class Window;
-
     class Viewport {
-    friend class Window;
+    friend class Renderer;
         unsigned int x, y, width, height;
 
         Camera *boundCamera;
         Overlay *boundOverlay;
         Scene *boundScene;
 
-        Viewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
-
         void render(CSELL::Render::Renderer *renderer);
     public:
+        Viewport(unsigned int x, unsigned int y, unsigned int w, unsigned int h);
+        ~Viewport();
+
         // bind functions can be null to unbind
         void bindCamera(Camera *cam);
         void bindOverlay(Overlay *overlay);

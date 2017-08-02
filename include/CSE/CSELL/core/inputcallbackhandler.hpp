@@ -15,6 +15,8 @@ namespace CSELL { namespace Core {
 
             virtual void handleWindowResizeInput(unsigned int width, unsigned int height) = 0;
             virtual void handleWindowCloseInput() = 0;
+        public:
+            virtual ~InputCallbackHandler() {}
     };
 }}
 

@@ -45,12 +45,20 @@
 		<Unit filename="assets/textures/texturesLesson/wall.jpg" />
 		<Unit filename="include/CSE/CSEA/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSEA/core/engine.hpp" />
+		<Unit filename="include/CSE/CSEA/core/gameobject.hpp" />
 		<Unit filename="include/CSE/CSEA/core/stage.hpp" />
 		<Unit filename="include/CSE/CSEA/core/time.hpp" />
 		<Unit filename="include/CSE/CSEA/input/inputlistener.hpp" />
 		<Unit filename="include/CSE/CSEA/input/inputmanager.hpp" />
+		<Unit filename="include/CSE/CSEA/render/cachemanager.hpp" />
+		<Unit filename="include/CSE/CSEA/render/camera.hpp" />
+		<Unit filename="include/CSE/CSEA/render/orthographiccamera.hpp" />
+		<Unit filename="include/CSE/CSEA/render/overlay.hpp" />
+		<Unit filename="include/CSE/CSEA/render/overlayrenderable.hpp" />
+		<Unit filename="include/CSE/CSEA/render/renderable.hpp" />
 		<Unit filename="include/CSE/CSEA/render/renderer.hpp" />
-		<Unit filename="include/CSE/CSEA/render/window.hpp" />
+		<Unit filename="include/CSE/CSEA/render/scene.hpp" />
+		<Unit filename="include/CSE/CSEA/render/viewport.hpp" />
 		<Unit filename="include/CSE/CSEA/ui/ui.hpp" />
 		<Unit filename="include/CSE/CSEA/ui/uicomponent.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
@@ -62,6 +70,7 @@
 		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/time.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
+		<Unit filename="include/CSE/CSELL/math/vector3f.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glrendererimple.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glshader.hpp" />
@@ -75,18 +84,29 @@
 		<Unit filename="include/CSE/CSELL/render/shaders.hpp" />
 		<Unit filename="include/CSE/CSELL/render/texture.hpp" />
 		<Unit filename="include/CSE/CSU/logger.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/testgameobject.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/testrenderable.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/teststage.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/lib/image/stb_image.cpp" />
 		<Unit filename="src/CSEA/asset/assetmanager.cpp" />
 		<Unit filename="src/CSEA/core/engine.cpp" />
+		<Unit filename="src/CSEA/core/gameobject.cpp" />
 		<Unit filename="src/CSEA/core/stage.cpp" />
 		<Unit filename="src/CSEA/core/time.cpp" />
 		<Unit filename="src/CSEA/input/inputlayer.cpp" />
 		<Unit filename="src/CSEA/input/inputmanager.cpp" />
+		<Unit filename="src/CSEA/render/cachemanager.cpp" />
+		<Unit filename="src/CSEA/render/camera.cpp" />
+		<Unit filename="src/CSEA/render/orthographiccamera.cpp" />
+		<Unit filename="src/CSEA/render/overlay.cpp" />
+		<Unit filename="src/CSEA/render/overlayrenderable.cpp" />
+		<Unit filename="src/CSEA/render/renderable.cpp" />
 		<Unit filename="src/CSEA/render/renderer.cpp" />
-		<Unit filename="src/CSEA/render/window.cpp" />
+		<Unit filename="src/CSEA/render/scene.cpp" />
+		<Unit filename="src/CSEA/render/viewport.cpp" />
 		<Unit filename="src/CSEA/ui/ui.cpp" />
 		<Unit filename="src/CSEA/ui/uicomponent.cpp" />
 		<Unit filename="src/CSELL/asset/asset.cpp" />
@@ -98,6 +118,7 @@
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/CSELL/math/vector3f.cpp" />
 		<Unit filename="src/CSELL/render/gl/glmesh.cpp" />
 		<Unit filename="src/CSELL/render/gl/glrendererimple.cpp" />
 		<Unit filename="src/CSELL/render/gl/glshader.cpp" />
@@ -109,6 +130,10 @@
 		<Unit filename="src/CSELL/render/shaderProgram.cpp" />
 		<Unit filename="src/CSELL/render/texture.cpp" />
 		<Unit filename="src/CSU/logger.cpp" />
+		<Unit filename="src/Experimental/Test1/testcallbackhandler.cpp" />
+		<Unit filename="src/Experimental/Test1/testgameobject.cpp" />
+		<Unit filename="src/Experimental/Test1/testrenderable.cpp" />
+		<Unit filename="src/Experimental/Test1/teststage.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<debugger />

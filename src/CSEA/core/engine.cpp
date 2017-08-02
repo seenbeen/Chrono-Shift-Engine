@@ -8,6 +8,7 @@
 #include <CSE/CSEA/core/time.hpp>
 #include <CSE/CSEA/asset/assetmanager.hpp>
 #include <CSE/CSEA/render/renderer.hpp>
+#include <CSE/CSEA/input/inputmanager.hpp>
 
 /*
 Notes:
@@ -24,15 +25,31 @@ namespace CSEA { namespace Core {
     std::set<CSEA::Core::Stage*> Engine::loadedStages;
     CSEA::Core::Stage *Engine::previousStage = NULL, *Engine::activeStage = NULL;
 
-    bool Engine::initializeModules() {
-        bool success = true;
-        success = success && CSEA::Core::Time::initialize();
-        success = success && CSEA::Assets::AssetManager::initialize();
-        success = success && CSEA::Render::Renderer::initialize();
-        return success;
+    bool Engine::initializeModules(Settings &settings) {
+        if (!CSEA::Core::Time::initialize()) {
+            return false;
+        }
+        if (!CSEA::Assets::AssetManager::initialize()) {
+            CSEA::Core::Time::shutdown();
+            return false;
+        }
+        if (!CSEA::Render::Renderer::initialize(settings.windowSettings)) {
+            CSEA::Assets::AssetManager::shutdown();
+            CSEA::Core::Time::shutdown();
+            return false;
+        }
+        if (!CSEA::Input::InputManager::initialize()) {
+            CSEA::Render::Renderer::shutdown();
+            CSEA::Assets::AssetManager::shutdown();
+            CSEA::Core::Time::shutdown();
+            return false;
+        }
+        CSEA::Render::Renderer::registerInputCallbackHandler(CSEA::Input::InputManager::instance);
+        return true;
     }
 
     void Engine::shutdownModules() {
+        CSEA::Input::InputManager::shutdown();
         CSEA::Render::Renderer::shutdown();
         CSEA::Assets::AssetManager::shutdown();
         CSEA::Core::Time::shutdown();
@@ -41,10 +58,10 @@ namespace CSEA { namespace Core {
 
     void Engine::updateModules() {
         CSEA::Core::Time::update();
-        CSEA::Render::Renderer::update();
+        CSEA::Render::Renderer::update(CSEA::Core::Time::getDeltaTime());
     }
 
-    bool Engine::initialize() {
+    bool Engine::initialize(Settings &settings) {
         if (Engine::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Core - Engine",
@@ -52,7 +69,7 @@ namespace CSEA { namespace Core {
             return false;
         }
 
-        Engine::isInitialized = Engine::initializeModules();
+        Engine::isInitialized = Engine::initializeModules(settings);
 
         return Engine::isInitialized;
     }
@@ -164,7 +181,7 @@ namespace CSEA { namespace Core {
                 Engine::activeStage->onTransitionInto();
             }
             Engine::updateModules();
-            Engine::activeStage->onUpdate();
+            Engine::activeStage->update(CSEA::Core::Time::getDeltaTime());
         }
     }
 }}

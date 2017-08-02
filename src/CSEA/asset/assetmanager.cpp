@@ -71,6 +71,8 @@ namespace CSEA { namespace Assets {
         AssetManager::assetReferenceMap[path] = 0;
         AssetManager::imageAssetMap[path] = asset;
 
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading an image with path \""+path+"\"");
+
         return true;
     }
 
@@ -101,6 +103,8 @@ namespace CSEA { namespace Assets {
         AssetManager::assetReferenceMap[path] = 0;
         AssetManager::textAssetMap[path] = asset;
 
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a file with path \""+path+"\"");
+
         return true;
     }
 
@@ -116,7 +120,7 @@ namespace CSEA { namespace Assets {
         it = AssetManager::imageAssetMap.find(path);
         if (it == AssetManager::imageAssetMap.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "ImageAsset "+path+" not loaded!");
+                             "Assets - AssetManager", "ImageAsset \""+path+"\" not loaded!");
             return NULL;
         }
 
@@ -136,7 +140,7 @@ namespace CSEA { namespace Assets {
         it = AssetManager::textAssetMap.find(path);
         if (it == AssetManager::textAssetMap.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "TextAsset "+path+" not loaded!");
+                             "Assets - AssetManager", "TextAsset \""+path+"\" not loaded!");
             return NULL;
         }
 
@@ -156,11 +160,11 @@ namespace CSEA { namespace Assets {
         it = AssetManager::assetReferenceMap.find(path);
         if (it == AssetManager::assetReferenceMap.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path " + path + " is not loaded!");
+                             "Assets - AssetManager", "Asset with path \""+path+"\" is not loaded!");
             return;
         } else if (it->second == 0) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path " + path + " has no references to release!");
+                             "Assets - AssetManager", "Asset with path \""+path+"\" has no references to release!");
             return;
         }
         AssetManager::assetReferenceMap[path]--;
@@ -178,11 +182,11 @@ namespace CSEA { namespace Assets {
 
         if (it == AssetManager::assetReferenceMap.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path " + path + " is not loaded!");
+                             "Assets - AssetManager", "Asset with path \""+path+"\" is not loaded!");
             return;
         } else if (it->second) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path " + path + " still has references!");
+                             "Assets - AssetManager", "Asset with path \""+path+"\" still has references!");
             return;
         }
 
@@ -201,7 +205,7 @@ namespace CSEA { namespace Assets {
                 return;
             } else {
                 CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path " + path + "was referenced, but not loaded!");
+                             "Assets - AssetManager", "Asset with path \""+path+"\" was referenced, but not loaded!");
             }
         }
     }

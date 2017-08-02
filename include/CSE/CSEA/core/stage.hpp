@@ -1,21 +1,38 @@
 #ifndef CSEA_CORE_STAGE_HPP
 #define CSEA_CORE_STAGE_HPP
+#include <queue>
+#include <set>
+
+#include <CSE/CSEA/core/gameobject.hpp>
 
 namespace CSEA { namespace Core {
     class Stage {
         friend class Engine;
+
+        struct StageTask {
+            enum TaskType { ADD_OBJECT, REMOVE_OBJECT };
+            TaskType type;
+            GameObject *target;
+        };
+
+        std::queue<StageTask*> tasks;
+
+        std::set<GameObject*> gameObjects; // objects that we manage
+
+        void update(double deltaTime);
+        void resolveTask(StageTask *task);
+
     protected:
-        virtual void onLoad() = 0;
+        virtual void onLoad() = 0;      // used to load assets
         virtual void onUnload() = 0;
-        virtual void onTransitionOutOf() = 0;
-        virtual void onTransitionInto() = 0;
-        virtual void onUpdate() = 0;
+
+        virtual void onTransitionInto() = 0;    // the part when the stage is set up
+        virtual void onTransitionOutOf() = 0;   // the part when the stage is cleaned up
+
     public:
-        /*
-            These should NOT be used on engine specific things.
-            All Loading must be done in the onLoad and onUnload function hooks,
-            otherwise you may get stuff liek funky "null pointer" inconsistencies.
-        */
+        void addObject(GameObject *obj);
+        void removeObject(GameObject *obj);
+
         Stage();
         virtual ~Stage();
     };

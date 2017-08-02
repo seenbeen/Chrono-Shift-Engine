@@ -16,8 +16,12 @@ namespace CSEA { namespace Render {
         this->height = h;
     }
 
+    Viewport::~Viewport() {}
+
     void Viewport::render(CSELL::Render::Renderer *renderer) {
         renderer->setViewport(this->x, this->y, this->width, this->height);
+        renderer->clearColour(0.0f, 0.0f, 0.0f, 1.0f);
+        renderer->clearDepth(1.0f);
         if (this->boundCamera != NULL && this->boundScene != NULL) {
             this->boundScene->render(this->boundCamera);
         } else if ((this->boundCamera != NULL && this->boundScene == NULL) ||

@@ -2,23 +2,33 @@
 #define CSEA_CORE_ENGINE_HPP
 
 #include <set>
+
+#include <CSE/CSEA/render/renderer.hpp>
+
 #include <CSE/CSEA/core/stage.hpp>
+
 
 namespace CSEA { namespace Core {
     class Engine {
+    public:
+        struct Settings {
+            CSEA::Render::Renderer::WindowSettings windowSettings;
+            // other settings later i guess...
+        };
+    private:
         static CSEA::Core::Stage *previousStage, *activeStage;
         static std::set<CSEA::Core::Stage*> loadedStages;
 
         static bool isInitialized;
 
-        static bool initializeModules();
+        static bool initializeModules(Settings &settings);
         static void updateModules();
         static void shutdownModules();
 
         Engine();
         ~Engine();
     public:
-        static bool initialize();
+        static bool initialize(Settings &settings);
         static void shutdown();
 
         // loads a stage into the system, must be called first before setting the stage as active

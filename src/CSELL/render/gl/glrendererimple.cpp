@@ -72,4 +72,6 @@ namespace CSELL { namespace Render {
         }
         return true;
     }
+
+    GLRendererImple::~GLRendererImple() {}
 }}

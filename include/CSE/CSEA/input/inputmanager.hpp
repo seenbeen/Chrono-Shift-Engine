@@ -15,19 +15,31 @@
     Done this way to prevent heavy coupling of this class to any specific event-producing class.
 */
 
+namespace CSEA { namespace Core {
+    class Engine; // forward decls
+}}
+
 namespace CSEA { namespace Input {
     class InputManager : public CSELL::Core::InputCallbackHandler {
+    friend class CSEA::Core::Engine;
+        static InputManager *instance;
+
         std::set<InputListener*> listeners;
 
-    public:
         InputManager();
         ~InputManager();
 
-        // registry functions
-        bool registerInputListener(InputListener *listener);
+        static bool initialize();
+        static void shutdown();
 
+        // registry functions
+        bool onRegisterInputListener(InputListener *listener);
         // unregistry functions
-        bool unregisterInputListener(InputListener *listener);
+        bool onUnregisterInputListener(InputListener *listener);
+
+    public:
+        static bool registerInputListener(InputListener *listener);
+        static bool unregisterInputListener(InputListener *listener);
 
         // own dispatchers
         void handleKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action);

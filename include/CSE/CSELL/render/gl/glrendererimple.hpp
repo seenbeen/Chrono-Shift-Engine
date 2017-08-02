@@ -22,6 +22,8 @@ namespace CSELL { namespace Render {
         bool clearStencil(int i);
         bool clearAccum(float r, float g, float b, float a);
         bool setPolygonMode(bool enable);
+    public:
+        ~GLRendererImple();
     };
 }}
 
