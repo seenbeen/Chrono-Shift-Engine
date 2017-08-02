@@ -10,6 +10,8 @@ namespace CSEA { namespace Render {
         this->isProjDirty = true;
     }
 
+    Camera::~Camera() {}
+
     void Camera::getViewMatrix(glm::mat4 &view) {
         if (this->isViewDirty) {
             this->updateViewMatrix(this->viewMatrix);

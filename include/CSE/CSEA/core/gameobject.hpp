@@ -13,6 +13,9 @@ namespace CSEA { namespace Core {
         virtual void onExit() = 0;
 
         virtual void onUpdate(double deltaTime) = 0;
+    public:
+        GameObject();
+        virtual ~GameObject();
     };
 }}
 #endif

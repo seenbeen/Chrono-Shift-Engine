@@ -1,9 +1,11 @@
+#include <CSE/CSEA/render/orthographiccamera.hpp>
+
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
 
-#include <CSE/CSELL/math/vector3f.hpp>
+#include <CSE/CSU/logger.hpp>
 
-#include <CSE/CSEA/render/orthographiccamera.hpp>
+#include <CSE/CSELL/math/vector3f.hpp>
 
 namespace CSEA { namespace Render {
     void OrthographicCamera::updateViewMatrix(glm::mat4 &view) {
@@ -17,11 +19,13 @@ namespace CSEA { namespace Render {
 
         up = glm::vec3(this->upAxis.x,this->upAxis.y,this->upAxis.z);
 
-        view = glm::lookAt(cPos, tPos, up);
+        //view = glm::lookAt(cPos, tPos, up);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Render - OrthographicCamera", "Updated View");
     }
 
     void OrthographicCamera::updateProjMatrix(glm::mat4 &proj) {
         proj = glm::ortho(this->l, this->r, this->d, this->u, this->n, this->f);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Render - OrthographicCamera", "Updated Proj");
     }
 
     OrthographicCamera::OrthographicCamera(float l, float r, float d, float u, float n, float f) {

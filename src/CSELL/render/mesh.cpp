@@ -12,8 +12,8 @@ namespace CSELL { namespace Render {
     bool Mesh::useMesh() {
         #if RENDERER_WARNING_CHECKS == true
         if (Mesh::activeMesh == this) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Mesh",
-                             "Current Mesh is already active.");
+            //CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Mesh",
+            //                 "Current Mesh is already active.");
             return false;
         }
         #endif

@@ -58,6 +58,7 @@ namespace CSEA { namespace Render {
 
     Renderable::Renderable() {
         this->isLoaded = false;
+        this->boundScene = NULL;
     }
 
     Renderable::~Renderable() {

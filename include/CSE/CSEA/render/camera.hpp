@@ -16,7 +16,7 @@ namespace CSEA { namespace Render {
         virtual void updateViewMatrix(glm::mat4 &view) = 0;
         virtual void updateProjMatrix(glm::mat4 &proj) = 0;
         Camera();
-
+        virtual ~Camera();
     public:
         void getViewMatrix(glm::mat4 &view);
         void getProjMatrix(glm::mat4 &proj);

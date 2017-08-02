@@ -11,6 +11,8 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
+#include <CSE/Experimental/Test1/testgameobject.hpp>
+
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
         this->viewport = new CSEA::Render::Viewport(0,0,800,600); // hoping this works...
@@ -18,20 +20,26 @@ namespace Experimental { namespace Test1 {
 
         float aspect = 800.0f / 600.0f;
 
-        this->camera = new CSEA::Render::OrthographicCamera(-5.0f*aspect, 5.0f*aspect, -5.0f, 5.0f, 0.1f, 100.0f);
+        this->camera = new CSEA::Render::OrthographicCamera(-1.0f*aspect, 1.0f*aspect, -1.0f, 1.0f, 0.1f, 100.0f);
 
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
+
+        // gulp...
+        this->testObject = new Experimental::Test1::TestGameObject(this->scene);
+
+        this->addObject(this->testObject);
     }
 
     TestStage::~TestStage() {
         delete this->scene;
         delete this->camera;
         delete this->viewport;
+        delete this->testObject;
     }
 
     void TestStage::onLoad() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Loading test stage");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Loading");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
@@ -47,9 +55,9 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onTransitionInto() {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
-
         /*
         glm::vec3 cubePositions[] = {
           glm::vec3( 0.0f,  0.0f,  0.0f),

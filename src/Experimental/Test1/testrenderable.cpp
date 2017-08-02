@@ -21,6 +21,7 @@
 
 namespace Experimental { namespace Test1 {
     bool TestRenderable::onLoad(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestRenderable", "On Load.");
         this->shaderProgram = cacheManager->retrieveShaderProgram("MyRenderable->ShaderProgram");
         if (this->shaderProgram == NULL) {
             CSELL::Assets::TextAsset *fsContent, *vsContent;
@@ -36,7 +37,7 @@ namespace Experimental { namespace Test1 {
 
             vertexShader = renderer->newShader(vsContent->getContents()->c_str(), CSELL::Render::Shader::VERTEX_SHADER);
 
-            CSEA::Assets::AssetManager::releaseAsset("assets/shaders/vertexShader1.fs");
+            CSEA::Assets::AssetManager::releaseAsset("assets/shaders/vertexShader1.vs");
 
             this->shaderProgram = renderer->newShaderProgram();
             this->shaderProgram->attachShader(vertexShader);
@@ -109,7 +110,7 @@ namespace Experimental { namespace Test1 {
         glm::mat4 tempMat;
 
         this->shaderProgram->useShaderProgram();
-        tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, 4.0f));
+        tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, -4.0f));
         // set the model matrix; guess our model matrix is default
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 

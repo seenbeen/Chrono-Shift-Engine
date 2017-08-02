@@ -6,11 +6,16 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
+#include <CSE/Experimental/Test1/testgameobject.hpp>
+
 namespace Experimental { namespace Test1 {
     class TestStage : public CSEA::Core::Stage {
         CSEA::Render::Viewport *viewport;
         CSEA::Render::Scene *scene;
         CSEA::Render::OrthographicCamera *camera;
+
+        Experimental::Test1::TestGameObject *testObject;
+
     protected:
         void onLoad();
         void onUnload();

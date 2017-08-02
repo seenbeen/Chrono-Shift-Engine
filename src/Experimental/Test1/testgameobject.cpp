@@ -9,6 +9,7 @@
 
 namespace Experimental { namespace Test1 {
     void TestGameObject::onEnter() {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestGameObject", "On Enter.");
         CSEA::Render::Renderer::loadRenderable(this->testRenderable);
         this->stageScene->addRenderable(this->testRenderable);
     }

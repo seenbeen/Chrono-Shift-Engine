@@ -71,8 +71,8 @@ namespace CSELL { namespace Render {
             return false;
         }
         if (ShaderProgram::activeShaderProgram == this) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
-                             "ShaderProgram is already active!");
+            //CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - ShaderProgram",
+            //                 "ShaderProgram is already active!");
             return false;
         }
         if (this->useShaderProgramImplementation()) {
