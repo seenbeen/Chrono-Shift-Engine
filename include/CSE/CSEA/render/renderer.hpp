@@ -35,7 +35,7 @@ namespace CSEA { namespace Render {
 
         static CSELL::Core::Window *window;
         static CSELL::Render::RendererImple *rimple;
-        static CSELL::Render::Renderer* renderer;
+        static CSELL::Render::Renderer *renderer;
         static CacheManager *cacheManager;
 
         static std::set<Scene*> scenes;

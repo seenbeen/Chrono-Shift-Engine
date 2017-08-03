@@ -3,7 +3,12 @@
 #include <CSE/CSELL/render/texture.hpp>
 
 namespace CSELL { namespace Render {
-    Texture::Texture() {}
+    Texture::Texture() {
+        #if RENDERER_WARNING_CHECKS == true
+        this->renderer = NULL;
+        this->activeRenderer = NULL;
+        #endif
+    }
     Texture::~Texture() {}
     bool Texture::useActiveTexture(unsigned int textureNumber) {
         #if RENDERER_WARNING_CHECKS == true

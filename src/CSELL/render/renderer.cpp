@@ -22,7 +22,11 @@ namespace CSELL { namespace Render {
     #endif
 
     Renderer::Renderer(CSELL::Core::Window *window, RendererImple *rImple)
-                    : window(window), rImple(rImple) {}
+                    : window(window), rImple(rImple) {
+        #if RENDERER_WARNING_CHECKS == true
+        this->activeRenderer = NULL;
+        #endif
+    }
 
     Renderer *Renderer::newRenderer(CSELL::Core::Window *window, RendererImple *rImple) {
         #if RENDERER_WARNING_CHECKS == true

@@ -4,8 +4,10 @@
 
 #include <CSE/CSEA/asset/assetmanager.hpp>
 
+#include <CSE/CSEA/core/engine.hpp>
 #include <CSE/CSEA/core/stage.hpp>
-
+#include <CSE/CSEA/input/inputmanager.hpp>
+#include <CSE/CSEA/input/inputlistener.hpp>
 #include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
 #include <CSE/CSEA/render/scene.hpp>
@@ -39,15 +41,17 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onLoad() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Loading");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Loading");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Assets loaded in!");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Assets loaded in!");
+        CSEA::Input::InputManager::registerInputListener(this);
     }
 
     void TestStage::onUnload() {
+        CSEA::Input::InputManager::unregisterInputListener(this);
         CSEA::Assets::AssetManager::unloadAsset("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::unloadAsset("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/container.jpg");
@@ -55,7 +59,7 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onTransitionInto() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestStage", "Transitioning in.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
         /*
@@ -89,4 +93,23 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::Renderer::removeScene(this->scene);
         CSEA::Render::Renderer::removeViewport(this->viewport);
     }
+
+    void TestStage::onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
+        if (key == CSELL::Core::InputEnum::K_ESCAPE && action == CSELL::Core::InputEnum::ACTION_PRESS) {
+            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onEscapeKey");
+            CSEA::Core::Engine::exit();
+        }
+    }
+
+    void TestStage::onMousePosInput(double xpos, double ypos, double xrel, double yrel) {}
+    void TestStage::onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action) {}
+    void TestStage::onMouseScrollInput(double xoffset, double yoffset) {}
+    void TestStage::onMouseEnterLeaveInput(bool entered) {}
+    void TestStage::onWindowResizeInput(unsigned int width, unsigned int height) {
+        this->viewport->setDimensions(width, height);
+    }
+    void TestStage::onWindowCloseInput() {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onWindowClose");
+        CSEA::Core::Engine::exit();
+    };
 }}

@@ -300,4 +300,8 @@ namespace CSELL { namespace Core {
             return false;
         }
     }
+
+    SDLWindow::SDLWindow() {
+        this->window = NULL;
+    }
 }}

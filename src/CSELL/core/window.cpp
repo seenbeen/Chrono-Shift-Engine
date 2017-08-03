@@ -7,6 +7,10 @@
 namespace CSELL { namespace Core {
     Window::~Window() {}
 
+    Window::Window() {
+        this->callbackHandler = NULL;
+    }
+
     bool Window::initialize(Window::Settings settings) {
         if (this->successfulInit) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is already initialized!");

@@ -26,6 +26,7 @@ namespace CSELL { namespace Core {
     public:
         static bool initialize();
         static bool shutdown();
+        SDLWindow();
     };
 }}
 #endif

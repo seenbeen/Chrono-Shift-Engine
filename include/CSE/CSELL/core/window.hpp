@@ -31,6 +31,7 @@ namespace CSELL { namespace Core {
         virtual bool setCursorModeImplementation(bool enable) = 0;
 
     public:
+        Window();
         bool initialize(Window::Settings settings);
         void destroy();
 

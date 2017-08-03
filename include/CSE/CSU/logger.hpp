@@ -10,7 +10,7 @@ namespace CSU {
         //  for example to save the time + date / filename
     public:
         enum LogLevel { FATAL, WARN, DEBUG, INFO, OFF };
-        enum EngineLevel { CSELL, CSEA, CSEF };
+        enum EngineLevel { CSELL, CSEA, CSEF, EXPERIMENTAL };
 
         static void log(Logger::LogLevel lv, Logger::EngineLevel elv, const std::string &source, const std::string &message);
     };

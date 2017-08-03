@@ -10,6 +10,8 @@ namespace CSELL { namespace Render {
 
     ShaderProgram::ShaderProgram() {
         #if RENDERER_WARNING_CHECKS == true
+        this->renderer = NULL;
+        this->activeRenderer = NULL;
         this->isLinked = false;
         #endif
     }

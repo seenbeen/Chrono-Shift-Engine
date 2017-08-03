@@ -4,6 +4,8 @@
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
 
+#include <CSE/CSU/logger.hpp>
+
 #include <CSE/CSELL/asset/text.hpp>
 #include <CSE/CSELL/asset/image.hpp>
 
@@ -21,7 +23,7 @@
 
 namespace Experimental { namespace Test1 {
     bool TestRenderable::onLoad(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Experimental/Test1 - TestRenderable", "On Load.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Load.");
         this->shaderProgram = cacheManager->retrieveShaderProgram("MyRenderable->ShaderProgram");
         if (this->shaderProgram == NULL) {
             CSELL::Assets::TextAsset *fsContent, *vsContent;
@@ -108,7 +110,6 @@ namespace Experimental { namespace Test1 {
 
     void TestRenderable::onRender(CSEA::Render::Camera *camera) {
         glm::mat4 tempMat;
-
         this->shaderProgram->useShaderProgram();
         tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, -4.0f));
         // set the model matrix; guess our model matrix is default
@@ -129,10 +130,11 @@ namespace Experimental { namespace Test1 {
         this->mesh->renderMesh();
     }
 
-    TestRenderable::TestRenderable() {}
+    TestRenderable::TestRenderable() {
+        this->mesh = NULL;
+        this->tex1 = NULL;
+        this->tex2 = NULL;
+        this->shaderProgram = NULL;
+    }
     TestRenderable::~TestRenderable() {}
-
-    /*
-        glm::mat4 view = glm::translate(identity, glm::vec3(0.0f, 0.0f, -4.0f));
-    */
 }}

@@ -181,7 +181,9 @@ namespace CSEA { namespace Core {
                 Engine::activeStage->onTransitionInto();
             }
             Engine::updateModules();
-            Engine::activeStage->update(CSEA::Core::Time::getDeltaTime());
+            if (Engine::activeStage != NULL) {
+                Engine::activeStage->update(CSEA::Core::Time::getDeltaTime());
+            }
         }
     }
 }}

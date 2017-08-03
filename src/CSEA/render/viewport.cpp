@@ -14,6 +14,9 @@ namespace CSEA { namespace Render {
         this->y = y;
         this->width = w;
         this->height = h;
+        this->boundOverlay = NULL;
+        this->boundScene = NULL;
+        this->boundCamera = NULL;
     }
 
     Viewport::~Viewport() {}

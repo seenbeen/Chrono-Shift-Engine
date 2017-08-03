@@ -57,6 +57,7 @@ namespace CSEA { namespace Render {
 
     OverlayRenderable::OverlayRenderable() {
         this->isLoaded = false;
+        this->boundOverlay = NULL;
     }
 
     OverlayRenderable::~OverlayRenderable() {

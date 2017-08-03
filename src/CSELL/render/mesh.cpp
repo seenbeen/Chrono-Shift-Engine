@@ -5,7 +5,12 @@
 namespace CSELL { namespace Render {
     Mesh *Mesh::activeMesh = NULL;
 
-    Mesh::Mesh() {}
+    Mesh::Mesh() {
+        #if RENDERER_WARNING_CHECKS == true
+        this->renderer = NULL;
+        this->activeRenderer = NULL;
+        #endif
+    }
 
     Mesh::~Mesh() {}
 
