@@ -28,7 +28,7 @@ namespace CSEA { namespace Core {
     }
 
     void Time::shutdown() {
-        if (Time::isInitialized) {
+        if (!Time::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Core - Time", "Trying to shutdown uninitialized Time!");
             return;
