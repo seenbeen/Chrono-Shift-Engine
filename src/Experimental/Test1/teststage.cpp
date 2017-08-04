@@ -97,10 +97,10 @@ namespace Experimental { namespace Test1 {
 
     void TestStage::onTransitionOutOf() {
         this->removeObject(this->testObject);
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onTransitionOut");
-        CSEA::Render::Renderer::removeScene(this->scene);
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "DONE REMOVING SCENE");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Transitioning Out.");
         CSEA::Render::Renderer::removeViewport(this->viewport);
+        CSEA::Render::Renderer::removeScene(this->scene);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Scene has been removed.");
     }
 
     void TestStage::onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {

@@ -24,7 +24,7 @@
 namespace Experimental { namespace Test1 {
     bool TestRenderable::onLoad(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Load.");
-        this->shaderProgram = cacheManager->retrieveShaderProgram("MyRenderable->ShaderProgram");
+        this->shaderProgram = cacheManager->retrieveShaderProgram("TestRenderable->ShaderProgram");
         if (this->shaderProgram == NULL) {
             CSELL::Assets::TextAsset *fsContent, *vsContent;
             CSELL::Render::Shader *fragmentShader, *vertexShader;
@@ -53,7 +53,7 @@ namespace Experimental { namespace Test1 {
             vertexShader = NULL;
 
             // cache it
-            cacheManager->cacheShaderProgram("MyRenderable->ShaderProgram", this->shaderProgram);
+            cacheManager->cacheShaderProgram("TestRenderable->ShaderProgram", this->shaderProgram);
         }
 
         this->tex1 = cacheManager->retrieveTexture("TestRenderable->Tex1");
@@ -62,7 +62,7 @@ namespace Experimental { namespace Test1 {
 
             img = CSEA::Assets::AssetManager::getImage("assets/textures/texturesLesson/container.jpg");
             this->tex1 = renderer->newTexture(img->width(), img->height(), img->data());
-            cacheManager->cacheTexture("MyRenderable->Tex1", this->tex1);
+            cacheManager->cacheTexture("TestRenderable->Tex1", this->tex1);
             CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/container.jpg");
         }
 
@@ -72,7 +72,7 @@ namespace Experimental { namespace Test1 {
 
             img = CSEA::Assets::AssetManager::getImage("assets/textures/texturesLesson/awesomeface.png");
             this->tex2 = renderer->newTexture(img->width(), img->height(), img->data());
-            cacheManager->cacheTexture("MyRenderabble->Tex2", this->tex2);
+            cacheManager->cacheTexture("TestRenderable->Tex2", this->tex2);
             CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/awesomeface.png");
         }
 
@@ -87,20 +87,12 @@ namespace Experimental { namespace Test1 {
 
     bool TestRenderable::onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Unload.");
-        // probably refactor cacheManager to be a instance counting cache and follow Ashkanz idea
-        /*
-        // onUnload
-        renderer->deleteShaderProgram(shaderProgram);
-        shaderProgram = NULL;
 
-        renderer->deleteTexture(tex1);
-        tex1 = NULL;
+        cacheManager->releaseShaderProgram("TestRenderable->ShaderProgram");
+        cacheManager->releaseTexture("TestRenderable->Tex1");
+        cacheManager->releaseTexture("TestRenderable->Tex2");
+        cacheManager->releaseMesh("TestRenderable->Mesh");
 
-        renderer->deleteTexture(tex2);
-        tex2 = NULL;
-
-        renderer->deleteMesh(mesh);
-        mesh = NULL;*/
         return true;
     }
 

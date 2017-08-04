@@ -234,7 +234,7 @@ namespace CSELL { namespace Core {
                 } else if (event.window.event == SDL_WINDOWEVENT_LEAVE) {
                     it->second->handleMouseEnterLeaveInput(false);
                 } else if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
-                    it->second->handleWindowCloseInput();
+                //    it->second->handleWindowCloseInput();
                 } else if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
                            event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     it->second->handleWindowResizeInput(event.window.data1, event.window.data2);

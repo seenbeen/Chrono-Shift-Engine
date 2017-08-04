@@ -62,7 +62,7 @@ namespace CSEA { namespace Render {
 
             if (Renderer::renderer != NULL) {
                 Renderer::renderer->makeActiveRenderer();
-                Renderer::cacheManager = new CacheManager();
+                Renderer::cacheManager = new CacheManager(Renderer::renderer);
                 Renderer::isInitialized = true;
                 return true;
             }
