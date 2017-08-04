@@ -2,12 +2,15 @@
 
 #include <CSE/CSU/logger.hpp>
 
+#include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/scene.hpp>
 
 namespace CSEA { namespace Render {
     class Camera;
 
-    Scene::Scene() {}
+    Scene::Scene() {
+        this->isLoaded = false;
+    }
 
     Scene::~Scene() {
         if (this->renderables.size()) {
@@ -15,25 +18,49 @@ namespace CSEA { namespace Render {
                              "Not all Renderables have been detached from Scene on deletion!");
         }
         std::set<Renderable*>::iterator it;
-        for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->boundScene = NULL;
         }
     }
 
     void Scene::update(double deltaTime) {
-        if (this->isActive) {
-            std::set<Renderable*>::iterator it;
-            for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
-                (*it)->update(deltaTime);
-            }
+        std::set<Renderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            (*it)->update(deltaTime);
         }
     }
 
     void Scene::render(Camera *camera) {
         std::set<Renderable*>::iterator it;
-        for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->render(camera);
         }
+    }
+
+    void Scene::onLoad() {
+        if (this->isLoaded) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Scene",
+                             "Trying to load already loaded scene!");
+            return;
+        }
+        std::set<Renderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            CSEA::Render::Renderer::loadRenderable(*it);
+        }
+        this->isLoaded = true;
+    }
+
+    void Scene::onUnload() {
+        if (!this->isLoaded) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Overlay",
+                             "Trying to unload unloaded overlay!");
+            return;
+        }
+        std::set<Renderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            CSEA::Render::Renderer::unloadRenderable(*it);
+        }
+        this->isLoaded = false;
     }
 
     bool Scene::addRenderable(Renderable *renderable) {
@@ -49,6 +76,9 @@ namespace CSEA { namespace Render {
         }
         renderable->boundScene = this;
         this->renderables.insert(renderable);
+        if (this->isLoaded) {
+            CSEA::Render::Renderer::loadRenderable(renderable);
+        }
         return true;
     }
 
@@ -59,15 +89,10 @@ namespace CSEA { namespace Render {
             return false;
         }
         renderable->boundScene = NULL;
+        if (this->isLoaded) {
+            CSEA::Render::Renderer::unloadRenderable(renderable);
+        }
         this->renderables.erase(this->renderables.find(renderable));
         return true;
-    }
-
-    void Scene::setIsActive(bool isActive) {
-        this->isActive = isActive;
-    }
-
-    bool Scene::getIsActive() {
-        return this->isActive;
     }
 }}

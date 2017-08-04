@@ -35,11 +35,12 @@ namespace CSELL { namespace Assets {
     void AssetManager::shutdown() {
         if (!AssetManager::ensureInit())
             return;
-        // prevent leakage
-        std::map<unsigned int, Asset*>::iterator it;
-        for (it = AssetManager::assets.begin(); it != AssetManager::assets.end(); it++) {
-            delete it->second;
+
+        if (AssetManager::assets.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Assets - AssetManager",
+                             "Not all allocated CSELL assets have been freed at time of shutdown!");
         }
+
         AssetManager::isInitialized = false;
     }
 

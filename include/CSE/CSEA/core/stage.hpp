@@ -20,7 +20,14 @@ namespace CSEA { namespace Core {
         std::set<GameObject*> gameObjects; // objects that we manage
 
         void update(double deltaTime);
+        void resolveTasks();
         void resolveTask(StageTask *task);
+
+        void load(); // NOTE: DO NOT ASSIGN TASKS IN THESE FUNCTIONS
+        void unload(); // HERE TOO. THESE ARE MEANT TO BE ONE TIME LOADS INTO RAM AND OUT
+
+        void transitionInto();
+        void transitionOutOf();
 
     protected:
         virtual void onLoad() = 0;      // used to load assets

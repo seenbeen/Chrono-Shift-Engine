@@ -10,8 +10,6 @@ namespace CSELL { namespace Assets {
         unsigned char *temp;
         int tw,th,tn;
 
-        std::vector<unsigned char> image;
-
         temp = stbi_load(filepath.c_str(), &tw, &th, &tn, 0);
         this->imgW = (unsigned int)tw;
         this->imgH = (unsigned int)th;

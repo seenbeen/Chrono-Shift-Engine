@@ -29,15 +29,13 @@ namespace Experimental { namespace Test1 {
 
         // gulp...
         this->testObject = new Experimental::Test1::TestGameObject(this->scene);
-
-        this->addObject(this->testObject);
     }
 
     TestStage::~TestStage() {
+        delete this->testObject;
         delete this->scene;
         delete this->camera;
         delete this->viewport;
-        delete this->testObject;
     }
 
     void TestStage::onLoad() {
@@ -52,9 +50,16 @@ namespace Experimental { namespace Test1 {
 
     void TestStage::onUnload() {
         CSEA::Input::InputManager::unregisterInputListener(this);
+        CSEA::Assets::AssetManager::releaseAsset("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::unloadAsset("assets/shaders/fragmentShader1.fs");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::unloadAsset("assets/shaders/vertexShader1.vs");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/container.jpg");
         CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/container.jpg");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/awesomeface.png");
         CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/awesomeface.png");
     }
 
@@ -62,6 +67,7 @@ namespace Experimental { namespace Test1 {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
+        this->addObject(this->testObject);
         /*
         glm::vec3 cubePositions[] = {
           glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -90,7 +96,10 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onTransitionOutOf() {
+        this->removeObject(this->testObject);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onTransitionOut");
         CSEA::Render::Renderer::removeScene(this->scene);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "DONE REMOVING SCENE");
         CSEA::Render::Renderer::removeViewport(this->viewport);
     }
 

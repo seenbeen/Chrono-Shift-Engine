@@ -84,7 +84,7 @@ namespace CSEA { namespace Core {
 
         // unload all loaded stages
         std::set<CSEA::Core::Stage*>::iterator it;
-        for (it = Engine::loadedStages.begin(); it != Engine::loadedStages.end(); it++) {
+        for (it = Engine::loadedStages.begin(); it != Engine::loadedStages.end(); ++it) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Engine",
                             "Not all Stages unloaded prior to engine shutdown!");
             (*it)->onUnload();
@@ -113,7 +113,7 @@ namespace CSEA { namespace Core {
 
         Engine::loadedStages.insert(stage);
 
-        stage->onLoad(); // load'er up
+        stage->load(); // load'er up
 
         return true;
     }
@@ -136,7 +136,7 @@ namespace CSEA { namespace Core {
 
         Engine::loadedStages.erase(it);
 
-        stage->onUnload();
+        stage->unload();
     }
 
     bool Engine::setActiveStage(CSEA::Core::Stage *stage) {
@@ -160,7 +160,10 @@ namespace CSEA { namespace Core {
     }
 
     void Engine::exit() {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Exit.");
+        Engine::activeStage->transitionOutOf();
         Engine::activeStage = NULL;
+        Engine::previousStage = NULL;
     }
 
     void Engine::run() {
@@ -175,10 +178,10 @@ namespace CSEA { namespace Core {
         while (Engine::activeStage != NULL) {
             if (Engine::previousStage != Engine::activeStage) {
                 if (Engine::previousStage != NULL) {
-                    Engine::previousStage->onTransitionOutOf();
+                    Engine::previousStage->transitionOutOf();
                 }
                 Engine::previousStage = Engine::activeStage;
-                Engine::activeStage->onTransitionInto();
+                Engine::activeStage->transitionInto();
             }
             Engine::updateModules();
             if (Engine::activeStage != NULL) {

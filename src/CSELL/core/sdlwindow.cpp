@@ -243,36 +243,36 @@ namespace CSELL { namespace Core {
                 keyit = keymap.find(event.key.keysym.sym);
                 InputEnum::KeyboardKey k = keyit == keymap.end() ? InputEnum::K_UNKNOWN : keyit->second;
 
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleKeyInput(k, InputEnum::ACTION_PRESS);
                 }
             } else if (event.type == SDL_KEYUP) {
                 keyit = keymap.find(event.key.keysym.sym);
                 InputEnum::KeyboardKey k = keyit == keymap.end() ? InputEnum::K_UNKNOWN : keyit->second;
 
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleKeyInput(k, InputEnum::ACTION_RELEASE);
                 }
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
                 buttonit = mousebuttonmap.find(event.button.button);
                 InputEnum::MouseButton mb = buttonit == mousebuttonmap.end() ? InputEnum::MOUSE_UNKNOWN : buttonit->second;
 
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleMouseButtonInput(mb, InputEnum::ACTION_PRESS);
                 }
             } else if (event.type == SDL_MOUSEBUTTONUP) {
                 buttonit = mousebuttonmap.find(event.button.button);
                 InputEnum::MouseButton mb = buttonit == mousebuttonmap.end() ? InputEnum::MOUSE_UNKNOWN : buttonit->second;
 
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleMouseButtonInput(mb, InputEnum::ACTION_RELEASE);
                 }
             } else if (event.type == SDL_MOUSEWHEEL) {
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleMouseScrollInput(event.wheel.x, event.wheel.y);
                 }
             } else if (event.type == SDL_MOUSEMOTION) {
-                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); it++) {
+                for (it = SDLWindow::windowMap.begin(); it != SDLWindow::windowMap.end(); ++it) {
                     it->second->handleMousePosInput(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
                 }
             }
@@ -303,5 +303,9 @@ namespace CSELL { namespace Core {
 
     SDLWindow::SDLWindow() {
         this->window = NULL;
+        this->windowWidth = 0;
+        this->windowHeight = 0;
+        this->windowId = 0;
+        this->context = NULL;
     }
 }}

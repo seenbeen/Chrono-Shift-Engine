@@ -28,6 +28,9 @@ int main(int argc, char *argv[]) {
 
     CSEA::Core::Engine::unloadStage(stage);
 
+    delete stage;
+    stage = NULL;
+
     CSEA::Core::Engine::shutdown();
 
     return 0;

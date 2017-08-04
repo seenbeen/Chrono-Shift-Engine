@@ -19,7 +19,7 @@ namespace CSEA { namespace Render {
             return true;
         }
         CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Renderable",
-                         "Failed to load OverlayRenderable!");
+                         "Failed to load Renderable!");
         return false;
     }
 
@@ -63,8 +63,8 @@ namespace CSEA { namespace Render {
 
     Renderable::~Renderable() {
         if (this->isLoaded) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - OverlayRenderable",
-                             "Deleting OverlayRenderable which is still loaded!");
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Renderable",
+                             "Deleting Renderable which is still loaded!");
         }
     }
 }}

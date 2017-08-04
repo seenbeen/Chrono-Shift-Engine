@@ -94,17 +94,17 @@ namespace CSEA { namespace Render {
         std::set<Viewport*>::iterator viewIt;
 
         // update active scenes
-        for (sceneIt = Renderer::scenes.begin(); sceneIt != Renderer::scenes.end(); sceneIt++) {
+        for (sceneIt = Renderer::scenes.begin(); sceneIt != Renderer::scenes.end(); ++sceneIt) {
             (*sceneIt)->update(deltaTime);
         }
 
         // update active overlays
-        for (overIt = Renderer::overlays.begin(); overIt != Renderer::overlays.end(); overIt++){
+        for (overIt = Renderer::overlays.begin(); overIt != Renderer::overlays.end(); ++overIt){
             (*overIt)->update(deltaTime);
         }
 
         // do some rendering
-        for (viewIt = Renderer::viewports.begin(); viewIt != Renderer::viewports.end(); viewIt++) {
+        for (viewIt = Renderer::viewports.begin(); viewIt != Renderer::viewports.end(); ++viewIt) {
             (*viewIt)->render(Renderer::renderer);
         }
         Renderer::window->update();
@@ -168,6 +168,7 @@ namespace CSEA { namespace Render {
             return false;
         }
         Renderer::scenes.insert(scene);
+        scene->onLoad();
         return true;
     }
 
@@ -183,6 +184,7 @@ namespace CSEA { namespace Render {
             return false;
         }
         Renderer::overlays.insert(overlay);
+        overlay->onLoad();
         return true;
     }
 
@@ -212,6 +214,7 @@ namespace CSEA { namespace Render {
                              "Render - Renderer", "Removing non-existent Scene!");
             return false;
         }
+        scene->onUnload();
         Renderer::scenes.erase(Renderer::scenes.find(scene));
         return true;
     }
@@ -227,6 +230,7 @@ namespace CSEA { namespace Render {
                              "Render - Renderer", "Removing non-existent Overlay!");
             return false;
         }
+        overlay->onUnload();
         Renderer::overlays.erase(Renderer::overlays.find(overlay));
         return true;
     }

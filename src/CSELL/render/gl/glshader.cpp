@@ -27,10 +27,11 @@ namespace CSELL { namespace Render {
         // check for success
 
         int compileSuccess;
-        char statusMsg[512];
+
         glGetShaderiv(this->shaderId, GL_COMPILE_STATUS, &compileSuccess);
 
         if (compileSuccess == 0) {
+            char statusMsg[512];
             glGetShaderInfoLog(this->shaderId, 512, NULL, statusMsg);
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Shader",
                              "Error compiling " + strShaderType + " Shader:\n" + statusMsg);

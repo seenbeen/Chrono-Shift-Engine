@@ -12,14 +12,17 @@ namespace CSEA { namespace Render {
     class Scene {
     friend class Renderer;
     friend class Viewport;
-        bool isActive;
         // active meaning does this scene update. Saves you some frame ops if you need it - still renders just fine
+        bool isLoaded;
 
         std::set<Renderable*> renderables;
 
         void update(double deltaTime);
         void render(Camera *c); // scene objects require a camera in order to render properly
 
+        // used to load/unload all bound renderables, and also to decide whether loading on add is necessary
+        void onLoad();
+        void onUnload();
     public:
         Scene();
         ~Scene();

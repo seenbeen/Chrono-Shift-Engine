@@ -2,11 +2,14 @@
 
 #include <CSE/CSU/logger.hpp>
 
+#include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/overlay.hpp>
 #include <CSE/CSEA/render/overlayrenderable.hpp>
 
 namespace CSEA { namespace Render {
-    Overlay::Overlay() {}
+    Overlay::Overlay() {
+        this->isLoaded = false;
+    }
 
     Overlay::~Overlay() {
         if (this->renderables.size()) {
@@ -14,25 +17,49 @@ namespace CSEA { namespace Render {
                              "Not all OverlayRenderables have been detached from Overlay on deletion!");
         }
         std::set<OverlayRenderable*>::iterator it;
-        for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->boundOverlay = NULL;
         }
     }
 
     void Overlay::update(double deltaTime) {
-        if (this->isActive) {
-            std::set<OverlayRenderable*>::iterator it;
-            for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
-                (*it)->update(deltaTime);
-            }
+        std::set<OverlayRenderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            (*it)->update(deltaTime);
         }
     }
 
     void Overlay::render(unsigned int viewportWidth, unsigned int viewportHeight) {
         std::set<OverlayRenderable*>::iterator it;
-        for (it = this->renderables.begin(); it != this->renderables.end(); it++) {
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->render(viewportWidth, viewportHeight);
         }
+    }
+
+    void Overlay::onLoad() {
+        if (this->isLoaded) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Overlay",
+                             "Trying to load already loaded overlay!");
+            return;
+        }
+        std::set<OverlayRenderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            CSEA::Render::Renderer::loadOverlayRenderable(*it);
+        }
+        this->isLoaded = true;
+    }
+
+    void Overlay::onUnload() {
+        if (!this->isLoaded) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Overlay",
+                             "Trying to unload unloaded overlay!");
+            return;
+        }
+        std::set<OverlayRenderable*>::iterator it;
+        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+            CSEA::Render::Renderer::unloadOverlayRenderable(*it);
+        }
+        this->isLoaded = false;
     }
 
     bool Overlay::addOverlayRenderable(OverlayRenderable *overRend) {
@@ -48,6 +75,9 @@ namespace CSEA { namespace Render {
         }
         overRend->boundOverlay = this;
         this->renderables.insert(overRend);
+        if (this->isLoaded) {
+            CSEA::Render::Renderer::loadOverlayRenderable(overRend);
+        }
         return true;
     }
 
@@ -58,16 +88,11 @@ namespace CSEA { namespace Render {
             return false;
         }
         overRend->boundOverlay = NULL;
+        if (this->isLoaded) {
+            CSEA::Render::Renderer::unloadOverlayRenderable(overRend);
+        }
         this->renderables.erase(this->renderables.find(overRend));
         return true;
-    }
-
-    void Overlay::setIsActive(bool isActive) {
-        this->isActive = isActive;
-    }
-
-    bool Overlay::getIsActive() {
-        return this->isActive;
     }
 }}
 

@@ -27,7 +27,6 @@ namespace CSELL { namespace Render {
         glLinkProgram(this->programId);
         // check for errors
         int linkSuccess;
-        char statusMsg[512];
         glGetProgramiv(this->programId, GL_LINK_STATUS, &linkSuccess);
 
         for (unsigned int i = 0; i < this->shaders.size(); i++) {
@@ -38,6 +37,7 @@ namespace CSELL { namespace Render {
         if (linkSuccess) {
             return true;
         } else {
+            char statusMsg[512];
             glGetProgramInfoLog(this->programId, 512, NULL, statusMsg);
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - GLShaderProgram",
                              std::string("Error linking GLShaderProgram:\n") + statusMsg);

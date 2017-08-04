@@ -16,7 +16,7 @@ namespace CSELL { namespace Assets {
             file.open(path.c_str());
             oss << file.rdbuf();
             file.close();
-        } catch (std::ifstream::failure e) {
+        } catch (const std::ifstream::failure &e) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "AssetManager - TextAsset", e.what());
         }
         this->contents = new std::string(oss.str());

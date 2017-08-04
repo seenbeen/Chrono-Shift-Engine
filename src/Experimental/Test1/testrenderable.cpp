@@ -86,6 +86,7 @@ namespace Experimental { namespace Test1 {
     }
 
     bool TestRenderable::onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Unload.");
         // probably refactor cacheManager to be a instance counting cache and follow Ashkanz idea
         /*
         // onUnload

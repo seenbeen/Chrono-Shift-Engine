@@ -6,7 +6,7 @@ namespace CSEA { namespace UI {
         virtual bool init() = 0;
         virtual bool update(float deltaTime) = 0;
     public:
-        UIComponent(CSELL::Render::Renderer renderer);
+        explicit UIComponent(CSELL::Render::Renderer renderer);
         virtual ~UIComponent() = 0;
     }
 }}

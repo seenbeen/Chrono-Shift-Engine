@@ -68,7 +68,7 @@ namespace CSEA { namespace Assets {
             return false;
         }
 
-        AssetManager::assetReferenceMap[path] = 0;
+        AssetManager::assetReferenceMap[path] = 1;
         AssetManager::imageAssetMap[path] = asset;
 
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading an image with path \""+path+"\"");
@@ -100,7 +100,7 @@ namespace CSEA { namespace Assets {
             return false;
         }
 
-        AssetManager::assetReferenceMap[path] = 0;
+        AssetManager::assetReferenceMap[path] = 1;
         AssetManager::textAssetMap[path] = asset;
 
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a file with path \""+path+"\"");
@@ -195,12 +195,14 @@ namespace CSEA { namespace Assets {
         std::map<std::string, CSELL::Assets::ImageAsset*>::iterator imageIt;
         imageIt = AssetManager::imageAssetMap.find(path);
         if (imageIt != AssetManager::imageAssetMap.end()) {
+            CSELL::Assets::AssetManager::freeAsset(imageIt->second);
             AssetManager::imageAssetMap.erase(imageIt);
             return;
         } else {
             std::map<std::string, CSELL::Assets::TextAsset*>::iterator textIt;
             textIt = AssetManager::textAssetMap.find(path);
             if (textIt !=  AssetManager::textAssetMap.end()) {
+                CSELL::Assets::AssetManager::freeAsset(textIt->second);
                 AssetManager::textAssetMap.erase(textIt);
                 return;
             } else {

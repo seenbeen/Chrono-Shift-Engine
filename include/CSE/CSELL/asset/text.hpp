@@ -10,7 +10,7 @@ namespace CSELL { namespace Assets {
     friend class AssetManager;
         std::string *contents;
     protected:
-        TextAsset(const std::string &path);
+        explicit TextAsset(const std::string &path);
         ~TextAsset();
     public:
         std::string *getContents();

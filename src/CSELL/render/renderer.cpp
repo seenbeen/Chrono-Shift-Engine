@@ -91,22 +91,22 @@ namespace CSELL { namespace Render {
         #endif
 
         std::set<Shader *>::iterator shaderIt;
-        for (shaderIt = shaders.begin(); shaderIt != shaders.end(); shaderIt++) {
+        for (shaderIt = shaders.begin(); shaderIt != shaders.end(); ++shaderIt) {
             delete (*shaderIt);
         }
 
         std::set<ShaderProgram *>::iterator shaderProgramIt;
-        for (shaderProgramIt = shaderPrograms.begin(); shaderProgramIt != shaderPrograms.end(); shaderProgramIt++) {
+        for (shaderProgramIt = shaderPrograms.begin(); shaderProgramIt != shaderPrograms.end(); ++shaderProgramIt) {
             delete (*shaderProgramIt);
         }
 
         std::set<Texture *>::iterator textureIt;
-        for (textureIt = textures.begin(); textureIt != textures.end(); textureIt++) {
+        for (textureIt = textures.begin(); textureIt != textures.end(); ++textureIt) {
             delete (*textureIt);
         }
 
         std::set<Mesh *>::iterator meshIt;
-        for (meshIt = meshes.begin(); meshIt != meshes.end(); meshIt++) {
+        for (meshIt = meshes.begin(); meshIt != meshes.end(); ++meshIt) {
             delete (*meshIt);
         }
 

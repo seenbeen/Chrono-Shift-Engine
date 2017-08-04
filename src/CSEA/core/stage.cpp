@@ -10,9 +10,13 @@
 namespace CSEA { namespace Core {
     void Stage::update(double deltaTime) {
         std::set<GameObject*>::iterator it;
-        for (it = this->gameObjects.begin(); it != this->gameObjects.end(); it++) {
+        for (it = this->gameObjects.begin(); it != this->gameObjects.end(); ++it) {
             (*it)->onUpdate(deltaTime);
         }
+        this->resolveTasks();
+    }
+
+    void Stage::resolveTasks() {
         while (this->tasks.size()) {
             this->resolveTask(this->tasks.front());
             delete this->tasks.front();
@@ -41,6 +45,24 @@ namespace CSEA { namespace Core {
             task->target->onExit();
             this->gameObjects.erase(it);
         }
+    }
+
+    void Stage::load() {
+        this->onLoad();
+    }
+
+    void Stage::unload() {
+        this->onUnload();
+    }
+
+    void Stage::transitionInto() {
+        this->onTransitionInto();
+        this->resolveTasks();
+    }
+
+    void Stage::transitionOutOf() {
+        this->onTransitionOutOf();
+        this->resolveTasks();
     }
 
     void Stage::addObject(GameObject *obj) {

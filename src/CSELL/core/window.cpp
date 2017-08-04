@@ -9,6 +9,7 @@ namespace CSELL { namespace Core {
 
     Window::Window() {
         this->callbackHandler = NULL;
+        this->successfulInit = false;
     }
 
     bool Window::initialize(Window::Settings settings) {
@@ -114,6 +115,6 @@ namespace CSELL { namespace Core {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSELL, "Core - Window", "Window is not initialized!");
             return false;
         }
-        return this-setCursorModeImplementation(enable);
+        return this->setCursorModeImplementation(enable);
     }
 }}
