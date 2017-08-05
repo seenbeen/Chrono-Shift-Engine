@@ -116,6 +116,15 @@ namespace Experimental { namespace Test1 {
             CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onEscapeKey");
             CSEA::Core::Engine::exit();
         }
+        if (key == CSELL::Core::InputEnum::K_TAB) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                CSEA::Render::Renderer::removeScene(this->scene);
+                CSEA::Render::Renderer::removeViewport(this->viewport);
+            } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
+                CSEA::Render::Renderer::addViewport(this->viewport);
+                CSEA::Render::Renderer::addScene(this->scene);
+            }
+        }
     }
 
     void TestStage::onMousePosInput(double xpos, double ypos, double xrel, double yrel) {}

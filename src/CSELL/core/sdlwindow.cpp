@@ -239,7 +239,7 @@ namespace CSELL { namespace Core {
                            event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     it->second->handleWindowResizeInput(event.window.data1, event.window.data2);
                 }
-            } else if (event.type == SDL_KEYDOWN) {
+            } else if (event.type == SDL_KEYDOWN && !event.key.repeat) {
                 keyit = keymap.find(event.key.keysym.sym);
                 InputEnum::KeyboardKey k = keyit == keymap.end() ? InputEnum::K_UNKNOWN : keyit->second;
 
