@@ -23,7 +23,7 @@
 
 namespace Experimental { namespace Test1 {
     bool TestRenderable::onLoad(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Load.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestRenderable", "On Load.");
         this->shaderProgram = cacheManager->retrieveShaderProgram("TestRenderable->ShaderProgram");
         if (this->shaderProgram == NULL) {
             CSELL::Assets::TextAsset *fsContent, *vsContent;
@@ -86,7 +86,7 @@ namespace Experimental { namespace Test1 {
     }
 
     bool TestRenderable::onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestRenderable", "On Unload.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestRenderable", "On Unload.");
 
         cacheManager->releaseShaderProgram("TestRenderable->ShaderProgram");
         cacheManager->releaseTexture("TestRenderable->Tex1");
@@ -97,7 +97,6 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestRenderable::onUpdate(double deltaTime) {
-        // don't forget to rotate
         // use this area to make renderables that animate or something...
     }
 

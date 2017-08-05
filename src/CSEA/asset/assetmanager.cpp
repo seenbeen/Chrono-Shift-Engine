@@ -71,7 +71,7 @@ namespace CSEA { namespace Assets {
         AssetManager::assetReferenceMap[path] = 1;
         AssetManager::imageAssetMap[path] = asset;
 
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading an image with path \""+path+"\"");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Assets - AssetManager", "Loading an image with path \""+path+"\"");
 
         return true;
     }
@@ -103,7 +103,7 @@ namespace CSEA { namespace Assets {
         AssetManager::assetReferenceMap[path] = 1;
         AssetManager::textAssetMap[path] = asset;
 
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a file with path \""+path+"\"");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a file with path \""+path+"\"");
 
         return true;
     }

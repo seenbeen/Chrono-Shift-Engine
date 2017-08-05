@@ -68,12 +68,12 @@ namespace CSEA { namespace Core {
                              "Engine already initialized!");
             return false;
         }
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Initializing.");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Initializing.");
 
         Engine::isInitialized = Engine::initializeModules(settings);
 
         if (Engine::isInitialized) {
-            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Successful Initialization.");
+            CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Successful Initialization.");
             return true;
         }
         return false;
@@ -86,19 +86,18 @@ namespace CSEA { namespace Core {
                              "Cannot shutdown uninitialized Engine!");
             return;
         }
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Shutting Down.");
-        // unload all loaded stages
-        std::set<CSEA::Core::Stage*>::iterator it;
-        for (it = Engine::loadedStages.begin(); it != Engine::loadedStages.end(); ++it) {
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Shutting Down.");
+
+        // warn loaded stages
+        if (Engine::loadedStages.size()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Engine",
-                            "Not all Stages unloaded prior to engine shutdown!");
-            (*it)->onUnload();
+                             "Not all Stages unloaded prior to engine shutdown!");
         }
 
         Engine::shutdownModules();
 
         Engine::isInitialized = false;
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Successful Shut Down.");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Successful Shut Down.");
     }
 
     bool Engine::loadStage(CSEA::Core::Stage *stage) {
@@ -167,7 +166,6 @@ namespace CSEA { namespace Core {
 
     void Engine::exit() {
         if (Engine::activeStage != NULL) {
-            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Exit.");
             Engine::activeStage->transitionOutOf();
             Engine::activeStage = NULL;
             Engine::previousStage = NULL;
@@ -198,6 +196,6 @@ namespace CSEA { namespace Core {
                 Engine::activeStage->update(CSEA::Core::Time::getDeltaTime());
             }
         }
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::CSEA, "Core - Engine", "Exited.");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Exited.");
     }
 }}

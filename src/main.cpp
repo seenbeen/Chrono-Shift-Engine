@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     CSEA::Core::Stage *stage = new Experimental::Test1::TestStage();
 
     CSEA::Core::Engine::loadStage(stage);
+
     CSEA::Core::Engine::setActiveStage(stage);
 
     CSEA::Core::Engine::run();

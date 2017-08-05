@@ -28,23 +28,33 @@ namespace Experimental { namespace Test1 {
         this->viewport->bindCamera(this->camera);
 
         // gulp...
-        this->testObject = new Experimental::Test1::TestGameObject(this->scene);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene);
+        this->addObject(this->testObject1);
+        this->addObject(this->testObject2);
+        this->addObject(this->testObject3);
     }
 
     TestStage::~TestStage() {
-        delete this->testObject;
+        this->removeObject(this->testObject1);
+        this->removeObject(this->testObject2);
+        this->removeObject(this->testObject3);
+        delete this->testObject1;
+        delete this->testObject2;
+        delete this->testObject3;
         delete this->scene;
         delete this->camera;
         delete this->viewport;
     }
 
     void TestStage::onLoad() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Loading");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Loading");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Assets loaded in!");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
         CSEA::Input::InputManager::registerInputListener(this);
     }
 
@@ -64,10 +74,9 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onTransitionInto() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Transitioning in.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
-        this->addObject(this->testObject);
         /*
         glm::vec3 cubePositions[] = {
           glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -96,16 +105,15 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestStage::onTransitionOutOf() {
-        this->removeObject(this->testObject);
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Transitioning Out.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning Out.");
         CSEA::Render::Renderer::removeViewport(this->viewport);
         CSEA::Render::Renderer::removeScene(this->scene);
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "Scene has been removed.");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Scene has been removed.");
     }
 
     void TestStage::onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
         if (key == CSELL::Core::InputEnum::K_ESCAPE && action == CSELL::Core::InputEnum::ACTION_PRESS) {
-            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onEscapeKey");
+            CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onEscapeKey");
             CSEA::Core::Engine::exit();
         }
     }
@@ -118,7 +126,7 @@ namespace Experimental { namespace Test1 {
         this->viewport->setDimensions(width, height);
     }
     void TestStage::onWindowCloseInput() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Experimental/Test1 - TestStage", "onWindowClose");
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onWindowClose");
         CSEA::Core::Engine::exit();
     };
 }}

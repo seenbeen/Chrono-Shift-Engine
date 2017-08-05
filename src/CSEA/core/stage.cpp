@@ -26,24 +26,10 @@ namespace CSEA { namespace Core {
 
     void Stage::resolveTask(Stage::StageTask *task) {
         std::set<GameObject*>::iterator it;
-        if (task->type == Stage::StageTask::ADD_OBJECT) {
-            it = this->gameObjects.find(task->target);
-            if (it != this->gameObjects.end()) {
-                CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Stage",
-                                 "Trying to add already-existent GameObject into Stage!");
-                return;
-            }
-            this->gameObjects.insert(task->target);
-            task->target->onEnter();
-        } else if (task->type == Stage::StageTask::REMOVE_OBJECT) {
-            it = this->gameObjects.find(task->target);
-            if (it == this->gameObjects.end()) {
-                CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Stage",
-                                 "Trying to delete non-existent GameObject from Stage!");
-                return;
-            }
-            task->target->onExit();
-            this->gameObjects.erase(it);
+        if (task->type == Stage::ADD_OBJECT) {
+            this->addObject(task->target);
+        } else if (task->type == Stage::REMOVE_OBJECT) {
+            this->removeObject(task->target);
         }
     }
 
@@ -57,25 +43,38 @@ namespace CSEA { namespace Core {
 
     void Stage::transitionInto() {
         this->onTransitionInto();
-        this->resolveTasks();
     }
 
     void Stage::transitionOutOf() {
         this->onTransitionOutOf();
-        this->resolveTasks();
     }
 
     void Stage::addObject(GameObject *obj) {
-        Stage::StageTask *e = new Stage::StageTask();
-        e->type = Stage::StageTask::ADD_OBJECT;
-        e->target = obj;
-        this->tasks.push(e);
+        std::set<GameObject*>::iterator it = this->gameObjects.find(obj);
+        if (it != this->gameObjects.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Stage",
+                             "Trying to add already-existent GameObject into Stage!");
+            return;
+        }
+        this->gameObjects.insert(obj);
+        obj->onEnter();
     }
 
     void Stage::removeObject(GameObject *obj) {
+        std::set<GameObject*>::iterator it = this->gameObjects.find(obj);
+        if (it == this->gameObjects.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Core - Stage",
+                             "Trying to remove non-existent GameObject from Stage!");
+            return;
+        }
+        obj->onExit();
+        this->gameObjects.erase(it);
+    }
+
+    void Stage::addTask(TaskType type, GameObject *target) {
         Stage::StageTask *e = new Stage::StageTask();
-        e->type = Stage::StageTask::REMOVE_OBJECT;
-        e->target = obj;
+        e->type = type;
+        e->target = target;
         this->tasks.push(e);
     }
 

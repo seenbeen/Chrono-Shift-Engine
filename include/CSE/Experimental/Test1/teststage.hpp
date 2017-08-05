@@ -15,7 +15,7 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::Scene *scene;
         CSEA::Render::OrthographicCamera *camera;
 
-        Experimental::Test1::TestGameObject *testObject;
+        Experimental::Test1::TestGameObject *testObject1, *testObject2, *testObject3;
 
     protected:
         void onLoad();
