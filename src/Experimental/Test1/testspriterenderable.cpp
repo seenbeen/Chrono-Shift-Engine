@@ -46,7 +46,7 @@ namespace Experimental { namespace Test1 {
         this->addAnimation("sit", 1, this->sit_frames, this->sit_originXs, this->sit_originYs, this->sit_delays);
         this->addAnimation("ladder", 2, this->ladder_frames, this->ladder_originXs, this->ladder_originYs, this->ladder_delays);
         this->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
-        this->setCurrentAnimation("alert");
+        this->setCurrentAnimation("walk1");
     }
 
     TestSpriteRenderable::~TestSpriteRenderable() {

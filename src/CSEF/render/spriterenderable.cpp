@@ -40,13 +40,13 @@ namespace CSEF { namespace Render {
         time = fmod(time, this->animationLength);
 
         for (unsigned int i = 0; i < this->nFrames; i++) {
+            time -= this->delays[i];
             if (time <= 0) {
                 resultFrame = this->frames[i];
                 originX = this->originXs[i];
                 originY = this->originYs[i];
                 return;
             }
-            time -= this->delays[i];
         }
         resultFrame = this->frames[this->nFrames - 1];
         originX = this->originXs[this->nFrames - 1];
