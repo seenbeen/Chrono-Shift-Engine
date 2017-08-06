@@ -1,6 +1,8 @@
 #ifndef EXPERIMENTAL_TEST1_TESTSPRITERENDERABLE_HPP
 #define EXPERIMENTAL_TEST1_TESTSPRITERENDERABLE_HPP
 
+#include <string>
+
 #include <CSE/CSEF/render/spriterenderable.hpp>
 
 #include <CSE/CSELL/math/vector3f.hpp>
@@ -346,7 +348,7 @@ namespace Experimental { namespace Test1 {
         bool onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager);
 
     public:
-        explicit TestSpriteRenderable(const CSELL::Math::Vector3f &position);
+        explicit TestSpriteRenderable(const CSELL::Math::Vector3f &position, const std::string &anim);
         ~TestSpriteRenderable();
     };
 }}

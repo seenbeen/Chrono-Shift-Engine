@@ -39,4 +39,14 @@ namespace CSEA { namespace Render {
     }
 
     OrthographicCamera::~OrthographicCamera() {}
+
+    void OrthographicCamera::resizeFrustum(float l, float r, float d, float u, float n, float f) {
+        this->l = l;
+        this->r = r;
+        this->d = d;
+        this->u = u;
+        this->n = n;
+        this->f = f;
+        this->updateProjectionProperties();
+    }
 }}

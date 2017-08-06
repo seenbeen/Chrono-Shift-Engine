@@ -11,6 +11,7 @@ namespace CSEA { namespace Render {
         glm::mat4 projMatrix, viewMatrix;
 
     protected:
+        void updateProjectionProperties();
         CSELL::Math::Vector3f position, upAxis, directionAxis;
 
         virtual void updateViewMatrix(glm::mat4 &view) = 0;

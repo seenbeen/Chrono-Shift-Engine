@@ -1,4 +1,5 @@
 #include <CSE/Experimental/Test1/testspriterenderable.hpp>
+#include <string>
 
 #include <lib/glm/glm.hpp>
 #include <lib/glm/gtc/matrix_transform.hpp>
@@ -23,10 +24,8 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 
-#include <iostream>
-
 namespace Experimental { namespace Test1 {
-    TestSpriteRenderable::TestSpriteRenderable(const CSELL::Math::Vector3f &position) {
+    TestSpriteRenderable::TestSpriteRenderable(const CSELL::Math::Vector3f &position, const std::string &anim) {
         this->xform.position = position;
         this->addAnimation("walk1", 4, this->walk1_frames, this->walk1_originXs, this->walk1_originYs, this->walk1_delays);
         this->addAnimation("stand1", 5, this->stand1_frames, this->stand1_originXs, this->stand1_originYs, this->stand1_delays);
@@ -46,7 +45,7 @@ namespace Experimental { namespace Test1 {
         this->addAnimation("sit", 1, this->sit_frames, this->sit_originXs, this->sit_originYs, this->sit_delays);
         this->addAnimation("ladder", 2, this->ladder_frames, this->ladder_originXs, this->ladder_originYs, this->ladder_delays);
         this->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
-        this->setCurrentAnimation("walk1");
+        this->setCurrentAnimation(anim);
     }
 
     TestSpriteRenderable::~TestSpriteRenderable() {

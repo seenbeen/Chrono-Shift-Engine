@@ -29,11 +29,11 @@ namespace Experimental { namespace Test1 {
 
         // gulp...
         CSELL::Math::Vector3f pos = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, pos);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, pos, "walk1");
         pos += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, pos);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, pos, "swingOF");
         pos -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, pos);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, pos, "stand1");
 
         this->addObject(this->testObject1);
         this->addObject(this->testObject2);
@@ -156,6 +156,8 @@ namespace Experimental { namespace Test1 {
     void TestStage::onMouseEnterLeaveInput(bool entered) {}
     void TestStage::onWindowResizeInput(unsigned int width, unsigned int height) {
         this->viewport->setDimensions(width, height);
+        float w = width, h = height; // casting so we don't get arbitrarily high numbers for negatives
+        this->camera->resizeFrustum(-w / 2.0f, w / 2.0f, -h / 2.0f, h / 2.0f, 0.1f, 100.0f);
     }
     void TestStage::onWindowCloseInput() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onWindowClose");

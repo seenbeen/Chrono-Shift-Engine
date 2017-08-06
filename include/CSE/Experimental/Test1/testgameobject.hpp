@@ -1,6 +1,8 @@
 #ifndef EXPERIMENTAL_TEST1_TESTGAMEOBJECT_HPP
 #define EXPERIMENTAL_TEST1_TESTGAMEOBJECT_HPP
 
+#include <string>
+
 #include <CSE/CSELL/math/vector3f.hpp>
 
 #include <CSE/CSEA/render/renderable.hpp>
@@ -21,7 +23,7 @@ namespace Experimental { namespace Test1 {
         void onUpdate(double deltaTime);
 
     public:
-        explicit TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos);
+        explicit TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos, const std::string &anim);
         ~TestGameObject();
     };
 }}

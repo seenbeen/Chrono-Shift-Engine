@@ -1,5 +1,7 @@
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 
+#include <string>
+
 #include <CSE/CSELL/math/vector3f.hpp>
 
 #include <CSE/CSEA/core/stage.hpp>
@@ -23,8 +25,8 @@ namespace Experimental { namespace Test1 {
         // apply our transform, then replicate it to our renderable.
     }
 
-    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos) {
-        this->testRenderable = new TestSpriteRenderable(pos);
+    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos, const std::string &anim) {
+        this->testRenderable = new TestSpriteRenderable(pos, anim);
         this->stageScene = stageScene;
     }
 

@@ -47,4 +47,8 @@ namespace CSEA { namespace Render {
         upAxis = this->upAxis;
         directionAxis = this->directionAxis;
     }
+
+    void Camera::updateProjectionProperties() {
+        this->isProjDirty = true;
+    }
 }}
