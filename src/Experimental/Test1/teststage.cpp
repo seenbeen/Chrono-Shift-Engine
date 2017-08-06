@@ -2,6 +2,8 @@
 
 #include <CSE/CSU/logger.hpp>
 
+#include <CSE/CSELL/math/vector3f.hpp>
+
 #include <CSE/CSEA/asset/assetmanager.hpp>
 
 #include <CSE/CSEA/core/engine.hpp>
@@ -23,7 +25,7 @@ namespace Experimental { namespace Test1 {
         float aspect = 800.0f / 600.0f;
 
         this->camera = new CSEA::Render::OrthographicCamera(-1.0f*aspect, 1.0f*aspect, -1.0f, 1.0f, 0.1f, 100.0f);
-
+        this->camera->setPosition(CSELL::Math::Vector3f(0.0f,0.0f,4.0f));
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
 
@@ -118,12 +120,37 @@ namespace Experimental { namespace Test1 {
         }
         if (key == CSELL::Core::InputEnum::K_TAB) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                this->viewport->setVisible(false);
                 CSEA::Render::Renderer::removeScene(this->scene);
-                CSEA::Render::Renderer::removeViewport(this->viewport);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                CSEA::Render::Renderer::addViewport(this->viewport);
+                this->viewport->setVisible(true);
                 CSEA::Render::Renderer::addScene(this->scene);
             }
+        }
+        CSELL::Math::Vector3f dir, camPos;
+        this->camera->getPosition(camPos);
+        if (key == CSELL::Core::InputEnum::K_UP) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                dir += CSELL::Math::Vector3f(0.0f, 0.2f, 0.0f);
+            }
+        }
+        if (key == CSELL::Core::InputEnum::K_DOWN) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                dir += CSELL::Math::Vector3f(0.0f, -0.2f, 0.0f);
+            }
+        }
+        if (key == CSELL::Core::InputEnum::K_LEFT) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                dir += CSELL::Math::Vector3f(-0.2f, 0.0f, 0.0f);
+            }
+        }
+        if (key == CSELL::Core::InputEnum::K_RIGHT) {
+            if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
+                dir += CSELL::Math::Vector3f(0.2f, 0.0f, 0.0f);
+            }
+        }
+        if (dir.magnitudeSquared()!= 0.0f) {
+            this->camera->setPosition(dir+camPos);
         }
     }
 

@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     engineSettings.windowSettings.width = SCREEN_WIDTH;
     engineSettings.windowSettings.height = SCREEN_HEIGHT;
     engineSettings.windowSettings.windowTitle = WINDOW_TITLE;
-    engineSettings.windowSettings.isResizeable = false;
+    engineSettings.windowSettings.isResizeable = true;
 
     CSEA::Core::Engine::initialize(engineSettings);
 

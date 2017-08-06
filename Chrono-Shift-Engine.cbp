@@ -70,6 +70,7 @@
 		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/time.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
+		<Unit filename="include/CSE/CSELL/math/transform.hpp" />
 		<Unit filename="include/CSE/CSELL/math/vector3f.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glrendererimple.hpp" />
@@ -118,6 +119,7 @@
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/CSELL/math/transform.cpp" />
 		<Unit filename="src/CSELL/math/vector3f.cpp" />
 		<Unit filename="src/CSELL/render/gl/glmesh.cpp" />
 		<Unit filename="src/CSELL/render/gl/glrendererimple.cpp" />
@@ -137,6 +139,8 @@
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<debugger />
+			<code_completion />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

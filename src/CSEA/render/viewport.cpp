@@ -14,6 +14,7 @@ namespace CSEA { namespace Render {
         this->y = y;
         this->width = w;
         this->height = h;
+        this->visible = true;
         this->boundOverlay = NULL;
         this->boundScene = NULL;
         this->boundCamera = NULL;
@@ -25,6 +26,11 @@ namespace CSEA { namespace Render {
         renderer->setViewport(this->x, this->y, this->width, this->height);
         renderer->clearColour(0.0f, 0.0f, 0.0f, 1.0f);
         renderer->clearDepth(1.0f);
+
+        if (!this->visible) {
+            return;
+        }
+
         if (this->boundCamera != NULL && this->boundScene != NULL) {
             this->boundScene->render(this->boundCamera);
         } else if ((this->boundCamera != NULL && this->boundScene == NULL) ||
@@ -58,5 +64,9 @@ namespace CSEA { namespace Render {
     void Viewport::setDimensions(unsigned int w, unsigned int h) {
         this->width = w;
         this->height = h;
+    }
+
+    void Viewport::setVisible(bool visible) {
+        this->visible = visible;
     }
 }}

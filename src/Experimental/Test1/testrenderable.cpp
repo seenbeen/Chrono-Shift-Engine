@@ -101,9 +101,10 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestRenderable::onRender(CSEA::Render::Camera *camera) {
-        glm::mat4 tempMat;
+        glm::mat4 tempMat, identity;
         this->shaderProgram->useShaderProgram();
-        tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, -4.0f));
+        tempMat = glm::rotate(tempMat, 3.14f/6.0f, glm::vec3(0.0f,0.0f,1.0f));
+        //tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, -4.0f));
         // set the model matrix; guess our model matrix is default
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 

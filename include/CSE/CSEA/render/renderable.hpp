@@ -2,6 +2,9 @@
 #define CSEA_RENDER_RENDERABLE_HPP
 
 #include <CSE/CSELL/render/renderer.hpp>
+
+#include <CSE/CSELL/math/transform.hpp>
+
 #include <CSE/CSEA/render/cachemanager.hpp>
 
 namespace CSEA { namespace Render {
@@ -21,6 +24,8 @@ namespace CSEA { namespace Render {
         void render(Camera *camera);
 
     protected:
+        CSELL::Math::Transform xform;
+
         virtual bool onLoad(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) = 0;
         virtual bool onUnload(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) = 0;
         virtual void onUpdate(double deltaTime) = 0;

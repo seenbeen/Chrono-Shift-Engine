@@ -11,6 +11,7 @@ namespace CSEA { namespace Render {
     class Viewport {
     friend class Renderer;
         unsigned int x, y, width, height;
+        bool visible;
 
         Camera *boundCamera;
         Overlay *boundOverlay;
@@ -28,6 +29,7 @@ namespace CSEA { namespace Render {
 
         void setPosition(unsigned int x, unsigned int y);
         void setDimensions(unsigned int w, unsigned int h);
+        void setVisible(bool visible);
     };
 }}
 #endif
