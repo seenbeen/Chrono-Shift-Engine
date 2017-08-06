@@ -44,7 +44,7 @@ namespace CSEF { namespace Render {
                 resultFrame = this->frames[i];
                 originX = this->originXs[i];
                 originY = this->originYs[i];
-                break;
+                return;
             }
             time -= this->delays[i];
         }
@@ -91,7 +91,7 @@ namespace CSEF { namespace Render {
                              "Trying to add existing animation.");
             return false;
         }
-
+        this->animationMap[name] = new Animation(nFrames, frames, originXs, originYs, delays);
         return true;
     }
 
@@ -132,10 +132,19 @@ namespace CSEF { namespace Render {
                              "In Method: Render. Current animation is NULL.");
             return;
         }
+
+        unsigned int frame;
+        int ox, oy;
+
+        this->currentAnimation->getDataAtTime(this->currentTime, frame, ox, oy);
+
         glm::mat4 tempMat;
+
         this->shaderProgram->useShaderProgram();
+
         CSELL::Math::Vector3f &pos = this->xform.position;
-        tempMat = glm::translate(tempMat, glm::vec3(pos.x, pos.y, pos.z));
+
+        tempMat = glm::translate(tempMat, glm::vec3(pos.x + ox, pos.y + oy, pos.z));
 
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 
@@ -147,6 +156,11 @@ namespace CSEF { namespace Render {
 
         this->shaderProgram->setMat4f("projection",glm::value_ptr(tempMat));
 
+        this->shaderProgram->setInt("spriteSheet", 0);
+        this->spriteSheet->useActiveTexture(0);
+        this->cutOuts->useMesh();
+
+        this->cutOuts->renderMesh(6*frame,6*(frame+1));
     }
 
     bool SpriteRenderable::setCurrentAnimation(const std::string &name) {

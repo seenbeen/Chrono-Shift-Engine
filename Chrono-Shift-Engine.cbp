@@ -86,6 +86,7 @@
 		<Unit filename="include/CSE/CSU/logger.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testgameobject.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testrenderable.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/testspriterenderable.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/teststage.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
 			<Option compilerVar="CC" />
@@ -132,6 +133,7 @@
 		<Unit filename="src/Experimental/Test1/testcallbackhandler.cpp" />
 		<Unit filename="src/Experimental/Test1/testgameobject.cpp" />
 		<Unit filename="src/Experimental/Test1/testrenderable.cpp" />
+		<Unit filename="src/Experimental/Test1/testspriterenderable.cpp" />
 		<Unit filename="src/Experimental/Test1/teststage.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>

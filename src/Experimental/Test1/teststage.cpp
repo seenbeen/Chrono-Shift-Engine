@@ -22,9 +22,7 @@ namespace Experimental { namespace Test1 {
         this->viewport = new CSEA::Render::Viewport(0,0,800,600); // hoping this works...
         this->scene = new CSEA::Render::Scene();
 
-        float aspect = 800.0f / 600.0f;
-
-        this->camera = new CSEA::Render::OrthographicCamera(-1.0f*aspect, 1.0f*aspect, -1.0f, 1.0f, 0.1f, 100.0f);
+        this->camera = new CSEA::Render::OrthographicCamera(-400, 400, -300, 300, 0.1f, 100.0f);
         this->camera->setPosition(CSELL::Math::Vector3f(0.0f,0.0f,4.0f));
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
@@ -56,16 +54,24 @@ namespace Experimental { namespace Test1 {
 
     void TestStage::onLoad() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Loading");
-        CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
+        /*CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
         CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
-        CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");
+        CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");*/
+
+        // sprite
+        CSEA::Assets::AssetManager::loadFile("assets/test1/fragmentShader.fs");
+        CSEA::Assets::AssetManager::loadFile("assets/test1/vertexShader.vs");
+        CSEA::Assets::AssetManager::loadImage("assets/test1/toruSheet.png");
+
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
         CSEA::Input::InputManager::registerInputListener(this);
     }
 
     void TestStage::onUnload() {
-        CSEA::Input::InputManager::unregisterInputListener(this);
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Unloading");
+
+        /*CSEA::Input::InputManager::unregisterInputListener(this);
         CSEA::Assets::AssetManager::releaseAsset("assets/shaders/fragmentShader1.fs");
         CSEA::Assets::AssetManager::unloadAsset("assets/shaders/fragmentShader1.fs");
 
@@ -76,38 +82,24 @@ namespace Experimental { namespace Test1 {
         CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/container.jpg");
 
         CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/awesomeface.png");
-        CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/awesomeface.png");
+        CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/awesomeface.png");*/
+
+        // sprite
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/test1/fragmentShader.fs");
+        CSEA::Assets::AssetManager::unloadAsset("assets/test1/fragmentShader.fs");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/test1/vertexShader.vs");
+        CSEA::Assets::AssetManager::unloadAsset("assets/test1/vertexShader.vs");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/test1/toruSheet.png");
+        CSEA::Assets::AssetManager::unloadAsset("assets/test1/toruSheet.png");
     }
 
     void TestStage::onTransitionInto() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
-        /*
-        glm::vec3 cubePositions[] = {
-          glm::vec3( 0.0f,  0.0f,  0.0f),
-          glm::vec3( 2.0f,  5.0f, -15.0f),
-          glm::vec3(-1.5f, -2.2f, -2.5f),
-          glm::vec3(-3.8f, -2.0f, -12.3f),
-          glm::vec3( 2.4f, -0.4f, -3.5f),
-          glm::vec3(-1.7f,  3.0f, -7.5f),
-          glm::vec3( 1.3f, -2.0f, -2.5f),
-          glm::vec3( 1.5f,  2.0f, -2.5f),
-          glm::vec3( 1.5f,  0.2f, -1.5f),
-          glm::vec3(-1.3f,  1.0f, -1.5f)
-        };
-
-        while(running) {
-            // Draw stuff
-            for(unsigned int i = 0; i < 10; i++) {
-                model = glm::translate(identity, cubePositions[i]);
-                float angle = glm::radians(20.0f * i) + CSELL::Core::Time::getTime() * glm::radians(60.0f);
-                model = glm::rotate(model, (i%2 ? 1 : -1)*angle, glm::vec3(1.0f, 0.3f, 0.5f));
-                shaderProgram->setMat4f("model", glm::value_ptr(model));
-                mesh->renderMesh();
-            }
-        }*/
-        // initiate the cube creation of test game objects
     }
 
     void TestStage::onTransitionOutOf() {
@@ -135,22 +127,22 @@ namespace Experimental { namespace Test1 {
         this->camera->getPosition(camPos);
         if (key == CSELL::Core::InputEnum::K_UP) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                dir += CSELL::Math::Vector3f(0.0f, 0.2f, 0.0f);
+                dir += CSELL::Math::Vector3f(0.0f, 25.0f, 0.0f);
             }
         }
         if (key == CSELL::Core::InputEnum::K_DOWN) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                dir += CSELL::Math::Vector3f(0.0f, -0.2f, 0.0f);
+                dir += CSELL::Math::Vector3f(0.0f, -25.0f, 0.0f);
             }
         }
         if (key == CSELL::Core::InputEnum::K_LEFT) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                dir += CSELL::Math::Vector3f(-0.2f, 0.0f, 0.0f);
+                dir += CSELL::Math::Vector3f(-25.0f, 0.0f, 0.0f);
             }
         }
         if (key == CSELL::Core::InputEnum::K_RIGHT) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                dir += CSELL::Math::Vector3f(0.2f, 0.0f, 0.0f);
+                dir += CSELL::Math::Vector3f(25.0f, 0.0f, 0.0f);
             }
         }
         if (dir.magnitudeSquared()!= 0.0f) {

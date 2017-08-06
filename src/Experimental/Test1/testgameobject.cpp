@@ -24,7 +24,7 @@ namespace Experimental { namespace Test1 {
     }
 
     TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos) {
-        this->testRenderable = new TestRenderable(pos);
+        this->testRenderable = new TestSpriteRenderable(pos);
         this->stageScene = stageScene;
     }
 

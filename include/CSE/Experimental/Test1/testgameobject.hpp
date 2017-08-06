@@ -9,10 +9,11 @@
 #include <CSE/CSEA/core/gameobject.hpp>
 
 #include <CSE/Experimental/Test1/testrenderable.hpp>
+#include <CSE/Experimental/Test1/testspriterenderable.hpp>
 
 namespace Experimental { namespace Test1 {
     class TestGameObject : public CSEA::Core::GameObject {
-        Experimental::Test1::TestRenderable *testRenderable;
+        Experimental::Test1::TestSpriteRenderable *testRenderable;
         CSEA::Render::Scene *stageScene;
 
         void onEnter();
