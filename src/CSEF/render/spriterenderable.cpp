@@ -144,7 +144,7 @@ namespace CSEF { namespace Render {
 
         CSELL::Math::Vector3f &pos = this->xform.position;
 
-        tempMat = glm::translate(tempMat, glm::vec3(pos.x + ox, pos.y + oy, pos.z));
+        tempMat = glm::translate(tempMat, glm::vec3(pos.x - ox, pos.y - oy, pos.z));
 
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 
