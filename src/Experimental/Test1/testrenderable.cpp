@@ -4,6 +4,8 @@
 #include <lib/glm/gtc/matrix_transform.hpp>
 #include <lib/glm/gtc/type_ptr.hpp>
 
+#include <CSE/CSELL/math/vector3f.hpp>
+
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSELL/asset/text.hpp>
@@ -101,11 +103,15 @@ namespace Experimental { namespace Test1 {
     }
 
     void TestRenderable::onRender(CSEA::Render::Camera *camera) {
-        glm::mat4 tempMat, identity;
+        glm::mat4 tempMat;
         this->shaderProgram->useShaderProgram();
+
+        CSELL::Math::Vector3f &pos = this->xform.position;
+
+        tempMat = glm::translate(tempMat, glm::vec3(pos.x, pos.y, pos.z));
+        // LOL OPERATIONS ARE APPLIED IN REVERSE ORDER tehe
         tempMat = glm::rotate(tempMat, 3.14f/6.0f, glm::vec3(0.0f,0.0f,1.0f));
-        //tempMat = glm::translate(tempMat, glm::vec3(0.0f, 0.0f, -4.0f));
-        // set the model matrix; guess our model matrix is default
+
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 
         camera->getViewMatrix(tempMat);
@@ -123,11 +129,12 @@ namespace Experimental { namespace Test1 {
         this->mesh->renderMesh();
     }
 
-    TestRenderable::TestRenderable() {
+    TestRenderable::TestRenderable(const CSELL::Math::Vector3f &position) {
         this->mesh = NULL;
         this->tex1 = NULL;
         this->tex2 = NULL;
         this->shaderProgram = NULL;
+        this->xform.position = position;
     }
     TestRenderable::~TestRenderable() {}
 }}

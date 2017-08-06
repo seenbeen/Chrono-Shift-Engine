@@ -41,6 +41,13 @@ namespace CSELL { namespace Math {
         return *this;
     }
 
+    Vector3f &Vector3f::operator*=(const Vector3f &other) { // non-uniform scale assignment
+        this->x *= other.x;
+        this->y *= other.y;
+        this->z *= other.z;
+        return *this;
+    }
+
     Vector3f &Vector3f::operator/=(float x) { // inverse scale assignment operator
         if (x == 0.0f) {
             CSU::Logger::log(CSU::Logger::WARN,CSU::Logger::CSELL, "Math - Vecto3f", "Attempting to scale by 1/0!");
@@ -62,6 +69,10 @@ namespace CSELL { namespace Math {
 
     Vector3f Vector3f::operator*(float x) { // scale
         return Vector3f(*this) *= x;
+    }
+
+    Vector3f Vector3f::operator*(const Vector3f &other) { // non-uniform scale
+        return Vector3f(*this) *= other;
     }
 
     Vector3f Vector3f::operator/(float x) { // inverse scale

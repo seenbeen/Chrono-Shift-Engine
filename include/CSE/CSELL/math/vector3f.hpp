@@ -14,12 +14,14 @@ namespace CSELL { namespace Math {
         Vector3f &operator+=(const Vector3f &other);
         Vector3f &operator-=(const Vector3f &other);
         Vector3f &operator*=(float x);
+        Vector3f &operator*=(const Vector3f &other);
         Vector3f &operator/=(float x);
 
         // binary operators
         Vector3f operator+(const Vector3f &other);
         Vector3f operator-(const Vector3f &other);
         Vector3f operator*(float x);
+        Vector3f operator*(const Vector3f &other);
         Vector3f operator/(float x);
 
         // unary operators

@@ -30,9 +30,13 @@ namespace Experimental { namespace Test1 {
         this->viewport->bindCamera(this->camera);
 
         // gulp...
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene);
+        CSELL::Math::Vector3f pos = CSELL::Math::Vector3f(-0.5f, 0.5f, -2.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, pos);
+        pos += CSELL::Math::Vector3f(0.5f, -0.5f, 2.0f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, pos);
+        pos -= CSELL::Math::Vector3f(-0.5f, 0.5f, 1.0f);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, pos);
+
         this->addObject(this->testObject1);
         this->addObject(this->testObject2);
         this->addObject(this->testObject3);

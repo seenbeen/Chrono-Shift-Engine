@@ -1,6 +1,8 @@
 #ifndef EXPERIMENTAL_TEST1_TESTRENDERABLE_HPP
 #define EXPERIMENTAL_TEST1_TESTRENDERABLE_HPP
 
+#include <CSE/CSELL/math/vector3f.hpp>
+
 #include <CSE/CSELL/render/renderer.hpp>
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/renderable.hpp>
@@ -71,7 +73,7 @@ namespace Experimental { namespace Test1 {
         void onRender(CSEA::Render::Camera *camera);
 
     public:
-        TestRenderable();
+        explicit TestRenderable(const CSELL::Math::Vector3f &position);
         ~TestRenderable();
     };
 }}
