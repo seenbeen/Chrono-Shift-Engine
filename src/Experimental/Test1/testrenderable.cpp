@@ -126,7 +126,7 @@ namespace Experimental { namespace Test1 {
         this->tex2->useActiveTexture(1);
 
         this->mesh->useMesh();
-        this->mesh->renderMesh();
+        this->mesh->renderMesh(6, 12);
     }
 
     TestRenderable::TestRenderable(const CSELL::Math::Vector3f &position) {

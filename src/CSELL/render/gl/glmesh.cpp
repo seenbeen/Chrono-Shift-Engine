@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include <CSE/CSU/logger.hpp>
+
 namespace CSELL { namespace Render {
     GLMesh::~GLMesh() {
         // empty for now
@@ -55,6 +57,16 @@ namespace CSELL { namespace Render {
 
     bool GLMesh::renderMeshImplementation() {
         glDrawElements(GL_TRIANGLES, this->nElements, GL_UNSIGNED_INT, 0);
+        return true;
+    }
+
+    bool GLMesh::renderMeshImplementation(unsigned int startElement, unsigned int endElement) {
+        if (endElement - startElement <= 0) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - GLMesh",
+                             "Invalid range specified on RenderMesh.");
+            return false;
+        }
+        glDrawElements(GL_TRIANGLES, endElement - startElement, GL_UNSIGNED_INT, (void*)(startElement * sizeof(GL_UNSIGNED_INT)));
         return true;
     }
 }}

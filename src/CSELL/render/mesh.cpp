@@ -36,4 +36,15 @@ namespace CSELL { namespace Render {
         #endif
         return this->renderMeshImplementation();
     }
+
+    bool Mesh::renderMesh(unsigned int startElement, unsigned int endElement) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Mesh::activeMesh != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Render - Mesh",
+                             "Unable to render non-active Mesh.");
+            return false;
+        }
+        #endif
+        return this->renderMeshImplementation(startElement, endElement);
+    }
 }}

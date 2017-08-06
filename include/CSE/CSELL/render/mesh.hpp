@@ -26,9 +26,11 @@ namespace CSELL { namespace Render {
                               unsigned int nElements, const unsigned int *elements) = 0;
         virtual bool useMeshImplementation() = 0;
         virtual bool renderMeshImplementation() = 0;
+        virtual bool renderMeshImplementation(unsigned int startElement, unsigned int endElement) = 0;
     public:
         bool useMesh();
         bool renderMesh();
+        bool renderMesh(unsigned int startElement, unsigned int endElement);
     };
 }}
 

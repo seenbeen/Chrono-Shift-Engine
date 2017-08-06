@@ -59,8 +59,7 @@
 		<Unit filename="include/CSE/CSEA/render/renderer.hpp" />
 		<Unit filename="include/CSE/CSEA/render/scene.hpp" />
 		<Unit filename="include/CSE/CSEA/render/viewport.hpp" />
-		<Unit filename="include/CSE/CSEA/ui/ui.hpp" />
-		<Unit filename="include/CSE/CSEA/ui/uicomponent.hpp" />
+		<Unit filename="include/CSE/CSEF/render/spriterenderable.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/image.hpp" />
@@ -97,7 +96,6 @@
 		<Unit filename="src/CSEA/core/gameobject.cpp" />
 		<Unit filename="src/CSEA/core/stage.cpp" />
 		<Unit filename="src/CSEA/core/time.cpp" />
-		<Unit filename="src/CSEA/input/inputlayer.cpp" />
 		<Unit filename="src/CSEA/input/inputmanager.cpp" />
 		<Unit filename="src/CSEA/render/cachemanager.cpp" />
 		<Unit filename="src/CSEA/render/camera.cpp" />
@@ -108,8 +106,7 @@
 		<Unit filename="src/CSEA/render/renderer.cpp" />
 		<Unit filename="src/CSEA/render/scene.cpp" />
 		<Unit filename="src/CSEA/render/viewport.cpp" />
-		<Unit filename="src/CSEA/ui/ui.cpp" />
-		<Unit filename="src/CSEA/ui/uicomponent.cpp" />
+		<Unit filename="src/CSEF/render/spriterenderable.cpp" />
 		<Unit filename="src/CSELL/asset/asset.cpp" />
 		<Unit filename="src/CSELL/asset/assetmanager.cpp" />
 		<Unit filename="src/CSELL/asset/image.cpp" />
