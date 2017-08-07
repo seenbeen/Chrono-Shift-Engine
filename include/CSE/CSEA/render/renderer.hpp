@@ -7,10 +7,8 @@
 #include <CSE/CSELL/render/renderer.hpp>
 
 #include <CSE/CSEA/render/scene.hpp>
-#include <CSE/CSEA/render/overlay.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
 #include <CSE/CSEA/render/renderable.hpp>
-#include <CSE/CSEA/render/overlayrenderable.hpp>
 
 #include <CSE/CSEA/render/cachemanager.hpp>
 
@@ -39,7 +37,6 @@ namespace CSEA { namespace Render {
         static CacheManager *cacheManager;
 
         static std::set<Scene*> scenes;
-        static std::set<Overlay*> overlays;
         static std::set<Viewport*> viewports;
 
         Renderer();
@@ -57,17 +54,12 @@ namespace CSEA { namespace Render {
     public:
         static bool addViewport(Viewport *viewport);
         static bool addScene(Scene *scene);
-        static bool addOverlay(Overlay *overlay);
 
         static bool removeViewport(Viewport *viewport);
         static bool removeScene(Scene *scene);
-        static bool removeOverlay(Overlay *overlay);
 
         static bool loadRenderable(Renderable *renderable);
         static bool unloadRenderable(Renderable *renderable);
-
-        static bool loadOverlayRenderable(OverlayRenderable *overRend);
-        static bool unloadOverlayRenderable(OverlayRenderable *overRend);
     };
 }}
 #endif

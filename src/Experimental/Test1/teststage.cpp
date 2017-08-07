@@ -15,6 +15,8 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
+#include <CSE/CSEF/render/spriteanimationset.hpp>
+
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 
 namespace Experimental { namespace Test1 {
@@ -27,26 +29,42 @@ namespace Experimental { namespace Test1 {
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
 
-        // gulp...
-        CSELL::Math::Vector3f pos = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, pos, "walk1");
-        pos += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, pos, "swingOF");
-        pos -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, pos, "stand1");
+        this->animSet = new CSEF::Render::SpriteAnimationSet();
 
-        this->addObject(this->testObject1);
-        this->addObject(this->testObject2);
-        this->addObject(this->testObject3);
+        this->animSet->addAnimation("walk1", 4, this->walk1_frames, this->walk1_originXs, this->walk1_originYs, this->walk1_delays);
+        this->animSet->addAnimation("stand1", 5, this->stand1_frames, this->stand1_originXs, this->stand1_originYs, this->stand1_delays);
+        this->animSet->addAnimation("alert", 5, this->alert_frames, this->alert_originXs, this->alert_originYs, this->alert_delays);
+        this->animSet->addAnimation("swingO1", 3, this->swingO1_frames, this->swingO1_originXs, this->swingO1_originYs, this->swingO1_delays);
+        this->animSet->addAnimation("swingO2", 3, this->swingO2_frames, this->swingO2_originXs, this->swingO2_originYs, this->swingO2_delays);
+        this->animSet->addAnimation("swingO3", 3, this->swingO3_frames, this->swingO3_originXs, this->swingO3_originYs, this->swingO3_delays);
+        this->animSet->addAnimation("swingOF", 4, this->swingOF_frames, this->swingOF_originXs, this->swingOF_originYs, this->swingOF_delays);
+        this->animSet->addAnimation("stabO1", 2, this->stabO1_frames, this->stabO1_originXs, this->stabO1_originYs, this->stabO1_delays);
+        this->animSet->addAnimation("stabO2", 2, this->stabO2_frames, this->stabO2_originXs, this->stabO2_originYs, this->stabO2_delays);
+        this->animSet->addAnimation("stabOF", 3, this->stabOF_frames, this->stabOF_originXs, this->stabOF_originYs, this->stabOF_delays);
+        this->animSet->addAnimation("proneStab", 2, this->proneStab_frames, this->proneStab_originXs, this->proneStab_originYs, this->proneStab_delays);
+        this->animSet->addAnimation("prone", 1, this->prone_frames, this->prone_originXs, this->prone_originYs, this->prone_delays);
+        this->animSet->addAnimation("heal", 3, this->heal_frames, this->heal_originXs, this->heal_originYs, this->heal_delays);
+        this->animSet->addAnimation("fly", 2, this->fly_frames, this->fly_originXs, this->fly_originYs, this->fly_delays);
+        this->animSet->addAnimation("jump", 1, this->jump_frames, this->jump_originXs, this->jump_originYs, this->jump_delays);
+        this->animSet->addAnimation("sit", 1, this->sit_frames, this->sit_originXs, this->sit_originYs, this->sit_delays);
+        this->animSet->addAnimation("ladder", 2, this->ladder_frames, this->ladder_originXs, this->ladder_originYs, this->ladder_delays);
+        this->animSet->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
+
+        // gulp...
+        CSELL::Math::Transform xform;
+        xform.position = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "walk1");
+        xform.position += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "stand1");
+        xform.position -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "swingOF");
     }
 
     TestStage::~TestStage() {
-        this->removeObject(this->testObject1);
-        this->removeObject(this->testObject2);
-        this->removeObject(this->testObject3);
         delete this->testObject1;
         delete this->testObject2;
         delete this->testObject3;
+        delete this->animSet;
         delete this->scene;
         delete this->camera;
         delete this->viewport;
@@ -100,10 +118,18 @@ namespace Experimental { namespace Test1 {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning in.");
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
+
+        this->addObject(this->testObject1);
+        this->addObject(this->testObject2);
+        this->addObject(this->testObject3);
     }
 
     void TestStage::onTransitionOutOf() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning Out.");
+        this->removeObject(this->testObject1);
+        this->removeObject(this->testObject2);
+        this->removeObject(this->testObject3);
+
         CSEA::Render::Renderer::removeViewport(this->viewport);
         CSEA::Render::Renderer::removeScene(this->scene);
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Scene has been removed.");

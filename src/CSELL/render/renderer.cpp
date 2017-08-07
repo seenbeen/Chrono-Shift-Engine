@@ -459,4 +459,17 @@ namespace CSELL { namespace Render {
 
         return this->rImple->setPolygonMode(enable);
     }
+
+    bool Renderer::setGLDepthTest(bool enable) {
+        #if RENDERER_WARNING_CHECKS == true
+        if (Renderer::activeRenderer != this) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL,
+                            "Render - Renderer",
+                            "Renderer is not the active renderer!");
+            return false;
+        }
+        #endif
+
+        return this->rImple->setGLDepthTest(enable);
+    }
 }}

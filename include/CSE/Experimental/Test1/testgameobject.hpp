@@ -10,6 +10,8 @@
 #include <CSE/CSEA/core/stage.hpp>
 #include <CSE/CSEA/core/gameobject.hpp>
 
+#include <CSE/CSEF/render/spriteanimationset.hpp>
+
 #include <CSE/Experimental/Test1/testrenderable.hpp>
 #include <CSE/Experimental/Test1/testspriterenderable.hpp>
 
@@ -23,7 +25,7 @@ namespace Experimental { namespace Test1 {
         void onUpdate(double deltaTime);
 
     public:
-        explicit TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos, const std::string &anim);
+        explicit TestGameObject(CSEA::Render::Scene *stageScene, CSEF::Render::SpriteAnimationSet *animSet, const std::string &anim);
         ~TestGameObject();
     };
 }}

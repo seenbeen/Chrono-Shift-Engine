@@ -19,63 +19,30 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 
+#include <CSE/CSEF/render/spriteanimationset.hpp>
+
 namespace CSEF { namespace Render {
-    SpriteRenderable::Animation::Animation(unsigned int nFrames, unsigned int *frames,
-                                           int *originXs, int *originYs, float *delays) {
-        this->nFrames = nFrames;
-        this->frames = frames;
-        this->originXs = originXs;
-        this->originYs = originYs;
-        this->delays = delays;
-        this->animationLength = 0.0f;
-        for (unsigned int i = 0; i < nFrames; i++) {
-            this->animationLength += this->delays[i];
-        }
-    }
-
-    SpriteRenderable::Animation::~Animation() {}
-
-    void SpriteRenderable::Animation::getDataAtTime(float time, unsigned int &resultFrame,
-                                                      int &originX, int &originY) {
-        time = fmod(time, this->animationLength);
-
-        for (unsigned int i = 0; i < this->nFrames; i++) {
-            time -= this->delays[i];
-            if (time <= 0) {
-                resultFrame = this->frames[i];
-                originX = this->originXs[i];
-                originY = this->originYs[i];
-                return;
-            }
-        }
-        resultFrame = this->frames[this->nFrames - 1];
-        originX = this->originXs[this->nFrames - 1];
-        originY = this->originYs[this->nFrames - 1];
-    }
-
-    float SpriteRenderable::Animation::getAnimationLength() {
-        return this->animationLength;
-    }
-
     SpriteRenderable::SpriteRenderable() {
+        this->animSet = NULL;
         this->spriteSheet = NULL;
         this->cutOuts = NULL;
+        this->shaderProgram = NULL;
         this->isInitialized = false;
+        this->currentAnimation = "NO_ANIMATION_SET";
+        this->currentTime = -1.0f;
+        this->currentAnimationLength = -1.0f;
     }
 
-    SpriteRenderable::~SpriteRenderable() {
-        if (this->animationMap.size()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "Not all animations have been erased on deletion.");
-        }
-    }
+    SpriteRenderable::~SpriteRenderable() {}
 
-    bool SpriteRenderable::setup(CSELL::Render::Texture *spriteSheet, CSELL::Render::Mesh *cutOuts, CSELL::Render::ShaderProgram *shaderProgram) {
-        if (spriteSheet == NULL || cutOuts == NULL || shaderProgram == NULL) {
+    bool SpriteRenderable::setup(SpriteAnimationSet *animSet, CSELL::Render::Texture *spriteSheet,
+                                 CSELL::Render::Mesh *cutOuts, CSELL::Render::ShaderProgram *shaderProgram) {
+        if (animSet == NULL || spriteSheet == NULL || cutOuts == NULL || shaderProgram == NULL) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "Calling setup with NULL argument.");
+                             "In: setup. No arguments may be NULL.");
             return false;
         }
+        this->animSet = animSet;
         this->spriteSheet = spriteSheet;
         this->cutOuts = cutOuts;
         this->shaderProgram = shaderProgram;
@@ -83,60 +50,28 @@ namespace CSEF { namespace Render {
         return true;
     }
 
-    bool SpriteRenderable::addAnimation(const std::string &name, unsigned int nFrames, unsigned int *frames,
-                                        int *originXs, int *originYs, float *delays) {
-        std::map<std::string,Animation*>::iterator it = this->animationMap.find(name);
-        if (it != this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "Trying to add existing animation.");
-            return false;
-        }
-        this->animationMap[name] = new Animation(nFrames, frames, originXs, originYs, delays);
-        return true;
-    }
-
-    bool SpriteRenderable::deleteAnimation(const std::string &name) {
-        std::map<std::string,Animation*>::iterator it = this->animationMap.find(name);
-        if (it == this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "Trying to delete non-existent animation.");
-            return false;
-        }
-
-        delete it->second;
-        this->animationMap.erase(it);
-
-        return true;
-    }
-
     void SpriteRenderable::onUpdate(double deltaTime) {
         if (!this->isInitialized) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "In Method: Update. SpriteRenderable has not been setup.");
-            return;
-        } else if (this->currentAnimation == NULL) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "In Method: Update. Current animation is NULL.");
+                             "In: Update. SpriteRenderable has not been setup.");
             return;
         }
-        this->currentTime = fmod(this->currentTime + deltaTime, this->currentAnimation->getAnimationLength());
+        this->currentTime = fmod(this->currentTime + deltaTime, this->currentAnimationLength);
     }
 
     void SpriteRenderable::onRender(CSEA::Render::Camera *camera) {
         if (!this->isInitialized) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "In Method: Render. SpriteRenderable has not been setup.");
-            return;
-        } else if (this->currentAnimation == NULL) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "In Method: Render. Current animation is NULL.");
+                             "In: Render. SpriteRenderable has not been setup.");
             return;
         }
 
         unsigned int frame;
         int ox, oy;
 
-        this->currentAnimation->getDataAtTime(this->currentTime, frame, ox, oy);
+        if (!this->animSet->getAnimationDataAtTime(this->currentAnimation, this->currentTime, frame, ox, oy)) {
+            return;
+        }
 
         glm::mat4 tempMat;
 
@@ -164,23 +99,48 @@ namespace CSEF { namespace Render {
     }
 
     bool SpriteRenderable::setCurrentAnimation(const std::string &name) {
-        std::map<std::string,SpriteRenderable::Animation*>::iterator it = this->animationMap.find(name);
-        if (it == this->animationMap.end()) {
+        if (!this->isInitialized) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
-                             "Trying to set Animation to unknown animation \"" + name + "\".");
+                             "In: setCurrentAnimation. SpriteRenderable has not been setup.");
             return false;
         }
+        float tempTime = 0.0f;
+        if (!this->animSet->getAnimationLength(name, tempTime)) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+                             "In: setCurrentAnimation. Unknown \"" + name + "\".");
+            return false;
+        }
+        this->currentAnimationLength = tempTime;
         this->currentTime = 0.0f;
-        this->currentAnimation = it->second;
+        this->currentAnimation = name;
         return true;
     }
 
+    std::string SpriteRenderable::getCurrentAnimation() {
+        if (!this->isInitialized) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+                             "In: getCurrentAnimation. SpriteRenderable has not been setup.");
+            return "";
+        }
+        return this->currentAnimation;
+    }
+
     bool SpriteRenderable::setCurrentAnimationTime(float time) {
-        this->currentTime = time;
+        if (!this->isInitialized) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+                             "In: setCurrentAnimationTime. SpriteRenderable has not been setup.");
+            return false;
+        }
+        this->currentTime = fmod(time, this->currentAnimationLength);
         return true;
     }
 
     float SpriteRenderable::getCurrentAnimationTime() {
+        if (!this->isInitialized) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+                             "In: getCurrentAnimationTime. SpriteRenderable has not been setup.");
+            return -1.0f;
+        }
         return this->currentTime;
     }
 }}

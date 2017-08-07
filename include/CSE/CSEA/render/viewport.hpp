@@ -5,7 +5,6 @@
 
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/camera.hpp>
-#include <CSE/CSEA/render/overlay.hpp>
 
 namespace CSEA { namespace Render {
     class Viewport {
@@ -14,7 +13,6 @@ namespace CSEA { namespace Render {
         bool visible;
 
         Camera *boundCamera;
-        Overlay *boundOverlay;
         Scene *boundScene;
 
         void render(CSELL::Render::Renderer *renderer);
@@ -24,7 +22,6 @@ namespace CSEA { namespace Render {
 
         // bind functions can be null to unbind
         void bindCamera(Camera *cam);
-        void bindOverlay(Overlay *overlay);
         void bindScene(Scene *scene);
 
         void setPosition(unsigned int x, unsigned int y);

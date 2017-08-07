@@ -53,12 +53,11 @@
 		<Unit filename="include/CSE/CSEA/render/cachemanager.hpp" />
 		<Unit filename="include/CSE/CSEA/render/camera.hpp" />
 		<Unit filename="include/CSE/CSEA/render/orthographiccamera.hpp" />
-		<Unit filename="include/CSE/CSEA/render/overlay.hpp" />
-		<Unit filename="include/CSE/CSEA/render/overlayrenderable.hpp" />
 		<Unit filename="include/CSE/CSEA/render/renderable.hpp" />
 		<Unit filename="include/CSE/CSEA/render/renderer.hpp" />
 		<Unit filename="include/CSE/CSEA/render/scene.hpp" />
 		<Unit filename="include/CSE/CSEA/render/viewport.hpp" />
+		<Unit filename="include/CSE/CSEF/render/spriteanimationset.hpp" />
 		<Unit filename="include/CSE/CSEF/render/spriterenderable.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
@@ -101,12 +100,11 @@
 		<Unit filename="src/CSEA/render/cachemanager.cpp" />
 		<Unit filename="src/CSEA/render/camera.cpp" />
 		<Unit filename="src/CSEA/render/orthographiccamera.cpp" />
-		<Unit filename="src/CSEA/render/overlay.cpp" />
-		<Unit filename="src/CSEA/render/overlayrenderable.cpp" />
 		<Unit filename="src/CSEA/render/renderable.cpp" />
 		<Unit filename="src/CSEA/render/renderer.cpp" />
 		<Unit filename="src/CSEA/render/scene.cpp" />
 		<Unit filename="src/CSEA/render/viewport.cpp" />
+		<Unit filename="src/CSEF/render/spriteanimationset.cpp" />
 		<Unit filename="src/CSEF/render/spriterenderable.cpp" />
 		<Unit filename="src/CSELL/asset/asset.cpp" />
 		<Unit filename="src/CSELL/asset/assetmanager.cpp" />

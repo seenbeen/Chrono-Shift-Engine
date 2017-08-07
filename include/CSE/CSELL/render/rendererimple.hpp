@@ -23,6 +23,7 @@ namespace CSELL { namespace Render {
         virtual bool clearStencil(int i) = 0;
         virtual bool clearAccum(float r, float g, float b, float a) = 0;
         virtual bool setPolygonMode(bool enable) = 0;
+        virtual bool setGLDepthTest(bool enable) = 0;
     public:
         virtual ~RendererImple() {}
     };

@@ -68,4 +68,8 @@ namespace CSEA { namespace Render {
                              "Deleting Renderable which is still loaded!");
         }
     }
+
+    void Renderable::setTransform(const CSELL::Math::Transform &xform) {
+        this->xform = xform;
+    }
 }}

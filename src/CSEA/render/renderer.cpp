@@ -10,10 +10,8 @@
 #include <CSE/CSELL/core/sdlwindow.hpp>
 
 #include <CSE/CSEA/render/scene.hpp>
-#include <CSE/CSEA/render/overlay.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
 #include <CSE/CSEA/render/renderable.hpp>
-#include <CSE/CSEA/render/overlayrenderable.hpp>
 
 #include <CSE/CSEA/render/cachemanager.hpp>
 
@@ -27,7 +25,6 @@ namespace CSEA { namespace Render {
     CacheManager *Renderer::cacheManager = NULL;
 
     std::set<Scene*> Renderer::scenes;
-    std::set<Overlay*> Renderer::overlays;
     std::set<Viewport*> Renderer::viewports;
 
     Renderer::Renderer() {}
@@ -90,7 +87,6 @@ namespace CSEA { namespace Render {
         }
 
         std::set<Scene*>::iterator sceneIt;
-        std::set<Overlay*>::iterator overIt;
         std::set<Viewport*>::iterator viewIt;
 
         // update active scenes
@@ -98,12 +94,8 @@ namespace CSEA { namespace Render {
             (*sceneIt)->update(deltaTime);
         }
 
-        // update active overlays
-        for (overIt = Renderer::overlays.begin(); overIt != Renderer::overlays.end(); ++overIt){
-            (*overIt)->update(deltaTime);
-        }
-
         // do some rendering
+        Renderer::renderer->clearColour(0.0f, 0.0f, 0.0f, 1.0f);
         for (viewIt = Renderer::viewports.begin(); viewIt != Renderer::viewports.end(); ++viewIt) {
             (*viewIt)->render(Renderer::renderer);
         }
@@ -172,22 +164,6 @@ namespace CSEA { namespace Render {
         return true;
     }
 
-    bool Renderer::addOverlay(Overlay *overlay) {
-        if (!Renderer::isInitialized) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not Initialized!");
-            return NULL;
-        }
-        if (Renderer::overlays.find(overlay) != Renderer::overlays.end()) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Render - Renderer", "Overlay already added!");
-            return false;
-        }
-        Renderer::overlays.insert(overlay);
-        overlay->onLoad();
-        return true;
-    }
-
     bool Renderer::removeViewport(Viewport *viewport) {
         if (!Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
@@ -219,22 +195,6 @@ namespace CSEA { namespace Render {
         return true;
     }
 
-    bool Renderer::removeOverlay(Overlay *overlay) {
-        if (!Renderer::isInitialized) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not Initialized!");
-            return NULL;
-        }
-        if (Renderer::overlays.find(overlay) == Renderer::overlays.end()) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
-                             "Render - Renderer", "Removing non-existent Overlay!");
-            return false;
-        }
-        overlay->onUnload();
-        Renderer::overlays.erase(Renderer::overlays.find(overlay));
-        return true;
-    }
-
     bool Renderer::loadRenderable(Renderable *renderable) {
         if (!Renderer::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
@@ -251,23 +211,5 @@ namespace CSEA { namespace Render {
             return false;
         }
         return renderable->unload(Renderer::renderer, Renderer::cacheManager);
-    }
-
-    bool Renderer::loadOverlayRenderable(OverlayRenderable *overRend) {
-        if (!Renderer::isInitialized) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not Initialized!");
-            return false;
-        }
-        return overRend->load(Renderer::renderer, Renderer::cacheManager);
-    }
-
-    bool Renderer::unloadOverlayRenderable(OverlayRenderable *overRend) {
-        if (!Renderer::isInitialized) {
-            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Render - Renderer", "Renderer is not Initialized!");
-            return false;
-        }
-        return overRend->unload(Renderer::renderer, Renderer::cacheManager);
     }
 }}

@@ -4,7 +4,6 @@
 
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/camera.hpp>
-#include <CSE/CSEA/render/overlay.hpp>
 
 #include <CSE/CSEA/render/viewport.hpp>
 
@@ -15,7 +14,6 @@ namespace CSEA { namespace Render {
         this->width = w;
         this->height = h;
         this->visible = true;
-        this->boundOverlay = NULL;
         this->boundScene = NULL;
         this->boundCamera = NULL;
     }
@@ -23,13 +21,12 @@ namespace CSEA { namespace Render {
     Viewport::~Viewport() {}
 
     void Viewport::render(CSELL::Render::Renderer *renderer) {
-        renderer->setViewport(this->x, this->y, this->width, this->height);
-        renderer->clearColour(0.0f, 0.0f, 0.0f, 1.0f);
-        renderer->clearDepth(1.0f);
-
         if (!this->visible) {
             return;
         }
+
+        renderer->setViewport(this->x, this->y, this->width, this->height);
+        renderer->clearDepth(1.0f);
 
         if (this->boundCamera != NULL && this->boundScene != NULL) {
             this->boundScene->render(this->boundCamera);
@@ -37,10 +34,6 @@ namespace CSEA { namespace Render {
                    (this->boundCamera == NULL && this->boundScene != NULL)) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Viewport",
                              "Viewport has Scene or Camera attached but not the other!");
-        }
-
-        if (this->boundOverlay != NULL) {
-            this->boundOverlay->render(this->width, this->height);
         }
     }
 
@@ -50,10 +43,6 @@ namespace CSEA { namespace Render {
 
     void Viewport::bindScene(Scene *scene) {
         this->boundScene = scene;
-    }
-
-    void Viewport::bindOverlay(Overlay *overlay) {
-        this->boundOverlay = overlay;
     }
 
     void Viewport::setPosition(unsigned int x, unsigned int y) {

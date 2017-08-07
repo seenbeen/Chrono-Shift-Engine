@@ -34,6 +34,7 @@ namespace CSEA { namespace Render {
     public:
         Renderable();
         virtual ~Renderable();
+        void setTransform(const CSELL::Math::Transform &xform);
     };
 }}
 #endif

@@ -11,7 +11,6 @@
 
 namespace CSELL { namespace Render {
     bool GLRendererImple::init() {
-        glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         return true;
@@ -69,6 +68,15 @@ namespace CSELL { namespace Render {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         } else {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+        return true;
+    }
+
+    bool GLRendererImple::setGLDepthTest(bool enable) {
+        if (enable) {
+            glEnable(GL_DEPTH_TEST);
+        } else {
+            glDisable(GL_DEPTH_TEST);
         }
         return true;
     }

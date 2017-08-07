@@ -52,8 +52,8 @@ namespace CSEA { namespace Render {
 
     void Scene::onUnload() {
         if (!this->isLoaded) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Overlay",
-                             "Trying to unload unloaded overlay!");
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Scene",
+                             "Trying to unload unloaded Scene!");
             return;
         }
         std::set<Renderable*>::iterator it;

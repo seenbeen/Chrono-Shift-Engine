@@ -10,6 +10,8 @@
 #include <CSE/CSEA/render/renderable.hpp>
 #include <CSE/CSEA/render/scene.hpp>
 
+#include <CSE/CSEF/render/spriteanimationset.hpp>
+
 namespace Experimental { namespace Test1 {
     void TestGameObject::onEnter() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestGameObject", "On Enter.");
@@ -25,8 +27,8 @@ namespace Experimental { namespace Test1 {
         // apply our transform, then replicate it to our renderable.
     }
 
-    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const CSELL::Math::Vector3f &pos, const std::string &anim) {
-        this->testRenderable = new TestSpriteRenderable(pos, anim);
+    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, CSEF::Render::SpriteAnimationSet *animSet, const std::string &anim) {
+        this->testRenderable = new TestSpriteRenderable(animSet, anim);
         this->stageScene = stageScene;
     }
 
