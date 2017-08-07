@@ -7,13 +7,11 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
-#include <CSE/CSEA/asset/spriteanimationset.hpp>
-
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 
 namespace Experimental { namespace Test1 {
     class TestStage : public CSEA::Core::Stage, public CSEA::Input::InputListener {
-unsigned int walk1_frames[4] = {0, 1, 2, 3};
+        unsigned int walk1_frames[4] = {0, 1, 2, 3};
         int walk1_originXs[4] = {70, 70, 70, 70};
         int walk1_originYs[4] = {9, 9, 9, 9};
         float walk1_delays[4] = {0.1800f, 0.1800f, 0.1800f, 0.1800f};
@@ -89,7 +87,6 @@ unsigned int walk1_frames[4] = {0, 1, 2, 3};
         CSEA::Render::Viewport *viewport;
         CSEA::Render::Scene *scene;
         CSEA::Render::OrthographicCamera *camera;
-        CSEA::Assets::SpriteAnimationSet *animSet;
 
         Experimental::Test1::TestGameObject *testObject1, *testObject2, *testObject3;
 
