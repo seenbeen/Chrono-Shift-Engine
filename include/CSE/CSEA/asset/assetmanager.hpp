@@ -4,6 +4,10 @@
 #include <string>
 
 #include <CSE/CSELL/asset/assetmanager.hpp>
+#include <CSE/CSELL/asset/text.hpp>
+#include <CSE/CSELL/asset/image.hpp>
+
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 namespace CSEA { namespace Core {
     class Engine; // forward decls
@@ -21,6 +25,7 @@ namespace CSEA { namespace Assets {
         static std::map<std::string, unsigned int> assetReferenceMap;
         static std::map<std::string, CSELL::Assets::ImageAsset*> imageAssetMap;
         static std::map<std::string, CSELL::Assets::TextAsset*> textAssetMap;
+        static std::map<std::string, CSEA::Assets::SpriteAnimationSet*> spriteSetMap;
 
         // gimme singleton.
         AssetManager();
@@ -31,14 +36,17 @@ namespace CSEA { namespace Assets {
 
     public:
         // actual loading and releasing of memory
-        // will result in false if something went wrong, or asset has already been loaded
-        static bool loadImage(const std::string &path);
-        static bool loadFile(const std::string &path);
+        // will result in NULL if something went wrong, or asset has already been loaded
+        static CSELL::Assets::ImageAsset *loadImage(const std::string &path);
+        static CSELL::Assets::TextAsset *loadFile(const std::string &path);
+        static CSEA::Assets::SpriteAnimationSet *loadSpriteAnimationSet(const std::string &path);
+        // for now just allocates an anim set. In future will also parse
 
         // returns loaded assets
         // will result in NULL if asset isn't already loaded
         static CSELL::Assets::ImageAsset *getImage(const std::string &path);
         static CSELL::Assets::TextAsset *getFile(const std::string &path);
+        static CSEA::Assets::SpriteAnimationSet *getSpriteAnimationSet(const std::string &path);
 
         // internally tracks references per
         static void releaseAsset(const std::string &path);

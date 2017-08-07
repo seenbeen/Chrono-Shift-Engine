@@ -3,26 +3,24 @@
 
 #include <string>
 
-#include <CSE/CSEF/render/spriterenderable.hpp>
-
 #include <CSE/CSELL/math/vector3f.hpp>
 
 #include <CSE/CSELL/render/renderer.hpp>
-#include <CSE/CSEA/render/cachemanager.hpp>
-#include <CSE/CSEA/render/renderable.hpp>
-#include <CSE/CSEA/render/camera.hpp>
-
 #include <CSE/CSELL/render/mesh.hpp>
 #include <CSE/CSELL/render/texture.hpp>
 #include <CSE/CSELL/render/shader.hpp>
 #include <CSE/CSELL/render/shaderprogram.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
+#include <CSE/CSEA/render/cachemanager.hpp>
+#include <CSE/CSEA/render/renderable.hpp>
+#include <CSE/CSEA/render/camera.hpp>
+#include <CSE/CSEA/render/spriterenderable.hpp>
 
 namespace Experimental { namespace Test1 {
-    class TestSpriteRenderable: public CSEF::Render::SpriteRenderable {
+    class TestSpriteRenderable: public CSEA::Render::SpriteRenderable {
         std::string anim;
-        CSEF::Render::SpriteAnimationSet *animSet;
+        CSEA::Assets::SpriteAnimationSet *animSet;
 
         CSELL::Render::Texture *spriteSheet;
         CSELL::Render::Mesh *cutOuts;
@@ -281,7 +279,7 @@ namespace Experimental { namespace Test1 {
         bool onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager);
 
     public:
-        explicit TestSpriteRenderable(CSEF::Render::SpriteAnimationSet *animSet, const std::string &anim);
+        explicit TestSpriteRenderable(const std::string &anim);
         ~TestSpriteRenderable();
     };
 }}

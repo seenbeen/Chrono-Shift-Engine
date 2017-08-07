@@ -1,5 +1,5 @@
-#ifndef CSEF_RENDER_SPRITERENDERABLE_HPP
-#define CSEF_RENDER_SPRITERENDERABLE_HPP
+#ifndef CSEA_RENDER_SPRITERENDERABLE_HPP
+#define CSEA_RENDER_SPRITERENDERABLE_HPP
 #include <CSE/CSEA/render/renderable.hpp>
 
 #include <string>
@@ -13,16 +13,16 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
-namespace CSEF { namespace Render {
+namespace CSEA { namespace Render {
     class SpriteRenderable: public CSEA::Render::Renderable {
         bool isInitialized;
 
         CSELL::Render::Texture *spriteSheet;
         CSELL::Render::Mesh *cutOuts;
         CSELL::Render::ShaderProgram *shaderProgram;
-        SpriteAnimationSet *animSet;
+        CSEA::Assets::SpriteAnimationSet *animSet;
 
         std::string currentAnimation;
         float currentAnimationLength;
@@ -37,7 +37,7 @@ namespace CSEF { namespace Render {
 
         // set-up / clean-up methods called by child classes
 
-        bool setup(SpriteAnimationSet *animSet, CSELL::Render::Texture *spriteSheet, CSELL::Render::Mesh *cutOuts, CSELL::Render::ShaderProgram *shaderProgram);
+        bool setup(CSEA::Assets::SpriteAnimationSet *animSet, CSELL::Render::Texture *spriteSheet, CSELL::Render::Mesh *cutOuts, CSELL::Render::ShaderProgram *shaderProgram);
     public:
         SpriteRenderable();
         ~SpriteRenderable();
@@ -53,5 +53,5 @@ namespace CSEF { namespace Render {
         bool unregisterSpriteTrigger();
     };
 }}
-#endif // CSEF_RENDER_SPRITERENDERABLE_HPP
+#endif
 

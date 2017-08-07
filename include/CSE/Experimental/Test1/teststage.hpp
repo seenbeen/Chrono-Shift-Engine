@@ -7,7 +7,7 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 
@@ -89,7 +89,7 @@ unsigned int walk1_frames[4] = {0, 1, 2, 3};
         CSEA::Render::Viewport *viewport;
         CSEA::Render::Scene *scene;
         CSEA::Render::OrthographicCamera *camera;
-        CSEF::Render::SpriteAnimationSet *animSet;
+        CSEA::Assets::SpriteAnimationSet *animSet;
 
         Experimental::Test1::TestGameObject *testObject1, *testObject2, *testObject3;
 

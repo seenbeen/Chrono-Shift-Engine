@@ -29,8 +29,8 @@ namespace CSU {
         case Logger::CSEA:
             elvStr = "CSEA";
             break;
-        case Logger::CSEF:
-            elvStr = "CSEF";
+        case Logger::CSEG:
+            elvStr = "CSEG";
             break;
         case Logger::EXPERIMENTAL:
             elvStr = "TEST";

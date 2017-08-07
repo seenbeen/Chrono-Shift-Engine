@@ -15,6 +15,7 @@ namespace CSEA { namespace Assets {
     std::map<std::string, unsigned int> AssetManager::assetReferenceMap;
     std::map<std::string, CSELL::Assets::ImageAsset*> AssetManager::imageAssetMap;
     std::map<std::string, CSELL::Assets::TextAsset*> AssetManager::textAssetMap;
+    std::map<std::string, CSEA::Assets::SpriteAnimationSet*> AssetManager::spriteSetMap;
 
     bool AssetManager::initialize() {
         if (AssetManager::isInitialized) {
@@ -45,11 +46,11 @@ namespace CSEA { namespace Assets {
         CSELL::Assets::AssetManager::shutdown();
     }
 
-    bool AssetManager::loadImage(const std::string &path) {
+    CSELL::Assets::ImageAsset *AssetManager::loadImage(const std::string &path) {
         if (!AssetManager::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "AssetManager is not Initialized!");
-            return false;
+            return NULL;
         }
 
         std::map<std::string, unsigned int>::iterator it;
@@ -58,14 +59,14 @@ namespace CSEA { namespace Assets {
         if (it != AssetManager::assetReferenceMap.end()) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "Asset Path " + path + " is already loaded!");
-            return false;
+            return NULL;
         }
 
         CSELL::Assets::ImageAsset *asset = CSELL::Assets::AssetManager::loadImage(path);
         if (asset == NULL) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "ImageAsset Path " + path + " failed to load!");
-            return false;
+            return NULL;
         }
 
         AssetManager::assetReferenceMap[path] = 1;
@@ -73,14 +74,14 @@ namespace CSEA { namespace Assets {
 
         CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Assets - AssetManager", "Loading an image with path \""+path+"\"");
 
-        return true;
+        return asset;
     }
 
-    bool AssetManager::loadFile(const std::string &path) {
+    CSELL::Assets::TextAsset *AssetManager::loadFile(const std::string &path) {
         if (!AssetManager::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "AssetManager is not Initialized!");
-            return false;
+            return NULL;
         }
 
         std::map<std::string, unsigned int>::iterator it;
@@ -89,7 +90,7 @@ namespace CSEA { namespace Assets {
         if (it != AssetManager::assetReferenceMap.end()) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "Asset Path " + path + " is already loaded!");
-            return false;
+            return NULL;
         }
 
         CSELL::Assets::TextAsset *asset = CSELL::Assets::AssetManager::loadFile(path);
@@ -97,7 +98,7 @@ namespace CSEA { namespace Assets {
         if (asset == NULL) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "TextAsset Path " + path + " failed to load!");
-            return false;
+            return NULL;
         }
 
         AssetManager::assetReferenceMap[path] = 1;
@@ -105,9 +106,40 @@ namespace CSEA { namespace Assets {
 
         CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a file with path \""+path+"\"");
 
-        return true;
+        return asset;
     }
 
+    CSEA::Assets::SpriteAnimationSet *AssetManager::loadSpriteAnimationSet(const std::string &path) {
+        if (!AssetManager::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Assets - AssetManager", "AssetManager is not Initialized!");
+            return NULL;
+        }
+
+        std::map<std::string, unsigned int>::iterator it;
+        it = AssetManager::assetReferenceMap.find(path);
+
+        if (it != AssetManager::assetReferenceMap.end()) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Assets - AssetManager", "Asset Path " + path + " is already loaded!");
+            return NULL;
+        }
+
+        CSEA::Assets::SpriteAnimationSet *asset = new CSEA::Assets::SpriteAnimationSet();
+
+        if (asset == NULL) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Assets - AssetManager", "SpriteAnimationSet Path " + path + " failed to load!");
+            return NULL;
+        }
+
+        AssetManager::assetReferenceMap[path] = 1;
+        AssetManager::spriteSetMap[path] = asset;
+
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Assets - AssetManager", "Loading a SpriteAnimationSet with path \""+path+"\"");
+
+        return asset;
+    }
 
     CSELL::Assets::ImageAsset *AssetManager::getImage(const std::string &path) {
         if (!AssetManager::isInitialized) {
@@ -141,6 +173,26 @@ namespace CSEA { namespace Assets {
         if (it == AssetManager::textAssetMap.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
                              "Assets - AssetManager", "TextAsset \""+path+"\" not loaded!");
+            return NULL;
+        }
+
+        AssetManager::assetReferenceMap[path]++;
+
+        return it->second;
+    }
+
+    CSEA::Assets::SpriteAnimationSet *AssetManager::getSpriteAnimationSet(const std::string &path) {
+        if (!AssetManager::isInitialized) {
+            CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                             "Assets - AssetManager", "AssetManager is not Initialized!");
+            return NULL;
+        }
+
+        std::map<std::string, CSEA::Assets::SpriteAnimationSet*>::iterator it;
+        it = AssetManager::spriteSetMap.find(path);
+        if (it == AssetManager::spriteSetMap.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
+                             "Assets - AssetManager", "SpriteAnimationSet \""+path+"\" not loaded!");
             return NULL;
         }
 
@@ -198,17 +250,22 @@ namespace CSEA { namespace Assets {
             CSELL::Assets::AssetManager::freeAsset(imageIt->second);
             AssetManager::imageAssetMap.erase(imageIt);
             return;
-        } else {
-            std::map<std::string, CSELL::Assets::TextAsset*>::iterator textIt;
-            textIt = AssetManager::textAssetMap.find(path);
-            if (textIt !=  AssetManager::textAssetMap.end()) {
-                CSELL::Assets::AssetManager::freeAsset(textIt->second);
-                AssetManager::textAssetMap.erase(textIt);
-                return;
-            } else {
-                CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
-                             "Assets - AssetManager", "Asset with path \""+path+"\" was referenced, but not loaded!");
-            }
         }
+        std::map<std::string, CSELL::Assets::TextAsset*>::iterator textIt;
+        textIt = AssetManager::textAssetMap.find(path);
+        if (textIt !=  AssetManager::textAssetMap.end()) {
+            CSELL::Assets::AssetManager::freeAsset(textIt->second);
+            AssetManager::textAssetMap.erase(textIt);
+            return;
+        }
+        std::map<std::string, CSEA::Assets::SpriteAnimationSet*>::iterator spriteIt;
+        spriteIt = AssetManager::spriteSetMap.find(path);
+        if (spriteIt != AssetManager::spriteSetMap.end()){
+            delete spriteIt->second;
+            AssetManager::spriteSetMap.erase(spriteIt);
+            return;
+        }
+        CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
+                         "Assets - AssetManager", "Asset with path \""+path+"\" was referenced, but not loaded!");
     }
 }}

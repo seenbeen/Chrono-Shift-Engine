@@ -24,11 +24,14 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 namespace Experimental { namespace Test1 {
-    TestSpriteRenderable::TestSpriteRenderable(CSEF::Render::SpriteAnimationSet *animSet, const std::string &anim) {
-        this->animSet = animSet;
+    TestSpriteRenderable::TestSpriteRenderable(const std::string &anim) {
+        this->animSet = NULL;
+        this->cutOuts = NULL;
+        this->shaderProgram = NULL;
+        this->spriteSheet = NULL;
         this->anim = anim;
     }
 
@@ -85,6 +88,7 @@ namespace Experimental { namespace Test1 {
             cacheManager->cacheMesh("TestSpriteRenderable->CutOuts", this->cutOuts);
         }
 
+        this->animSet = CSEA::Assets::AssetManager::getSpriteAnimationSet("assets/test1/toruAnimSet.xml");
         this->setup(this->animSet, this->spriteSheet, this->cutOuts, this->shaderProgram);
         this->setCurrentAnimation(this->anim);
         return true;
@@ -93,9 +97,15 @@ namespace Experimental { namespace Test1 {
     bool TestSpriteRenderable::onUnload(CSELL::Render::Renderer *renderer, CSEA::Render::CacheManager *cacheManager) {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestSpriteRenderable", "On Unload.");
 
-        cacheManager->releaseTexture("TestSpriteRenderable->SpriteSheet");
+        CSEA::Assets::AssetManager::releaseAsset("assets/test1/toruAnimSet.xml");
         cacheManager->releaseMesh("TestSpriteRenderable->CutOuts");
+        cacheManager->releaseTexture("TestSpriteRenderable->SpriteSheet");
         cacheManager->releaseShaderProgram("TestSpriteRenderable->ShaderProgram");
+
+        this->animSet = NULL;
+        this->cutOuts = NULL;
+        this->spriteSheet = NULL;
+        this->shaderProgram = NULL;
 
         return true;
     }

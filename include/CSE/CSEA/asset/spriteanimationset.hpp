@@ -1,10 +1,13 @@
-#ifndef CSEF_RENDER_SPRITEANIMATIONSET_HPP
-#define CSEF_RENDER_SPRITEANIMATIONSET_HPP
+#ifndef CSEA_ASSETS_SPRITEANIMATIONSET_HPP
+#define CSEA_ASSETS_SPRITEANIMATIONSET_HPP
 #include <map>
 #include <string>
 
-namespace CSEF { namespace Render {
+namespace CSEA { namespace Assets {
+    class AssetManager;
+
     class SpriteAnimationSet {
+    friend class AssetManager;
         // Note: SpriteAnimation copies over data passed in.
         //       It's still the caller's responsibility to free their arguments.
         class SpriteAnimation {
@@ -24,10 +27,11 @@ namespace CSEF { namespace Render {
         };
 
         std::map<std::string,SpriteAnimation*> animationMap;
-    public:
+
         SpriteAnimationSet();
         ~SpriteAnimationSet();
 
+    public:
         bool addAnimation(const std::string &name, unsigned int nFrames, unsigned int *frames,
                           int *originXs, int *originYs, float *delays);
         bool deleteAnimation(const std::string &name);
@@ -36,4 +40,4 @@ namespace CSEF { namespace Render {
         bool getAnimationLength(const std::string &name, float &length);
     };
 }}
-#endif // CSEF_RENDER_SPRITEANIMATIONSET_HPP
+#endif

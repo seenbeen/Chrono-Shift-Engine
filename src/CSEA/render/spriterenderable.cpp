@@ -1,4 +1,4 @@
-#include <CSE/CSEF/render/spriterenderable.hpp>
+#include <CSE/CSEA/render/spriterenderable.hpp>
 #include <math.h>
 #include <map>
 #include <string>
@@ -19,9 +19,9 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
-namespace CSEF { namespace Render {
+namespace CSEA { namespace Render {
     SpriteRenderable::SpriteRenderable() {
         this->animSet = NULL;
         this->spriteSheet = NULL;
@@ -35,10 +35,10 @@ namespace CSEF { namespace Render {
 
     SpriteRenderable::~SpriteRenderable() {}
 
-    bool SpriteRenderable::setup(SpriteAnimationSet *animSet, CSELL::Render::Texture *spriteSheet,
+    bool SpriteRenderable::setup(CSEA::Assets::SpriteAnimationSet *animSet, CSELL::Render::Texture *spriteSheet,
                                  CSELL::Render::Mesh *cutOuts, CSELL::Render::ShaderProgram *shaderProgram) {
         if (animSet == NULL || spriteSheet == NULL || cutOuts == NULL || shaderProgram == NULL) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: setup. No arguments may be NULL.");
             return false;
         }
@@ -52,7 +52,7 @@ namespace CSEF { namespace Render {
 
     void SpriteRenderable::onUpdate(double deltaTime) {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: Update. SpriteRenderable has not been setup.");
             return;
         }
@@ -61,7 +61,7 @@ namespace CSEF { namespace Render {
 
     void SpriteRenderable::onRender(CSEA::Render::Camera *camera) {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: Render. SpriteRenderable has not been setup.");
             return;
         }
@@ -100,13 +100,13 @@ namespace CSEF { namespace Render {
 
     bool SpriteRenderable::setCurrentAnimation(const std::string &name) {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: setCurrentAnimation. SpriteRenderable has not been setup.");
             return false;
         }
         float tempTime = 0.0f;
         if (!this->animSet->getAnimationLength(name, tempTime)) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: setCurrentAnimation. Unknown \"" + name + "\".");
             return false;
         }
@@ -118,7 +118,7 @@ namespace CSEF { namespace Render {
 
     std::string SpriteRenderable::getCurrentAnimation() {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: getCurrentAnimation. SpriteRenderable has not been setup.");
             return "";
         }
@@ -127,7 +127,7 @@ namespace CSEF { namespace Render {
 
     bool SpriteRenderable::setCurrentAnimationTime(float time) {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: setCurrentAnimationTime. SpriteRenderable has not been setup.");
             return false;
         }
@@ -137,7 +137,7 @@ namespace CSEF { namespace Render {
 
     float SpriteRenderable::getCurrentAnimationTime() {
         if (!this->isInitialized) {
-            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEF, "Render - SpriteRenderable",
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
                              "In: getCurrentAnimationTime. SpriteRenderable has not been setup.");
             return -1.0f;
         }

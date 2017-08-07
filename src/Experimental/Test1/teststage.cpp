@@ -15,7 +15,7 @@
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 
@@ -29,8 +29,36 @@ namespace Experimental { namespace Test1 {
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
 
-        this->animSet = new CSEF::Render::SpriteAnimationSet();
+        // gulp...
+        CSELL::Math::Transform xform;
+        xform.position = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "walk1");
+        xform.position += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "stand1");
+        xform.position -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, "swingOF");
+    }
 
+    TestStage::~TestStage() {
+        delete this->testObject1;
+        delete this->testObject2;
+        delete this->testObject3;
+        delete this->scene;
+        delete this->camera;
+        delete this->viewport;
+    }
+
+    void TestStage::onLoad() {
+        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Loading");
+
+        // sprite
+        CSEA::Assets::AssetManager::loadFile("assets/test1/fragmentShader.fs");
+        CSEA::Assets::AssetManager::loadFile("assets/test1/vertexShader.vs");
+        CSEA::Assets::AssetManager::loadImage("assets/test1/toruSheet.png");
+
+        this->animSet = CSEA::Assets::AssetManager::loadSpriteAnimationSet("assets/test1/toruAnimSet.xml");
+
+        // should be loaded in by a loader in the future, implemented in AssetManager (above call)
         this->animSet->addAnimation("walk1", 4, this->walk1_frames, this->walk1_originXs, this->walk1_originYs, this->walk1_delays);
         this->animSet->addAnimation("stand1", 5, this->stand1_frames, this->stand1_originXs, this->stand1_originYs, this->stand1_delays);
         this->animSet->addAnimation("alert", 5, this->alert_frames, this->alert_originXs, this->alert_originYs, this->alert_delays);
@@ -50,57 +78,12 @@ namespace Experimental { namespace Test1 {
         this->animSet->addAnimation("ladder", 2, this->ladder_frames, this->ladder_originXs, this->ladder_originYs, this->ladder_delays);
         this->animSet->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
 
-        // gulp...
-        CSELL::Math::Transform xform;
-        xform.position = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "walk1");
-        xform.position += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "stand1");
-        xform.position -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, this->animSet, "swingOF");
-    }
-
-    TestStage::~TestStage() {
-        delete this->testObject1;
-        delete this->testObject2;
-        delete this->testObject3;
-        delete this->animSet;
-        delete this->scene;
-        delete this->camera;
-        delete this->viewport;
-    }
-
-    void TestStage::onLoad() {
-        CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Loading");
-        /*CSEA::Assets::AssetManager::loadFile("assets/shaders/fragmentShader1.fs");
-        CSEA::Assets::AssetManager::loadFile("assets/shaders/vertexShader1.vs");
-        CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/container.jpg");
-        CSEA::Assets::AssetManager::loadImage("assets/textures/texturesLesson/awesomeface.png");*/
-
-        // sprite
-        CSEA::Assets::AssetManager::loadFile("assets/test1/fragmentShader.fs");
-        CSEA::Assets::AssetManager::loadFile("assets/test1/vertexShader.vs");
-        CSEA::Assets::AssetManager::loadImage("assets/test1/toruSheet.png");
-
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
         CSEA::Input::InputManager::registerInputListener(this);
     }
 
     void TestStage::onUnload() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Unloading");
-
-        /*CSEA::Input::InputManager::unregisterInputListener(this);
-        CSEA::Assets::AssetManager::releaseAsset("assets/shaders/fragmentShader1.fs");
-        CSEA::Assets::AssetManager::unloadAsset("assets/shaders/fragmentShader1.fs");
-
-        CSEA::Assets::AssetManager::releaseAsset("assets/shaders/vertexShader1.vs");
-        CSEA::Assets::AssetManager::unloadAsset("assets/shaders/vertexShader1.vs");
-
-        CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/container.jpg");
-        CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/container.jpg");
-
-        CSEA::Assets::AssetManager::releaseAsset("assets/textures/texturesLesson/awesomeface.png");
-        CSEA::Assets::AssetManager::unloadAsset("assets/textures/texturesLesson/awesomeface.png");*/
 
         // sprite
 
@@ -112,6 +95,10 @@ namespace Experimental { namespace Test1 {
 
         CSEA::Assets::AssetManager::releaseAsset("assets/test1/toruSheet.png");
         CSEA::Assets::AssetManager::unloadAsset("assets/test1/toruSheet.png");
+
+        CSEA::Assets::AssetManager::releaseAsset("assets/test1/toruAnimSet.xml");
+        CSEA::Assets::AssetManager::unloadAsset("assets/test1/toruAnimSet.xml");
+        this->animSet = NULL;
     }
 
     void TestStage::onTransitionInto() {

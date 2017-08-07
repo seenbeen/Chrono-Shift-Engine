@@ -1,10 +1,10 @@
-#include <CSE/CSEF/render/spriteanimationset.hpp>
+#include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 #include <math.h>
 
 #include <CSE/CSU/logger.hpp>
 
-namespace CSEF { namespace Render {
+namespace CSEA { namespace Assets {
     SpriteAnimationSet::SpriteAnimation::SpriteAnimation(unsigned int nFrames, unsigned int *frames,
                                                          int *originXs, int *originYs, float *delays) {
         this->nFrames = nFrames;
@@ -65,7 +65,7 @@ namespace CSEF { namespace Render {
                                           int *originXs, int *originYs, float *delays) {
         std::map<std::string,SpriteAnimation*>::iterator it = this->animationMap.find(name);
         if (it != this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteAnimationSet",
+            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEA, "Assets - SpriteAnimationSet",
                              "Trying to add existing animation.");
             return false;
         }
@@ -76,7 +76,7 @@ namespace CSEF { namespace Render {
     bool SpriteAnimationSet::deleteAnimation(const std::string &name) {
         std::map<std::string,SpriteAnimation*>::iterator it = this->animationMap.find(name);
         if (it == this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteAnimationSet",
+            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEA, "Assets - SpriteAnimationSet",
                              "Trying to delete non-existent animation.");
             return false;
         }
@@ -91,7 +91,7 @@ namespace CSEF { namespace Render {
                                                     unsigned int &resultFrame, int &originX, int &originY) {
         std::map<std::string,SpriteAnimation*>::iterator it = this->animationMap.find(name);
         if (it == this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteAnimationSet",
+            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEA, "Assets - SpriteAnimationSet",
                              "Trying to fetch data of non-existent animation.");
             return false;
         }
@@ -102,7 +102,7 @@ namespace CSEF { namespace Render {
     bool SpriteAnimationSet::getAnimationLength(const std::string &name, float &length) {
         std::map<std::string,SpriteAnimation*>::iterator it = this->animationMap.find(name);
         if (it == this->animationMap.end()) {
-            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEF, "Render - SpriteAnimationSet",
+            CSU::Logger::log(CSU::Logger::WARN,  CSU::Logger::CSEA, "Assets - SpriteAnimationSet",
                              "Trying to fetch length of non-existent animation.");
             return false;
         }
