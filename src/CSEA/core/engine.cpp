@@ -181,6 +181,9 @@ namespace CSEA { namespace Core {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA, "Core - Engine", "Trying to start engine with no active Stage!");
             return;
         }
+
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Running.");
+
         Engine::isRunning = true;
         while (Engine::isRunning) {
             if (Engine::previousStage != Engine::activeStage) {
@@ -190,13 +193,13 @@ namespace CSEA { namespace Core {
                 Engine::previousStage = Engine::activeStage;
                 Engine::activeStage->transitionInto();
             }
-            Engine::updateModules();
             Engine::activeStage->update(CSEA::Core::Time::getDeltaTime());
+            Engine::updateModules();
         }
         Engine::activeStage->transitionOutOf(); // bai bai
         Engine::activeStage = NULL;
         Engine::previousStage = NULL;
 
-        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Exited.");
+        CSU::Logger::log(CSU::Logger::INFO, CSU::Logger::CSEA, "Core - Engine", "Stopped Running.");
     }
 }}

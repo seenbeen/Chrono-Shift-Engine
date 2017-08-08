@@ -3,8 +3,6 @@
 #include <CSE/CSEA/core/engine.hpp>
 #include <CSE/CSEA/core/stage.hpp>
 
-#include <CSE/CSEA/render/renderer.hpp>
-
 #include <CSE/Experimental/test1/teststage.hpp>
 
 static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
