@@ -80,7 +80,6 @@ namespace Experimental { namespace Test1 {
         animSet->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
 
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
-        CSEA::Input::InputManager::registerInputListener(this);
     }
 
     void TestStage::onUnload() {
@@ -108,10 +107,12 @@ namespace Experimental { namespace Test1 {
         this->addObject(this->testObject1);
         this->addObject(this->testObject2);
         this->addObject(this->testObject3);
+        CSEA::Input::InputManager::registerInputListener(this);
     }
 
     void TestStage::onTransitionOutOf() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning Out.");
+        CSEA::Input::InputManager::unregisterInputListener(this);
         this->removeObject(this->testObject1);
         this->removeObject(this->testObject2);
         this->removeObject(this->testObject3);

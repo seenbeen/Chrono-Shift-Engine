@@ -10,6 +10,7 @@ namespace CSELL { namespace Math {
         Vector3f scale;
         Vector3f position;
         Transform();
+        ~Transform();
     };
 }}
 #endif // CSELL_MATH_TRANSFORM_HPP

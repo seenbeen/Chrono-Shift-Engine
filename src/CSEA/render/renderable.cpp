@@ -59,7 +59,7 @@ namespace CSEA { namespace Render {
     Renderable::Renderable() {
         this->isLoaded = false;
         this->boundScene = NULL;
-        this->xform = CSELL::Math::Transform();
+        this->xform = new CSELL::Math::Transform();
     }
 
     Renderable::~Renderable() {
@@ -67,9 +67,10 @@ namespace CSEA { namespace Render {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Renderable",
                              "Deleting Renderable which is still loaded!");
         }
+        delete this->xform;
     }
 
-    void Renderable::setTransform(const CSELL::Math::Transform &xform) {
-        this->xform = xform;
+    CSELL::Math::Transform *Renderable::getTransform() {
+        return this->xform;
     }
 }}

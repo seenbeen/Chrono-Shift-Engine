@@ -24,7 +24,7 @@ namespace CSEA { namespace Render {
         void render(Camera *camera);
 
     protected:
-        CSELL::Math::Transform xform;
+        CSELL::Math::Transform *xform;
 
         virtual bool onLoad(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) = 0;
         virtual bool onUnload(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) = 0;
@@ -34,7 +34,7 @@ namespace CSEA { namespace Render {
     public:
         Renderable();
         virtual ~Renderable();
-        void setTransform(const CSELL::Math::Transform &xform);
+        CSELL::Math::Transform *getTransform();
     };
 }}
 #endif

@@ -77,9 +77,23 @@ namespace CSEA { namespace Render {
 
         this->shaderProgram->useShaderProgram();
 
-        CSELL::Math::Vector3f &pos = this->xform.position;
+        CSELL::Math::Transform &xform = *this->xform;
 
-        tempMat = glm::translate(tempMat, glm::vec3(pos.x - ox, pos.y - oy, pos.z));
+        tempMat = glm::translate(tempMat, glm::vec3(xform.position.x, xform.position.y, 1.0f));
+
+        if (xform.scale.z != 1.0f) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
+                             "Ignoring scaling factor on Z axis as sprite has no depth.");
+        }
+        tempMat = glm::scale(tempMat, glm::vec3(xform.scale.x, xform.scale.y, 1.0f));
+
+        if (xform.orientation.x != 0.0f || xform.orientation.y != 0) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",
+                             "Sprite's orientation about x and y axes are not 0 - will only honor z component.");
+        }
+        tempMat = glm::rotate(tempMat, glm::radians(xform.orientation.z), glm::vec3(0.0f,0.0f,1.0f));
+
+        tempMat = glm::translate(tempMat, glm::vec3(-ox, -oy, 0.0f));
 
         this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 
