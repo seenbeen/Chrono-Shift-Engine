@@ -21,7 +21,7 @@ namespace CSELL { namespace Assets {
         unsigned int tempCounter = 0;
         unsigned int nChan = (unsigned int)tn;
 
-        for (unsigned int i = 0; i < dataSize; i++) {
+        for (unsigned int i = 0; i < dataSize; ++i) {
             if (i%4 < nChan) {
                 this->imgData[i] = temp[tempCounter++];
             } else {
@@ -33,9 +33,9 @@ namespace CSELL { namespace Assets {
 
         dataSize /= 4;
         // set all invisible pixels to white
-        for (unsigned int i = 0; i < dataSize; i++) {
+        for (unsigned int i = 0; i < dataSize; ++i) {
             if (this->imgData[i*4+3] == 0) {
-                for (unsigned int j = 0; j < 3; j++) {
+                for (unsigned int j = 0; j < 3; ++j) {
                     this->imgData[i*4+j] = 255;
                 }
             }
@@ -53,8 +53,8 @@ namespace CSELL { namespace Assets {
         unsigned int lHeight = this->imgH/2;
         unsigned int lWidth = this->imgW*4;
 
-        for (unsigned int i = 0; i < lHeight; i++) {
-            for (unsigned int j = 0; j < lWidth; j++) {
+        for (unsigned int i = 0; i < lHeight; ++i) {
+            for (unsigned int j = 0; j < lWidth; ++j) {
                 temp = this->imgData[i*lWidth+j];
                 this->imgData[i*lWidth+j] = this->imgData[(this->imgH-i-1)*lWidth+j];
                 this->imgData[(this->imgH-i-1)*lWidth+j] = temp;

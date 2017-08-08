@@ -1,6 +1,8 @@
 #ifndef CSEA_INPUT_INPUTMANAGER_HPP
 #define CSEA_INPUT_INPUTMANAGER_HPP
-#include <set>
+#include <map>
+#include <list>
+#include <string>
 
 #include <CSE/CSELL/core/inputcallbackhandler.hpp>
 #include <CSE/CSELL/core/inputenum.hpp>
@@ -24,7 +26,7 @@ namespace CSEA { namespace Input {
     friend class CSEA::Core::Engine;
         static InputManager *instance;
 
-        std::set<InputListener*> listeners;
+        std::map<std::string, std::list<InputListener*>> inputGroupMap;
 
         InputManager();
         ~InputManager();
@@ -33,13 +35,13 @@ namespace CSEA { namespace Input {
         static void shutdown();
 
         // registry functions
-        bool onRegisterInputListener(InputListener *listener);
+        bool onRegisterInputListener(InputListener *listener, const std::string &inputGroup);
         // unregistry functions
-        bool onUnregisterInputListener(InputListener *listener);
+        bool onUnregisterInputListener(InputListener *listener, const std::string &inputGroup);
 
     public:
-        static bool registerInputListener(InputListener *listener);
-        static bool unregisterInputListener(InputListener *listener);
+        static bool registerInputListener(InputListener *listener, const std::string &inputGroup);
+        static bool unregisterInputListener(InputListener *listener, const std::string &inputGroup);
 
         // own dispatchers
         void handleKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action);

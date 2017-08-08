@@ -19,7 +19,7 @@ namespace CSEA { namespace Core {
         static CSEA::Core::Stage *previousStage, *activeStage;
         static std::set<CSEA::Core::Stage*> loadedStages;
 
-        static bool isInitialized;
+        static bool isInitialized, isRunning;
 
         static bool initializeModules(Settings &settings);
         static void updateModules();

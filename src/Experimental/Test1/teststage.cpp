@@ -107,12 +107,12 @@ namespace Experimental { namespace Test1 {
         this->addObject(this->testObject1);
         this->addObject(this->testObject2);
         this->addObject(this->testObject3);
-        CSEA::Input::InputManager::registerInputListener(this);
+        CSEA::Input::InputManager::registerInputListener(this, "TEST_STAGE");
     }
 
     void TestStage::onTransitionOutOf() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning Out.");
-        CSEA::Input::InputManager::unregisterInputListener(this);
+        CSEA::Input::InputManager::unregisterInputListener(this, "TEST_STAGE");
         this->removeObject(this->testObject1);
         this->removeObject(this->testObject2);
         this->removeObject(this->testObject3);
@@ -163,15 +163,12 @@ namespace Experimental { namespace Test1 {
         }
     }
 
-    void TestStage::onMousePosInput(double xpos, double ypos, double xrel, double yrel) {}
-    void TestStage::onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action) {}
-    void TestStage::onMouseScrollInput(double xoffset, double yoffset) {}
-    void TestStage::onMouseEnterLeaveInput(bool entered) {}
     void TestStage::onWindowResizeInput(unsigned int width, unsigned int height) {
         this->viewport->setDimensions(width, height);
         float w = width, h = height; // casting so we don't get arbitrarily high numbers for negatives
         this->camera->resizeFrustum(-w / 2.0f, w / 2.0f, -h / 2.0f, h / 2.0f, 0.1f, 100.0f);
     }
+
     void TestStage::onWindowCloseInput() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onWindowClose");
         CSEA::Core::Engine::exit();

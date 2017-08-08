@@ -99,10 +99,6 @@ namespace Experimental { namespace Test1 {
 
         // input stuff
         void onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action);
-        void onMousePosInput(double xpos, double ypos, double xrel, double yrel);
-        void onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action);
-        void onMouseScrollInput(double xoffset, double yoffset);
-        void onMouseEnterLeaveInput(bool entered);
         void onWindowResizeInput(unsigned int width, unsigned int height);
         void onWindowCloseInput();
 

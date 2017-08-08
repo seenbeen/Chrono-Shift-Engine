@@ -29,7 +29,7 @@ namespace CSELL { namespace Render {
         int linkSuccess;
         glGetProgramiv(this->programId, GL_LINK_STATUS, &linkSuccess);
 
-        for (unsigned int i = 0; i < this->shaders.size(); i++) {
+        for (unsigned int i = 0; i < this->shaders.size(); ++i) {
             glDetachShader(this->programId, this->shaders.back()->getShaderId());
             this->shaders.pop_back();
         }

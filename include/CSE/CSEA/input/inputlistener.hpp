@@ -6,15 +6,19 @@
 namespace CSEA { namespace Input {
     class InputListener {
     friend class InputManager;
+        bool isEnabled;
     protected:
-        virtual void onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) = 0;
-        virtual void onMousePosInput(double xpos, double ypos, double xrel, double yrel) = 0;
-        virtual void onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action) = 0;
-        virtual void onMouseScrollInput(double xoffset, double yoffset) = 0;
-        virtual void onMouseEnterLeaveInput(bool entered) = 0;
+        virtual void onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action);
+        virtual void onMousePosInput(double xpos, double ypos, double xrel, double yrel);
+        virtual void onMouseButtonInput(CSELL::Core::InputEnum::MouseButton button, CSELL::Core::InputEnum::InputAction action);
+        virtual void onMouseScrollInput(double xoffset, double yoffset);
+        virtual void onMouseEnterLeaveInput(bool entered);
 
-        virtual void onWindowResizeInput(unsigned int width, unsigned int height) = 0;
-        virtual void onWindowCloseInput() = 0;
+        virtual void onWindowResizeInput(unsigned int width, unsigned int height);
+        virtual void onWindowCloseInput();
+        InputListener();
+    public:
+        void setListenerIsEnabled(bool isEnabled);
     };
 }}
 #endif
