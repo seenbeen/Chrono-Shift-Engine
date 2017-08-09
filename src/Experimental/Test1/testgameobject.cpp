@@ -25,8 +25,9 @@ namespace Experimental { namespace Test1 {
         // apply our transform, then replicate it to our renderable.
     }
 
-    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const std::string &anim) {
+    TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const std::string &anim, const CSELL::Math::Vector3f &pos) {
         this->testSpriteRenderable = new TestSpriteRenderable(anim);
+        this->testSpriteRenderable->getTransform()->position = pos;
         this->stageScene = stageScene;
     }
 

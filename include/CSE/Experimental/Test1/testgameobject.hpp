@@ -22,7 +22,7 @@ namespace Experimental { namespace Test1 {
         void onUpdate(double deltaTime);
 
     public:
-        explicit TestGameObject(CSEA::Render::Scene *stageScene, const std::string &anim);
+        explicit TestGameObject(CSEA::Render::Scene *stageScene, const std::string &anim, const CSELL::Math::Vector3f &pos);
         ~TestGameObject();
     };
 }}

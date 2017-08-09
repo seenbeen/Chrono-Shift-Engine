@@ -5,6 +5,7 @@
 #include <CSE/CSEA/input/inputlistener.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
 #include <CSE/CSEA/render/scene.hpp>
+#include <CSE/CSEA/render/scenemanager2d.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
@@ -86,6 +87,7 @@ namespace Experimental { namespace Test1 {
 
         CSEA::Render::Viewport *viewport;
         CSEA::Render::Scene *scene;
+        CSEA::Render::SceneManager2D *sceneManager;
         CSEA::Render::OrthographicCamera *camera;
 
         Experimental::Test1::TestGameObject *testObject1, *testObject2, *testObject3;

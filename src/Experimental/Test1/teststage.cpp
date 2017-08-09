@@ -13,6 +13,7 @@
 #include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
 #include <CSE/CSEA/render/scene.hpp>
+#include <CSE/CSEA/render/scenemanager2d.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
 #include <CSE/CSEA/asset/spriteanimationset.hpp>
@@ -22,8 +23,8 @@
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
         this->viewport = new CSEA::Render::Viewport(0,0,800,600); // hoping this works...
-        this->scene = new CSEA::Render::Scene();
-
+        this->sceneManager = new CSEA::Render::SceneManager2D();
+        this->scene = new CSEA::Render::Scene(this->sceneManager);
         this->camera = new CSEA::Render::OrthographicCamera(-400, 400, -300, 300, 0.1f, 100.0f);
         this->camera->setPosition(CSELL::Math::Vector3f(0.0f,0.0f,4.0f));
         this->viewport->bindScene(this->scene);
@@ -31,12 +32,12 @@ namespace Experimental { namespace Test1 {
 
         // gulp...
         CSELL::Math::Transform xform;
-        xform.position = CSELL::Math::Vector3f(-200.0f, 150.0f, -2.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "walk1");
-        xform.position += CSELL::Math::Vector3f(200.0f, -150.0f, 2.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "stand1");
-        xform.position -= CSELL::Math::Vector3f(-200.0f, 150.0f, 1.0f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, "swingOF");
+        xform.position = CSELL::Math::Vector3f(-25.0f, -25.0f, -1.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "walk1", xform.position);
+        xform.position = CSELL::Math::Vector3f(0.0f, 0.0f, -1.0f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "stand1", xform.position);
+        xform.position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, "swingOF", xform.position);
     }
 
     TestStage::~TestStage() {
@@ -44,6 +45,7 @@ namespace Experimental { namespace Test1 {
         delete this->testObject2;
         delete this->testObject3;
         delete this->scene;
+        delete this->sceneManager;
         delete this->camera;
         delete this->viewport;
     }
