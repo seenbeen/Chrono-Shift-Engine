@@ -1,10 +1,14 @@
 #include <CSE/CSU/logger.hpp>
 
+#include <CSE/CSELL/math/transform.hpp>
+#include <CSE/CSELL/math/vector3f.hpp>
+
 #include <CSE/CSELL/render/renderer.hpp>
 
 #include <CSE/CSEA/render/renderable.hpp>
 #include <CSE/CSEA/render/camera.hpp>
 #include <CSE/CSEA/render/cachemanager.hpp>
+
 
 namespace CSEA { namespace Render {
     bool Renderable::load(CSELL::Render::Renderer *renderer, CacheManager *cacheManager) {
@@ -41,6 +45,12 @@ namespace CSEA { namespace Render {
     void Renderable::update(double deltaTime) {
         if (this->isLoaded) {
             this->onUpdate(deltaTime);
+            if (this->xform->position != this->lastPos) { // positions don't match; im dirty
+                this->lastPos = this->xform->position;
+                this->isDirty = true;
+            } else if (this->isDirty) { // positions match now, unflag me
+                this->isDirty = false;
+            }
         } else {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Renderable",
                              "Trying update non-loaded Renderable!");
@@ -58,8 +68,10 @@ namespace CSEA { namespace Render {
 
     Renderable::Renderable() {
         this->isLoaded = false;
+        this->isDirty = true;
         this->boundScene = NULL;
         this->xform = new CSELL::Math::Transform();
+        this->lastPos = CSELL::Math::Vector3f();
     }
 
     Renderable::~Renderable() {

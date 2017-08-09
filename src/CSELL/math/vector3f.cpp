@@ -83,6 +83,15 @@ namespace CSELL { namespace Math {
         return Vector3f(*this) *= -1.0f;
     }
 
+    // comparison operators
+    bool Vector3f::operator==(const Vector3f &other) {
+        return this->x == other.x && this->y == other.y && this->z == other.z;
+    }
+
+    bool Vector3f::operator!=(const Vector3f &other) {
+        return !(*this == other);
+    }
+
     // special operators
 
     float Vector3f::dot(const Vector3f &other) {

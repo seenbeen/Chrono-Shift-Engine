@@ -104,9 +104,9 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::Renderer::addScene(this->scene);
         CSEA::Render::Renderer::addViewport(this->viewport);
 
-        this->addObject(this->testObject1);
         this->addObject(this->testObject2);
         this->addObject(this->testObject3);
+        this->addObject(this->testObject1);
         CSEA::Input::InputManager::registerInputListener(this, "TEST_STAGE");
     }
 

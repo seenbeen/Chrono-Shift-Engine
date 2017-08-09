@@ -27,6 +27,10 @@ namespace CSELL { namespace Math {
         // unary operators
         Vector3f operator-();
 
+        // comparison operators
+        bool operator==(const Vector3f &other);
+        bool operator!=(const Vector3f &other);
+
         // special operators
         float magnitudeSquared();
         float magnitude();

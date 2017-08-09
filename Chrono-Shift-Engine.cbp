@@ -57,6 +57,9 @@
 		<Unit filename="include/CSE/CSEA/render/renderable.hpp" />
 		<Unit filename="include/CSE/CSEA/render/renderer.hpp" />
 		<Unit filename="include/CSE/CSEA/render/scene.hpp" />
+		<Unit filename="include/CSE/CSEA/render/scenemanager.hpp" />
+		<Unit filename="include/CSE/CSEA/render/scenemanager2d.hpp" />
+		<Unit filename="include/CSE/CSEA/render/scenemanagerdefault.hpp" />
 		<Unit filename="include/CSE/CSEA/render/spriterenderable.hpp" />
 		<Unit filename="include/CSE/CSEA/render/viewport.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
@@ -104,6 +107,9 @@
 		<Unit filename="src/CSEA/render/renderable.cpp" />
 		<Unit filename="src/CSEA/render/renderer.cpp" />
 		<Unit filename="src/CSEA/render/scene.cpp" />
+		<Unit filename="src/CSEA/render/scenemanager.cpp" />
+		<Unit filename="src/CSEA/render/scenemanager2d.cpp" />
+		<Unit filename="src/CSEA/render/scenemanagerdefault.cpp" />
 		<Unit filename="src/CSEA/render/spriterenderable.cpp" />
 		<Unit filename="src/CSEA/render/viewport.cpp" />
 		<Unit filename="src/CSEG/snuffedgamestage.cpp" />

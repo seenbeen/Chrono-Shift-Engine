@@ -8,14 +8,17 @@
 #include <CSE/CSEA/render/cachemanager.hpp>
 
 namespace CSEA { namespace Render {
-    class Scene;
     class Camera;
+    class Scene;
 
     class Renderable {
     friend class Renderer;
     friend class Scene;
         Scene *boundScene;
         bool isLoaded;
+
+        CSELL::Math::Vector3f lastPos;
+        bool isDirty;
 
         bool load(CSELL::Render::Renderer *renderer, CacheManager *cacheManager);
         bool unload(CSELL::Render::Renderer *renderer, CacheManager *cacheManager);

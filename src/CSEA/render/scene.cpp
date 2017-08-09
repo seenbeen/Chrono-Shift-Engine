@@ -1,15 +1,27 @@
+#include <CSE/CSEA/render/scene.hpp>
+
 #include <set>
+#include <vector>
 
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSEA/render/renderer.hpp>
-#include <CSE/CSEA/render/scene.hpp>
+#include <CSE/CSEA/render/scenemanager.hpp>
+#include <CSE/CSEA/render/scenemanagerdefault.hpp>
 
 namespace CSEA { namespace Render {
     class Camera;
 
     Scene::Scene() {
         this->isLoaded = false;
+        this->manager = new SceneManagerDefault();
+        this->managerIsMine = true;
+    }
+
+    Scene::Scene(SceneManager *manager) {
+        this->isLoaded = false;
+        this->manager = manager;
+        this->managerIsMine = false;
     }
 
     Scene::~Scene() {
@@ -21,18 +33,27 @@ namespace CSEA { namespace Render {
         for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->boundScene = NULL;
         }
+        if (this->managerIsMine) {
+            delete this->manager;
+        }
     }
 
     void Scene::update(double deltaTime) {
         std::set<Renderable*>::iterator it;
         for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
             (*it)->update(deltaTime);
+            if ((*it)->isDirty) {
+                // update Manager
+                this->manager->updateRenderable(*it);
+            }
         }
     }
 
     void Scene::render(Camera *camera) {
-        std::set<Renderable*>::iterator it;
-        for (it = this->renderables.begin(); it != this->renderables.end(); ++it) {
+        std::vector<Renderable*> resultingRenderables;
+        this->manager->getVisibleRenderables(camera, resultingRenderables);
+        std::vector<Renderable*>::iterator it;
+        for (it = resultingRenderables.begin(); it != resultingRenderables.end(); ++it) {
             (*it)->render(camera);
         }
     }
@@ -76,6 +97,7 @@ namespace CSEA { namespace Render {
         }
         renderable->boundScene = this;
         this->renderables.insert(renderable);
+        this->manager->addRenderable(renderable);
         if (this->isLoaded) {
             CSEA::Render::Renderer::loadRenderable(renderable);
         }
@@ -92,6 +114,7 @@ namespace CSEA { namespace Render {
         if (this->isLoaded) {
             CSEA::Render::Renderer::unloadRenderable(renderable);
         }
+        this->manager->removeRenderable(renderable);
         this->renderables.erase(this->renderables.find(renderable));
         return true;
     }
