@@ -48,8 +48,6 @@ namespace CSEA { namespace Render {
             if (this->xform->position != this->lastPos) { // positions don't match; im dirty
                 this->lastPos = this->xform->position;
                 this->isDirty = true;
-            } else if (this->isDirty) { // positions match now, unflag me
-                this->isDirty = false;
             }
         } else {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - Renderable",

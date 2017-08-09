@@ -45,6 +45,8 @@ namespace CSEA { namespace Render {
             if ((*it)->isDirty) {
                 // update Manager
                 this->manager->updateRenderable(*it);
+                // acknowledge dirt
+                (*it)->isDirty = false;
             }
         }
     }
