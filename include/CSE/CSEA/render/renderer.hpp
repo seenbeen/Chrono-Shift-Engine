@@ -1,6 +1,7 @@
 #ifndef CSEA_RENDER_RENDERER_HPP
 #define CSEA_RENDER_RENDERER_HPP
 #include <set>
+#include <list>
 
 #include <CSE/CSELL/core/window.hpp>
 #include <CSE/CSELL/render/rendererimple.hpp>
@@ -37,7 +38,7 @@ namespace CSEA { namespace Render {
         static CacheManager *cacheManager;
 
         static std::set<Scene*> scenes;
-        static std::set<Viewport*> viewports;
+        static std::list<Viewport*> viewports;
 
         Renderer();
         ~Renderer();

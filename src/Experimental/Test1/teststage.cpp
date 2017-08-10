@@ -8,12 +8,14 @@
 
 #include <CSE/CSEA/core/engine.hpp>
 #include <CSE/CSEA/core/stage.hpp>
+
 #include <CSE/CSEA/input/inputmanager.hpp>
 #include <CSE/CSEA/input/inputlistener.hpp>
+
 #include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
-
 #include <CSE/CSEA/render/scene.hpp>
+
 #include <CSE/CSEA/render/scenemanager2d.hpp>
 #include <CSE/CSEA/render/scenemanagerui.hpp>
 
@@ -26,47 +28,69 @@
 
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
-        this->viewport = new CSEA::Render::Viewport(0,0,800,600); // hoping this works...
-        this->sceneManager = new CSEA::Render::SceneManagerUI();
-        this->scene = new CSEA::Render::Scene(this->sceneManager);
-        this->camera = new CSEA::Render::OrthographicCamera(-400, 400, 300, -300, -1.0f, 0.0f);
-        // camera look down the -z axis from origin, which means everything behind the camera is positive z
-        //this->camera->setPosition(CSELL::Math::Vector3f(-400.0f,300.0f,0.0f));
-        this->viewport->bindScene(this->scene);
-        this->viewport->bindCamera(this->camera);
+        // setting up our ui
+        this->uiViewport = new CSEA::Render::Viewport(0, 0, 800, 600); // (0,0) = bottom left corner of window
+        this->uiSceneManager = new CSEA::Render::SceneManagerUI();
+        this->uiScene = new CSEA::Render::Scene(this->uiSceneManager);
+        this->uiCam = new CSEA::Render::UICamera(800, 600); // 800x600 viewport, coincidentally same as our window
 
-        // gulp...
-        CSELL::Math::Transform xform;
-        xform.position = CSELL::Math::Vector3f(200.0f, 150.0f, 0.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "swingO1", xform.position);
-        xform.position = CSELL::Math::Vector3f(200.0f, 200.0f, 0.11f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "heal", xform.position);
-        xform.position = CSELL::Math::Vector3f(200.0f, 250.0f, 0.12f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, "swingOF", xform.position);
+        // attach our ui scene + camera to our viewport
+        this->uiViewport->bindCamera(this->uiCam);
+        this->uiViewport->bindScene(this->uiScene);
+
+        // setting up our game scene
+        this->gameViewport = new CSEA::Render::Viewport(0, 0, 800, 600);
+        this->gameSceneManager = new CSEA::Render::SceneManager2D();
+        this->gameScene = new CSEA::Render::Scene(this->gameSceneManager);
+        this->gameCam = new CSEA::Render::OrthographicCamera(-400, 400, -300, 300, -1, 0);
+        // don't worry too much about the ortho cam params - I'll explain them when I get a chance
+        // DO NOTE: only objects with Z = [0, 1] will be rendered
+
+        // attach our game scene + camera to our viewport
+        this->uiViewport->bindCamera(this->gameCam);
+        this->uiViewport->bindScene(this->gameScene);
+
+        // Setting up the game objects
+        CSELL::Math::Transform xform; // a transform is a (position, orientation, scale)
+
+        xform.position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->gameScene, "swingO1", xform.position);
+        xform.position = CSELL::Math::Vector3f(0.0f, 0.0f, 0.0f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->gameScene, "heal", xform.position);
+        xform.position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
+        this->testObject3 = new Experimental::Test1::TestGameObject(this->gameScene, "swingOF", xform.position);
     }
 
     TestStage::~TestStage() {
-        delete this->testObject1;
-        delete this->testObject2;
+        // cleanup allocated memory, in reverse order of allocation
         delete this->testObject3;
-        delete this->scene;
-        delete this->sceneManager;
-        delete this->camera;
-        delete this->viewport;
+        delete this->testObject2;
+        delete this->testObject1;
+
+        delete this->gameCam;
+        delete this->gameScene;
+        delete this->gameSceneManager;
+        delete this->gameViewport;
+
+        delete this->uiCam;
+        delete this->uiScene;
+        delete this->uiSceneManager;
+        delete this->uiViewport;
     }
 
     void TestStage::onLoad() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Loading");
 
-        // sprite
+        // load sprite assets in
         CSEA::Assets::AssetManager::loadFile("assets/test1/fragmentShader.fs");
         CSEA::Assets::AssetManager::loadFile("assets/test1/vertexShader.vs");
         CSEA::Assets::AssetManager::loadImage("assets/test1/toruSheet.png");
 
+        // load sprite animation set in
         CSEA::Assets::SpriteAnimationSet *animSet;
         animSet = CSEA::Assets::AssetManager::loadSpriteAnimationSet("assets/test1/toruAnimSet.xml");
 
-        // should be loaded in by a loader in the future, implemented in AssetManager (above call)
+        // should be loaded in the above call by a loader in the future
         animSet->addAnimation("walk1", 4, this->walk1_frames, this->walk1_originXs, this->walk1_originYs, this->walk1_delays);
         animSet->addAnimation("stand1", 5, this->stand1_frames, this->stand1_originXs, this->stand1_originYs, this->stand1_delays);
         animSet->addAnimation("alert", 5, this->alert_frames, this->alert_originXs, this->alert_originYs, this->alert_delays);
@@ -92,7 +116,7 @@ namespace Experimental { namespace Test1 {
     void TestStage::onUnload() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Unloading");
 
-        // sprite
+        // release all our assets we loaded in
         CSEA::Assets::AssetManager::releaseAsset("assets/test1/fragmentShader.fs");
         CSEA::Assets::AssetManager::unloadAsset("assets/test1/fragmentShader.fs");
 
@@ -108,43 +132,68 @@ namespace Experimental { namespace Test1 {
 
     void TestStage::onTransitionInto() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning in.");
-        CSEA::Render::Renderer::addScene(this->scene);
-        CSEA::Render::Renderer::addViewport(this->viewport);
+        // This is when our stage first becomes the active stage;
+        // We need to add our scenes and viewports into the renderer
 
+        // the order of scenes added does not matter, they'll be updated in an arbitrary order anyhow
+        CSEA::Render::Renderer::addScene(this->uiScene);
+        CSEA::Render::Renderer::addScene(this->gameScene);
+
+        // Viewports however, are rendered in order of addition - so first game, then UI
+        CSEA::Render::Renderer::addViewport(this->gameViewport);
+        CSEA::Render::Renderer::addViewport(this->uiViewport);
+
+        // Add our objects to ourselves (addObject is implemented in CSEA::Core::Stage, which this class extends)
+        this->addObject(this->testObject1);
         this->addObject(this->testObject2);
         this->addObject(this->testObject3);
-        this->addObject(this->testObject1);
+
+        // This class implements an InputListener, which allows it to receive inputs after registration
+        // - InputListeners are registered under input groups (in this case, TEST_STAGE)
+        // - Listeners of the same group are guaranteed to be executed in order of addition
+        // - Listeners of different groups are guaranteed to be executed, but have no order guarantee
         CSEA::Input::InputManager::registerInputListener(this, "TEST_STAGE");
     }
 
     void TestStage::onTransitionOutOf() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Transitioning Out.");
+
+        // unregister us
         CSEA::Input::InputManager::unregisterInputListener(this, "TEST_STAGE");
+
+        // note that order of removal isn't too important
+        CSEA::Render::Renderer::removeScene(this->uiScene);
+        CSEA::Render::Renderer::removeScene(this->gameScene);
+
+        CSEA::Render::Renderer::removeViewport(this->gameViewport);
+        CSEA::Render::Renderer::removeViewport(this->uiViewport);
+
+        // take out our objects
         this->removeObject(this->testObject1);
         this->removeObject(this->testObject2);
         this->removeObject(this->testObject3);
 
-        CSEA::Render::Renderer::removeViewport(this->viewport);
-        CSEA::Render::Renderer::removeScene(this->scene);
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Scene has been removed.");
     }
 
     void TestStage::onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
+        // Pretty self explanatory function - Escape = exit, Tab = toggle visibility, Arrows = Move Game Cam
         if (key == CSELL::Core::InputEnum::K_ESCAPE && action == CSELL::Core::InputEnum::ACTION_PRESS) {
             CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onEscapeKey");
             CSEA::Core::Engine::exit();
         }
+
         if (key == CSELL::Core::InputEnum::K_TAB) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                this->viewport->setVisible(false);
-                CSEA::Render::Renderer::removeScene(this->scene);
+                this->gameViewport->setVisible(false);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                this->viewport->setVisible(true);
-                CSEA::Render::Renderer::addScene(this->scene);
+                this->gameViewport->setVisible(true);
             }
         }
+
         CSELL::Math::Vector3f dir, camPos;
-        this->camera->getPosition(camPos);
+        this->gameCam->getPosition(camPos); // stores the cameras current position in camPos
+
         if (key == CSELL::Core::InputEnum::K_UP) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
                 dir += CSELL::Math::Vector3f(0.0f, 25.0f, 0.0f);
@@ -165,19 +214,16 @@ namespace Experimental { namespace Test1 {
                 dir += CSELL::Math::Vector3f(25.0f, 0.0f, 0.0f);
             }
         }
-        if (dir.magnitudeSquared()!= 0.0f) {
-            this->camera->setPosition(dir+camPos);
-        }
-    }
 
-    void TestStage::onWindowResizeInput(unsigned int width, unsigned int height) {
-        this->viewport->setDimensions(width, height);
-        float w = width, h = height; // casting so we don't get arbitrarily high numbers for negatives
-        //this->camera->resizeFrustum(-w / 2.0f, w / 2.0f, -h / 2.0f, h / 2.0f, 0.1f, 100.0f);
+        // only move if this event actually triggered camera motion
+        if (dir.magnitudeSquared()!= 0.0f) {
+            this->gameCam->setPosition(dir+camPos);
+        }
     }
 
     void TestStage::onWindowCloseInput() {
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "onWindowClose");
+        // Also pretty self explanatory - kill the engine if we clicked the X
         CSEA::Core::Engine::exit();
     };
 }}

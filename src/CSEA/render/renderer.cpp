@@ -1,6 +1,8 @@
 #include <CSE/CSEA/render/renderer.hpp>
 
+#include <algorithm>
 #include <set>
+#include <list>
 
 #include <CSE/CSU/logger.hpp>
 
@@ -25,7 +27,7 @@ namespace CSEA { namespace Render {
     CacheManager *Renderer::cacheManager = NULL;
 
     std::set<Scene*> Renderer::scenes;
-    std::set<Viewport*> Renderer::viewports;
+    std::list<Viewport*> Renderer::viewports;
 
     Renderer::Renderer() {}
     Renderer::~Renderer() {}
@@ -87,7 +89,7 @@ namespace CSEA { namespace Render {
         }
 
         std::set<Scene*>::iterator sceneIt;
-        std::set<Viewport*>::iterator viewIt;
+        std::list<Viewport*>::iterator viewIt;
 
         // update active scenes
         for (sceneIt = Renderer::scenes.begin(); sceneIt != Renderer::scenes.end(); ++sceneIt) {
@@ -139,12 +141,12 @@ namespace CSEA { namespace Render {
                              "Render - Renderer", "Renderer is not Initialized!");
             return NULL;
         }
-        if (Renderer::viewports.find(viewport) != Renderer::viewports.end()) {
+        if (std::find(Renderer::viewports.begin(), Renderer::viewports.end(), viewport) != Renderer::viewports.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
                              "Render - Renderer", "Viewport already added!");
             return false;
         }
-        Renderer::viewports.insert(viewport);
+        Renderer::viewports.push_back(viewport);
         return true;
     }
 
@@ -170,12 +172,13 @@ namespace CSEA { namespace Render {
                              "Render - Renderer", "Renderer is not Initialized!");
             return NULL;
         }
-        if (Renderer::viewports.find(viewport) == Renderer::viewports.end()) {
+        std::list<Viewport*>::iterator it = std::find(Renderer::viewports.begin(), Renderer::viewports.end(), viewport);
+        if (it == Renderer::viewports.end()) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA,
                              "Render - Renderer", "Removing non-existent Viewport!");
             return false;
         }
-        Renderer::viewports.erase(Renderer::viewports.find(viewport));
+        Renderer::viewports.erase(it);
         return true;
     }
 

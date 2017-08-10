@@ -60,7 +60,9 @@
 		<Unit filename="include/CSE/CSEA/render/scenemanager.hpp" />
 		<Unit filename="include/CSE/CSEA/render/scenemanager2d.hpp" />
 		<Unit filename="include/CSE/CSEA/render/scenemanagerdefault.hpp" />
+		<Unit filename="include/CSE/CSEA/render/scenemanagerui.hpp" />
 		<Unit filename="include/CSE/CSEA/render/spriterenderable.hpp" />
+		<Unit filename="include/CSE/CSEA/render/uicamera.hpp" />
 		<Unit filename="include/CSE/CSEA/render/viewport.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/asset.hpp" />
 		<Unit filename="include/CSE/CSELL/asset/assetmanager.hpp" />
@@ -110,7 +112,9 @@
 		<Unit filename="src/CSEA/render/scenemanager.cpp" />
 		<Unit filename="src/CSEA/render/scenemanager2d.cpp" />
 		<Unit filename="src/CSEA/render/scenemanagerdefault.cpp" />
+		<Unit filename="src/CSEA/render/scenemanagerui.cpp" />
 		<Unit filename="src/CSEA/render/spriterenderable.cpp" />
+		<Unit filename="src/CSEA/render/uicamera.cpp" />
 		<Unit filename="src/CSEA/render/viewport.cpp" />
 		<Unit filename="src/CSEG/snuffedgamestage.cpp" />
 		<Unit filename="src/CSELL/asset/asset.cpp" />

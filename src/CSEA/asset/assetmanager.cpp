@@ -46,7 +46,7 @@ namespace CSEA { namespace Assets {
         CSELL::Assets::AssetManager::shutdown();
     }
 
-    CSELL::Assets::ImageAsset *AssetManager::loadImage(const std::string &path) {
+    CSELL::Assets::ImageAsset *AssetManager::loadImage(const std::string &path, bool invertY) {
         if (!AssetManager::isInitialized) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "AssetManager is not Initialized!");
@@ -62,7 +62,7 @@ namespace CSEA { namespace Assets {
             return NULL;
         }
 
-        CSELL::Assets::ImageAsset *asset = CSELL::Assets::AssetManager::loadImage(path);
+        CSELL::Assets::ImageAsset *asset = CSELL::Assets::AssetManager::loadImage(path, invertY);
         if (asset == NULL) {
             CSU::Logger::log(CSU::Logger::FATAL, CSU::Logger::CSEA,
                              "Assets - AssetManager", "ImageAsset Path " + path + " failed to load!");

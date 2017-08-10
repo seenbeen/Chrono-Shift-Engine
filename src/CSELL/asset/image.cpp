@@ -6,7 +6,7 @@
 #include <CSE/CSELL/asset/image.hpp>
 
 namespace CSELL { namespace Assets {
-    ImageAsset::ImageAsset(const std::string &filepath) {
+    ImageAsset::ImageAsset(const std::string &filepath, bool invertY) {
         unsigned char *temp;
         int tw,th,tn;
 
@@ -40,8 +40,9 @@ namespace CSELL { namespace Assets {
                 }
             }
         }
-
-        this->vFlipImageData();
+        if (!invertY) { // stbi loads images flipped, so invert to be unflipped if we don't want inversion
+            this->vFlipImageData();
+        }
     }
 
     ImageAsset::~ImageAsset() {

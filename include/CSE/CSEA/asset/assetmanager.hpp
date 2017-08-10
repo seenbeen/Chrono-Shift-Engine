@@ -37,7 +37,7 @@ namespace CSEA { namespace Assets {
     public:
         // actual loading and releasing of memory
         // will result in NULL if something went wrong, or asset has already been loaded
-        static CSELL::Assets::ImageAsset *loadImage(const std::string &path);
+        static CSELL::Assets::ImageAsset *loadImage(const std::string &path, bool invertY = false);
         static CSELL::Assets::TextAsset *loadFile(const std::string &path);
         static CSEA::Assets::SpriteAnimationSet *loadSpriteAnimationSet(const std::string &path);
         // for now just allocates an anim set. In future will also parse

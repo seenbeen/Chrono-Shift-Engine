@@ -13,7 +13,7 @@ namespace CSELL { namespace Assets {
         unsigned char *imgData;
         unsigned int imgW, imgH;
     protected:
-        explicit ImageAsset(const std::string &filepath);
+        explicit ImageAsset(const std::string &filepath, bool invertY = false);
         ~ImageAsset();
     public:
         void vFlipImageData();
