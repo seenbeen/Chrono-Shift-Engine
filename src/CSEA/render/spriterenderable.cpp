@@ -79,7 +79,7 @@ namespace CSEA { namespace Render {
 
         CSELL::Math::Transform &xform = *this->xform;
 
-        tempMat = glm::translate(tempMat, glm::vec3(xform.position.x, xform.position.y, 1.0f));
+        tempMat = glm::translate(tempMat, glm::vec3(xform.position.x, xform.position.y, xform.position.z));
 
         if (xform.scale.z != 1.0f) {
             CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Render - SpriteRenderable",

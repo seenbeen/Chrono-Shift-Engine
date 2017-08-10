@@ -12,8 +12,12 @@
 #include <CSE/CSEA/input/inputlistener.hpp>
 #include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/render/viewport.hpp>
+
 #include <CSE/CSEA/render/scene.hpp>
 #include <CSE/CSEA/render/scenemanager2d.hpp>
+#include <CSE/CSEA/render/scenemanagerui.hpp>
+
+#include <CSE/CSEA/render/uicamera.hpp>
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 
 #include <CSE/CSEA/asset/spriteanimationset.hpp>
@@ -23,20 +27,21 @@
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
         this->viewport = new CSEA::Render::Viewport(0,0,800,600); // hoping this works...
-        this->sceneManager = new CSEA::Render::SceneManager2D();
+        this->sceneManager = new CSEA::Render::SceneManagerUI();
         this->scene = new CSEA::Render::Scene(this->sceneManager);
-        this->camera = new CSEA::Render::OrthographicCamera(-400, 400, -300, 300, 0.1f, 100.0f);
-        this->camera->setPosition(CSELL::Math::Vector3f(0.0f,0.0f,4.0f));
+        this->camera = new CSEA::Render::OrthographicCamera(-400, 400, 300, -300, -1.0f, 0.0f);
+        // camera look down the -z axis from origin, which means everything behind the camera is positive z
+        //this->camera->setPosition(CSELL::Math::Vector3f(-400.0f,300.0f,0.0f));
         this->viewport->bindScene(this->scene);
         this->viewport->bindCamera(this->camera);
 
         // gulp...
         CSELL::Math::Transform xform;
-        xform.position = CSELL::Math::Vector3f(-25.0f, -25.0f, -1.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "walk1", xform.position);
-        xform.position = CSELL::Math::Vector3f(0.0f, 0.0f, -1.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "stand1", xform.position);
-        xform.position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
+        xform.position = CSELL::Math::Vector3f(200.0f, 150.0f, 0.0f);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->scene, "swingO1", xform.position);
+        xform.position = CSELL::Math::Vector3f(200.0f, 200.0f, 0.11f);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->scene, "heal", xform.position);
+        xform.position = CSELL::Math::Vector3f(200.0f, 250.0f, 0.12f);
         this->testObject3 = new Experimental::Test1::TestGameObject(this->scene, "swingOF", xform.position);
     }
 
@@ -168,7 +173,7 @@ namespace Experimental { namespace Test1 {
     void TestStage::onWindowResizeInput(unsigned int width, unsigned int height) {
         this->viewport->setDimensions(width, height);
         float w = width, h = height; // casting so we don't get arbitrarily high numbers for negatives
-        this->camera->resizeFrustum(-w / 2.0f, w / 2.0f, -h / 2.0f, h / 2.0f, 0.1f, 100.0f);
+        //this->camera->resizeFrustum(-w / 2.0f, w / 2.0f, -h / 2.0f, h / 2.0f, 0.1f, 100.0f);
     }
 
     void TestStage::onWindowCloseInput() {
