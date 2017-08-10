@@ -48,8 +48,8 @@ namespace Experimental { namespace Test1 {
         // DO NOTE: only objects with Z = [0, 1] will be rendered
 
         // attach our game scene + camera to our viewport
-        this->uiViewport->bindCamera(this->gameCam);
-        this->uiViewport->bindScene(this->gameScene);
+        this->gameViewport->bindCamera(this->gameCam);
+        this->gameViewport->bindScene(this->gameScene);
 
         // Setting up the game objects
         CSELL::Math::Transform xform; // a transform is a (position, orientation, scale)
