@@ -26,7 +26,7 @@ namespace Experimental { namespace Test1 {
         const std::string WALK_ANIM_KEY = "walk1";
 
         float playerSpeed = 100.0f;
-        CSELL::Math::Vector3f *playerVelocity;
+        CSELL::Math::Vector3f *playerDirection;
 
         void onEnter();
         void onExit();

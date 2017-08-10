@@ -38,64 +38,64 @@ namespace Experimental { namespace Test1 {
         // Remember we have dereference in the appropriate places
 
         CSELL::Math::Transform & xform = *this->renderable->getTransform();
-        xform.position += *this->playerVelocity * (float)deltaTime; // apply velocity
+        xform.position += *this->playerDirection * this->playerSpeed * (float)deltaTime; // apply velocity
     }
 
     TestPlayer::TestPlayer(CSEA::Render::Scene *gameScene) {
         this->renderable = new TestSpriteRenderable(this->STAND_ANIM_KEY);
         this->gameScene = gameScene;
-        this->playerVelocity = new CSELL::Math::Vector3f();
+        this->playerDirection = new CSELL::Math::Vector3f();
     }
 
     TestPlayer::~TestPlayer() {
-        delete this->playerVelocity;
+        delete this->playerDirection;
         delete this->renderable;
     }
 
     // Input Handling
     void TestPlayer::onKeyInput(CSELL::Core::InputEnum::KeyboardKey key, CSELL::Core::InputEnum::InputAction action) {
-        CSELL::Math::Vector3f &pVel = *this->playerVelocity;
+        CSELL::Math::Vector3f &pDir = *this->playerDirection;
 
         if (key == CSELL::Core::InputEnum::K_W) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                pVel += CSELL::Math::Vector3f(0.0f, 1.0f, 0.0f) * this->playerSpeed;
+                pDir += CSELL::Math::Vector3f(0.0f, 1.0f, 0.0f);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                pVel -= CSELL::Math::Vector3f(0.0f, 1.0f, 0.0f) * this->playerSpeed;
+                pDir -= CSELL::Math::Vector3f(0.0f, 1.0f, 0.0f);
             }
         }
 
         if (key == CSELL::Core::InputEnum::K_S) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                pVel += CSELL::Math::Vector3f(0.0f, -1.0f, 0.0f) * this->playerSpeed;
+                pDir += CSELL::Math::Vector3f(0.0f, -1.0f, 0.0f);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                pVel -= CSELL::Math::Vector3f(0.0f, -1.0f, 0.0f) * this->playerSpeed;
+                pDir -= CSELL::Math::Vector3f(0.0f, -1.0f, 0.0f);
             }
         }
 
         if (key == CSELL::Core::InputEnum::K_A) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                pVel += CSELL::Math::Vector3f(-1.0f, 0.0f, 0.0f) * this->playerSpeed;
+                pDir += CSELL::Math::Vector3f(-1.0f, 0.0f, 0.0f);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                pVel -= CSELL::Math::Vector3f(-1.0f, 0.0f, 0.0f) * this->playerSpeed;
+                pDir -= CSELL::Math::Vector3f(-1.0f, 0.0f, 0.0f);
             }
         }
 
         if (key == CSELL::Core::InputEnum::K_D) {
             if (action == CSELL::Core::InputEnum::ACTION_PRESS) {
-                pVel += CSELL::Math::Vector3f(1.0f, 0.0f, 0.0f) * this->playerSpeed;
+                pDir += CSELL::Math::Vector3f(1.0f, 0.0f, 0.0f);
             } else if (action == CSELL::Core::InputEnum::ACTION_RELEASE) {
-                pVel -= CSELL::Math::Vector3f(1.0f, 0.0f, 0.0f) * this->playerSpeed;
+                pDir -= CSELL::Math::Vector3f(1.0f, 0.0f, 0.0f);
             }
         }
 
         // change our animation accordingly
-        if (pVel.magnitudeSquared() != 0.0f) {
+        if (pDir.magnitudeSquared() != 0.0f) {
             this->renderable->setCurrentAnimation(this->WALK_ANIM_KEY);
 
             // set his direction accordingly
-            if (pVel.x > 0.0f) {
+            if (pDir.x > 0.0f) {
                 this->renderable->getTransform()->scale.x = -1.0f;
-            } else if (pVel.x < 0.0f) {
+            } else if (pDir.x < 0.0f) {
                 this->renderable->getTransform()->scale.x = 1.0f;
             }
         } else {
