@@ -25,6 +25,7 @@
 #include <CSE/CSEA/asset/spriteanimationset.hpp>
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
+#include <CSE/Experimental/Test1/testplayer.hpp>
 
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
@@ -54,16 +55,16 @@ namespace Experimental { namespace Test1 {
         CSELL::Math::Transform xform; // a transform is a (position, orientation, scale)
 
         xform.position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->gameScene, "swingO1", xform.position);
-        xform.position = CSELL::Math::Vector3f(0.0f, 0.0f, 0.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->gameScene, "heal", xform.position);
+        this->testObject1 = new Experimental::Test1::TestGameObject(this->gameScene, "stand1", xform.position);
         xform.position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
-        this->testObject3 = new Experimental::Test1::TestGameObject(this->gameScene, "swingOF", xform.position);
+        this->testObject2 = new Experimental::Test1::TestGameObject(this->gameScene, "stand1", xform.position);
+
+        this->testPlayer = new Experimental::Test1::TestPlayer(this->gameScene);
     }
 
     TestStage::~TestStage() {
         // cleanup allocated memory, in reverse order of allocation
-        delete this->testObject3;
+        delete this->testPlayer;
         delete this->testObject2;
         delete this->testObject1;
 
@@ -146,7 +147,7 @@ namespace Experimental { namespace Test1 {
         // Add our objects to ourselves (addObject is implemented in CSEA::Core::Stage, which this class extends)
         this->addObject(this->testObject1);
         this->addObject(this->testObject2);
-        this->addObject(this->testObject3);
+        this->addObject(this->testPlayer);
 
         // This class implements an InputListener, which allows it to receive inputs after registration
         // - InputListeners are registered under input groups (in this case, TEST_STAGE)
@@ -171,7 +172,7 @@ namespace Experimental { namespace Test1 {
         // take out our objects
         this->removeObject(this->testObject1);
         this->removeObject(this->testObject2);
-        this->removeObject(this->testObject3);
+        this->removeObject(this->testPlayer);
 
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Scene has been removed.");
     }

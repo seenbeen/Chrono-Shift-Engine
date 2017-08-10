@@ -89,6 +89,7 @@
 		<Unit filename="include/CSE/CSELL/render/texture.hpp" />
 		<Unit filename="include/CSE/CSU/logger.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testgameobject.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/testplayer.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testspriterenderable.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/teststage.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
@@ -140,6 +141,7 @@
 		<Unit filename="src/CSELL/render/texture.cpp" />
 		<Unit filename="src/CSU/logger.cpp" />
 		<Unit filename="src/Experimental/Test1/testgameobject.cpp" />
+		<Unit filename="src/Experimental/Test1/testplayer.cpp" />
 		<Unit filename="src/Experimental/Test1/testspriterenderable.cpp" />
 		<Unit filename="src/Experimental/Test1/teststage.cpp" />
 		<Unit filename="src/main.cpp" />

@@ -124,6 +124,11 @@ namespace CSEA { namespace Render {
                              "In: setCurrentAnimation. Unknown \"" + name + "\".");
             return false;
         }
+
+        if (this->currentAnimation == name) {
+            return true;
+        }
+
         this->currentAnimationLength = tempTime;
         this->currentTime = 0.0f;
         this->currentAnimation = name;

@@ -21,9 +21,7 @@ namespace Experimental { namespace Test1 {
         this->stageScene->removeRenderable(this->testSpriteRenderable);
     }
 
-    void TestGameObject::onUpdate(double deltaTime) {
-        // apply our transform, then replicate it to our renderable.
-    }
+    void TestGameObject::onUpdate(double deltaTime) {}
 
     TestGameObject::TestGameObject(CSEA::Render::Scene *stageScene, const std::string &anim, const CSELL::Math::Vector3f &pos) {
         this->testSpriteRenderable = new TestSpriteRenderable(anim);

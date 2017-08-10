@@ -15,6 +15,7 @@
 #include <CSE/CSEA/render/uicamera.hpp>
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
+#include <CSE/Experimental/Test1/testplayer.hpp>
 
 namespace Experimental { namespace Test1 {
     class TestStage : public CSEA::Core::Stage, public CSEA::Input::InputListener {
@@ -107,7 +108,7 @@ namespace Experimental { namespace Test1 {
         // our objects of interest
         Experimental::Test1::TestGameObject *testObject1;
         Experimental::Test1::TestGameObject *testObject2;
-        Experimental::Test1::TestGameObject *testObject3;
+        Experimental::Test1::TestPlayer *testPlayer;
 
     protected:
         void onLoad();
