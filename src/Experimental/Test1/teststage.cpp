@@ -26,6 +26,7 @@
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 #include <CSE/Experimental/Test1/testplayer.hpp>
+#include <CSE/Experimental/Test1/testplayercontroller.hpp>
 
 namespace Experimental { namespace Test1 {
     TestStage::TestStage() {
@@ -60,10 +61,15 @@ namespace Experimental { namespace Test1 {
         this->testObject2 = new Experimental::Test1::TestGameObject(this->gameScene, "stand1", xform.position);
 
         this->testPlayer = new Experimental::Test1::TestPlayer(this->gameScene);
+        this->playerController = new Experimental::Test1::TestPlayerController();
+        this->playerController->bindTo(this->testPlayer);
     }
 
     TestStage::~TestStage() {
+        this->playerController->unbindFrom();
         // cleanup allocated memory, in reverse order of allocation
+
+        delete this->playerController;
         delete this->testPlayer;
         delete this->testObject2;
         delete this->testObject1;

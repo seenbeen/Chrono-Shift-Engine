@@ -11,7 +11,7 @@ namespace CSEA { namespace Core {
     void Stage::update(double deltaTime) {
         std::set<GameObject*>::iterator it;
         for (it = this->gameObjects.begin(); it != this->gameObjects.end(); ++it) {
-            (*it)->onUpdate(deltaTime);
+            (*it)->update(deltaTime);
         }
         this->resolveTasks();
     }
@@ -57,7 +57,7 @@ namespace CSEA { namespace Core {
             return;
         }
         this->gameObjects.insert(obj);
-        obj->onEnter();
+        obj->enter();
     }
 
     void Stage::removeObject(GameObject *obj) {
@@ -67,7 +67,7 @@ namespace CSEA { namespace Core {
                              "Trying to remove non-existent GameObject from Stage!");
             return;
         }
-        obj->onExit();
+        obj->exit();
         this->gameObjects.erase(it);
     }
 

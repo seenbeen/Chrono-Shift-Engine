@@ -16,6 +16,7 @@
 
 #include <CSE/Experimental/Test1/testgameobject.hpp>
 #include <CSE/Experimental/Test1/testplayer.hpp>
+#include <CSE/Experimental/Test1/testplayercontroller.hpp>
 
 namespace Experimental { namespace Test1 {
     class TestStage : public CSEA::Core::Stage, public CSEA::Input::InputListener {
@@ -110,6 +111,8 @@ namespace Experimental { namespace Test1 {
         Experimental::Test1::TestGameObject *testObject2;
         Experimental::Test1::TestPlayer *testPlayer;
 
+        // player's controller class
+        Experimental::Test1::TestPlayerController *playerController;
     protected:
         void onLoad();
         void onUnload();

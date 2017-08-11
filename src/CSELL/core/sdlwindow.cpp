@@ -206,7 +206,7 @@ namespace CSELL { namespace Core {
             return false;
         }
 
-        SDL_GL_SetSwapInterval(1);
+        SDL_GL_SetSwapInterval(0);
         return true;
     }
 

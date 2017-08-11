@@ -45,6 +45,7 @@
 		<Unit filename="assets/textures/texturesLesson/wall.jpg" />
 		<Unit filename="include/CSE/CSEA/asset/assetmanager.hpp" />
 		<Unit filename="include/CSE/CSEA/asset/spriteanimationset.hpp" />
+		<Unit filename="include/CSE/CSEA/core/controller.hpp" />
 		<Unit filename="include/CSE/CSEA/core/engine.hpp" />
 		<Unit filename="include/CSE/CSEA/core/gameobject.hpp" />
 		<Unit filename="include/CSE/CSEA/core/stage.hpp" />
@@ -90,6 +91,7 @@
 		<Unit filename="include/CSE/CSU/logger.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testgameobject.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testplayer.hpp" />
+		<Unit filename="include/CSE/Experimental/Test1/testplayercontroller.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testspriterenderable.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/teststage.hpp" />
 		<Unit filename="include/lib/glad/glad.c">
@@ -98,6 +100,7 @@
 		<Unit filename="include/lib/image/stb_image.cpp" />
 		<Unit filename="src/CSEA/asset/assetmanager.cpp" />
 		<Unit filename="src/CSEA/asset/spriteanimationset.cpp" />
+		<Unit filename="src/CSEA/core/controller.cpp" />
 		<Unit filename="src/CSEA/core/engine.cpp" />
 		<Unit filename="src/CSEA/core/gameobject.cpp" />
 		<Unit filename="src/CSEA/core/stage.cpp" />
@@ -142,6 +145,7 @@
 		<Unit filename="src/CSU/logger.cpp" />
 		<Unit filename="src/Experimental/Test1/testgameobject.cpp" />
 		<Unit filename="src/Experimental/Test1/testplayer.cpp" />
+		<Unit filename="src/Experimental/Test1/testplayercontroller.cpp" />
 		<Unit filename="src/Experimental/Test1/testspriterenderable.cpp" />
 		<Unit filename="src/Experimental/Test1/teststage.cpp" />
 		<Unit filename="src/main.cpp" />

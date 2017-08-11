@@ -1,7 +1,6 @@
 #include <CSE/CSU/logger.hpp>
 
 #include <CSE/CSEA/core/engine.hpp>
-#include <CSE/CSEA/core/stage.hpp>
 
 #include <CSE/Experimental/test1/teststage.hpp>
 
@@ -17,7 +16,7 @@ int main(int argc, char *argv[]) {
 
     CSEA::Core::Engine::initialize(engineSettings);
 
-    CSEA::Core::Stage *stage = new Experimental::Test1::TestStage();
+    Experimental::Test1::TestStage *stage = new Experimental::Test1::TestStage();
 
     CSEA::Core::Engine::loadStage(stage);
 
