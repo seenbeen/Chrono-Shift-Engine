@@ -24,7 +24,6 @@
 
 #include <CSE/CSEA/asset/spriteanimationset.hpp>
 
-#include <CSE/Experimental/Test1/testgameobject.hpp>
 #include <CSE/Experimental/Test1/testplayer.hpp>
 #include <CSE/Experimental/Test1/testplayercontroller.hpp>
 
@@ -53,16 +52,18 @@ namespace Experimental { namespace Test1 {
         this->gameViewport->bindScene(this->gameScene);
 
         // Setting up the game objects
-        CSELL::Math::Transform xform; // a transform is a (position, orientation, scale)
+        this->testPlayer1 = new Experimental::Test1::TestPlayer(this->gameScene);
+        this->testPlayer1->renderable->getTransform()->position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
 
-        xform.position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
-        this->testObject1 = new Experimental::Test1::TestGameObject(this->gameScene, "stand1", xform.position);
-        xform.position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
-        this->testObject2 = new Experimental::Test1::TestGameObject(this->gameScene, "stand1", xform.position);
+        this->testPlayer2 = new Experimental::Test1::TestPlayer(this->gameScene);
 
-        this->testPlayer = new Experimental::Test1::TestPlayer(this->gameScene);
+        this->testPlayer3 = new Experimental::Test1::TestPlayer(this->gameScene);
+        this->testPlayer3->renderable->getTransform()->position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
+
+        // add our controller to an arbitrary player. We are player 2 here.
+        // - Feel free to change this to 3 or 1 and see what happens
         this->playerController = new Experimental::Test1::TestPlayerController();
-        this->playerController->bindTo(this->testPlayer);
+        this->playerController->bindTo(this->testPlayer2);
     }
 
     TestStage::~TestStage() {
@@ -70,9 +71,9 @@ namespace Experimental { namespace Test1 {
         // cleanup allocated memory, in reverse order of allocation
 
         delete this->playerController;
-        delete this->testPlayer;
-        delete this->testObject2;
-        delete this->testObject1;
+        delete this->testPlayer3;
+        delete this->testPlayer2;
+        delete this->testPlayer1;
 
         delete this->gameCam;
         delete this->gameScene;
@@ -151,9 +152,9 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::Renderer::addViewport(this->uiViewport);
 
         // Add our objects to ourselves (addObject is implemented in CSEA::Core::Stage, which this class extends)
-        this->addObject(this->testObject1);
-        this->addObject(this->testObject2);
-        this->addObject(this->testPlayer);
+        this->addObject(this->testPlayer1);
+        this->addObject(this->testPlayer2);
+        this->addObject(this->testPlayer3);
 
         // This class implements an InputListener, which allows it to receive inputs after registration
         // - InputListeners are registered under input groups (in this case, TEST_STAGE)
@@ -176,9 +177,9 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::Renderer::removeViewport(this->uiViewport);
 
         // take out our objects
-        this->removeObject(this->testObject1);
-        this->removeObject(this->testObject2);
-        this->removeObject(this->testPlayer);
+        this->removeObject(this->testPlayer1);
+        this->removeObject(this->testPlayer2);
+        this->removeObject(this->testPlayer3);
 
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Scene has been removed.");
     }

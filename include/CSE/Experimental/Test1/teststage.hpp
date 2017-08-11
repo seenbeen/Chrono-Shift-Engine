@@ -14,7 +14,6 @@
 #include <CSE/CSEA/render/orthographiccamera.hpp>
 #include <CSE/CSEA/render/uicamera.hpp>
 
-#include <CSE/Experimental/Test1/testgameobject.hpp>
 #include <CSE/Experimental/Test1/testplayer.hpp>
 #include <CSE/Experimental/Test1/testplayercontroller.hpp>
 
@@ -107,9 +106,9 @@ namespace Experimental { namespace Test1 {
         CSEA::Render::OrthographicCamera *gameCam;
 
         // our objects of interest
-        Experimental::Test1::TestGameObject *testObject1;
-        Experimental::Test1::TestGameObject *testObject2;
-        Experimental::Test1::TestPlayer *testPlayer;
+        Experimental::Test1::TestPlayer *testPlayer1;
+        Experimental::Test1::TestPlayer *testPlayer2;
+        Experimental::Test1::TestPlayer *testPlayer3;
 
         // player's controller class
         Experimental::Test1::TestPlayerController *playerController;
