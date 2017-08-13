@@ -97,7 +97,7 @@ namespace CSEA { namespace Render {
         }
 
         // do some rendering
-        Renderer::renderer->clearColour(0.0f, 0.0f, 0.0f, 1.0f);
+        Renderer::renderer->clearColour(1.0f, 1.0f, 1.0f, 1.0f);
         for (viewIt = Renderer::viewports.begin(); viewIt != Renderer::viewports.end(); ++viewIt) {
             (*viewIt)->render(Renderer::renderer);
         }
