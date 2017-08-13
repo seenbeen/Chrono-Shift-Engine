@@ -7,12 +7,23 @@
 #include <CSE/CSELL/font/fontglyph.hpp>
 
 namespace CSEA { namespace Font {
-    RasterizedFont::RasterizedFont(std::map<char, unsigned int> glyphMap, unsigned int nGlyphs,
+    RasterizedFont::RasterizedFont(unsigned int nGlyphs,
                                    unsigned int *glyphPackingOrder, CSELL::Font::FontGlyph **glyphs,
                                    unsigned int textureWidth, unsigned int textureHeight) {
+        this->nGlyphs = nGlyphs;
         this->textureWidth = textureWidth;
         this->textureHeight = textureHeight;
         this->textureImage = new unsigned char[this->textureWidth * this->textureHeight * 4]; // rgba
+
+        this->offsetXs = new unsigned int[this->nGlyphs];
+        this->offsetYs = new unsigned int[this->nGlyphs];
+        this->advanceXs = new unsigned int[this->nGlyphs];
+
+        this->glyphXs = new unsigned int[this->nGlyphs];
+        this->glyphYs = new unsigned int[this->nGlyphs];
+        this->glyphWidths = new unsigned int[this->nGlyphs];
+        this->glyphHeights = new unsigned int[this->nGlyphs];
+
 
         // time to pack c:
         unsigned int xMark = 0;
@@ -21,13 +32,24 @@ namespace CSEA { namespace Font {
 
         CSELL::Font::FontGlyph *currentGlyph;
 
-        for (unsigned int i = 0; i < nGlyphs; ++i) {
+        for (unsigned int i = 0; i < this->nGlyphs; ++i) {
             currentGlyph = glyphs[glyphPackingOrder[i]];
+            this->glyphMap[currentGlyph->chr] = i;
+
             if (xMark + currentGlyph->width > this->textureWidth) {
                 xMark = 0;
                 yMark += yTemp;
                 yTemp = 0;
             }
+
+            this->offsetXs[i] = currentGlyph->bearingX;
+            this->offsetYs[i] = currentGlyph->bearingY;
+            this->advanceXs[i] = currentGlyph->advance;
+
+            this->glyphXs[i] = xMark;
+            this->glyphYs[i] = yMark;
+            this->glyphWidths[i] = currentGlyph->width;
+            this->glyphHeights[i] = currentGlyph->height;
 
             // fill in our glyph
             for (unsigned int glyphY = 0; glyphY < currentGlyph->height; ++glyphY) {
@@ -51,13 +73,18 @@ namespace CSEA { namespace Font {
     RasterizedFont::~RasterizedFont() {
         delete[] this->textureImage;
 
-        //delete[] this->offsetXs;
-        //delete[] this->offsetYs;
+        delete[] this->offsetXs;
+        delete[] this->offsetYs;
+        delete[] this->advanceXs;
 
-        //delete[] this->texCoordXs;
-        //delete[] this->texCoordYs;
-        //delete[] this->meshCoordXs;
-        //delete[] this->meshCoordYs;
+        delete[] this->glyphXs;
+        delete[] this->glyphYs;
+        delete[] this->glyphWidths;
+        delete[] this->glyphHeights;
+    }
+
+    unsigned int RasterizedFont::getNGlyphs() {
+        return this->nGlyphs;
     }
 
     unsigned int RasterizedFont::getTextureWidth() {
@@ -72,28 +99,42 @@ namespace CSEA { namespace Font {
         return this->textureImage;
     }
 
-    unsigned int *RasterizedFont::RasterizedFont::getTexCoordXs() {
-        return this->texCoordXs;
+    unsigned int *RasterizedFont::getGlyphXs() {
+        return this->glyphXs;
     }
 
-    unsigned int *RasterizedFont::getTexCoordYs() {
-        return this->texCoordYs;
+    unsigned int *RasterizedFont::getGlyphYs() {
+        return this->glyphYs;
     }
 
-    unsigned int *RasterizedFont::getMeshCoordXs() {
-        return this->meshCoordXs;
+    unsigned int *RasterizedFont::getGlyphWidths() {
+        return this->glyphWidths;
     }
 
-    unsigned int *RasterizedFont::getMeshCoordYs() {
-        return this->meshCoordYs;
+    unsigned int *RasterizedFont::getGlyphHeights() {
+        return this->glyphHeights;
     }
 
     // returns false if glyph isn't available.
     bool RasterizedFont::queryGlyphData(char chr,
-                        unsigned int &offsetX,
-                        unsigned int &offsetY,
-                        unsigned int &elementRangeBegin,
-                        unsigned int &elementRangeEnd) {
+                                        unsigned int &offsetX,
+                                        unsigned int &offsetY,
+                                        unsigned int &advanceX,
+                                        unsigned int &glyphIndex) {
+
+        std::map<char,unsigned int>::iterator it = this->glyphMap.find(chr);
+
+        if (it == this->glyphMap.end()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Font - RasterizedFont",
+                             "Character " + std::string(&chr) + " was not available.");
+            return false;
+        }
+
+        glyphIndex = it->second;
+        offsetX = this->offsetXs[glyphIndex];
+        offsetY = this->offsetYs[glyphIndex];
+        advanceX = this->advanceXs[glyphIndex];
+
         return true;
     }
 }}

@@ -17,19 +17,21 @@ namespace CSEA { namespace Font {
 
     class RasterizedFont {
     friend class FontRasterizer;
+        unsigned int nGlyphs;
         unsigned int textureWidth, textureHeight;
         unsigned char *textureImage;
 
         std::map<char, unsigned int> glyphMap;
         unsigned int *offsetXs;
         unsigned int *offsetYs;
+        unsigned int *advanceXs;
 
-        unsigned int *texCoordXs;
-        unsigned int *texCoordYs;
-        unsigned int *meshCoordXs;
-        unsigned int *meshCoordYs;
+        unsigned int *glyphXs;
+        unsigned int *glyphYs;
+        unsigned int *glyphWidths;
+        unsigned int *glyphHeights;
 
-        RasterizedFont(std::map<char, unsigned int> glyphMap, unsigned int nGlyphs,
+        RasterizedFont(unsigned int nGlyphs,
                        unsigned int *glyphPackingOrder, CSELL::Font::FontGlyph **glyphs,
                        unsigned int textureWidth, unsigned int textureHeight);
         ~RasterizedFont();
@@ -38,17 +40,15 @@ namespace CSEA { namespace Font {
         unsigned int getTextureHeight();
         unsigned char *getTextureImage();
 
-        unsigned int *getTexCoordXs();
-        unsigned int *getTexCoordYs();
-        unsigned int *getMeshCoordXs();
-        unsigned int *getMeshCoordYs();
+        unsigned int getNGlyphs();
+        unsigned int *getGlyphXs();
+        unsigned int *getGlyphYs();
+        unsigned int *getGlyphWidths();
+        unsigned int *getGlyphHeights();
 
         // returns false if glyph isn't available.
-        bool queryGlyphData(char chr,
-                            unsigned int &offsetX,
-                            unsigned int &offsetY,
-                            unsigned int &elementRangeBegin,
-                            unsigned int &elementRangeEnd); // organizes elements ccw order
+        bool queryGlyphData(char chr, unsigned int &offsetX, unsigned int &offsetY,
+                            unsigned int &advanceX, unsigned int &glyphIndex);
     };
 }}
 #endif // CSEA_FONT_RASTERIZEDFONT_HPP

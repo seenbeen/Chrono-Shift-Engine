@@ -143,10 +143,11 @@ namespace CSELL { namespace Font {
             return NULL;
         }
 
+        // Note that advance resolves with 1/64 the actual value in pixels so right shift by 6
         FontGlyph *newGlyph = new FontGlyph(chr,
                                             face->glyph->bitmap_left, face->glyph->bitmap_top,
                                             face->glyph->bitmap.width, face->glyph->bitmap.rows,
-                                            face->glyph->advance.x, face->glyph->bitmap.buffer);
+                                            face->glyph->advance.x >> 6, face->glyph->bitmap.buffer);
 
         glyphMap[charSizePair] = newGlyph;
 

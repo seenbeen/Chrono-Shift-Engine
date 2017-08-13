@@ -152,16 +152,14 @@ namespace CSEA { namespace Font {
         CSU::Utilities::packRects(lst,resultW, resultH);
 
         unsigned int packingOrder[lst.size()];
-        std::map<char, unsigned int> glyphMap;
 
         ctr = 0;
         for (auto rect: lst) {
             packingOrder[ctr] = rect.first;
-            glyphMap[glyphs[rect.first]->chr] = rect.first;
             ctr++;
         }
 
-        FontRasterizer::rFontMap[rFontKey] = new RasterizedFont(glyphMap, lst.size(), packingOrder,
+        FontRasterizer::rFontMap[rFontKey] = new RasterizedFont(lst.size(), packingOrder,
                                                                 glyphs, resultW, resultH);
 
         return true;
