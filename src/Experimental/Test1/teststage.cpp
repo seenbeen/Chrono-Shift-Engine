@@ -57,7 +57,8 @@ namespace Experimental { namespace Test1 {
         this->testPlayer1 = new Experimental::Test1::TestPlayer(this->gameScene);
         this->testPlayer1->renderable->getTransform()->position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
 
-        this->testPlayer2 = new Experimental::Test1::TestPlayer(this->gameScene);
+        this->testPlayer2 = new Experimental::Test1::TestPlayer(this->uiScene);
+        this->testPlayer2->fRenderable->getTransform()->position = CSELL::Math::Vector3f(100,100,0);
 
         this->testPlayer3 = new Experimental::Test1::TestPlayer(this->gameScene);
         this->testPlayer3->renderable->getTransform()->position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
@@ -124,6 +125,8 @@ namespace Experimental { namespace Test1 {
 
         CSEA::Font::FontRasterizer::loadFont("assets/test1/arial.ttf", "FONT_ARIAL");
         CSEA::Font::FontRasterizer::rasterizeFont("TEST_STAGE_ARIAL1", "FONT_ARIAL", 48);
+        CSEA::Font::FontRasterizer::unloadFont("FONT_ARIAL");
+
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
     }
 
@@ -144,7 +147,6 @@ namespace Experimental { namespace Test1 {
         CSEA::Assets::AssetManager::unloadAsset("assets/test1/toruAnimSet.xml");
 
         CSEA::Font::FontRasterizer::deleteRasterizedFont("TEST_STAGE_ARIAL1");
-        CSEA::Font::FontRasterizer::unloadFont("FONT_ARIAL");
     }
 
     void TestStage::onTransitionInto() {

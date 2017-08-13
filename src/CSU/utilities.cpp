@@ -22,7 +22,8 @@ namespace CSU { namespace Utilities {
         }
     }
 
-    void packRects(std::list<std::pair<unsigned int, std::pair<unsigned int, unsigned int>>> &rects, unsigned int &resultW, unsigned int &resultH) {
+    void packRects(std::list<std::pair<unsigned int, std::pair<unsigned int, unsigned int>>> &rects,
+                   unsigned int &resultW, unsigned int &resultH) {
         rects.sort(rectCmp);
 
         std::list<std::pair<unsigned int, std::pair<unsigned int, unsigned int>>>::iterator it;
@@ -33,9 +34,7 @@ namespace CSU { namespace Utilities {
             area += it->second.first * it->second.second;
         }
 
-        area = std::pow(2, std::ceil(std::log2(std::sqrt(area))));
-
-        unsigned int dims = (unsigned int) area;
+        unsigned int dims = (unsigned int) std::ceil(std::sqrt(area));
         // above gets us the power of two that would contain everything assuming area
         // was PERFECTLY tightly packed (ie: dissecting rects up allowed)
 

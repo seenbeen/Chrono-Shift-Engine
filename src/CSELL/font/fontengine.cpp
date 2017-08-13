@@ -47,9 +47,12 @@ namespace CSELL { namespace Font {
                              "Unable to shutdown uninitialized Font Engine.");
             return;
         }
+        if (FontEngine::fontFaceMap.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Font - FontEngine",
+                             "Not all Fonts unloaded at time of shutdown.");
+        }
         FT_Done_FreeType(ft);
         FontEngine::isInitialized = false;
-
     }
 
     bool FontEngine::loadFont(const std::string &fontPath, const std::string &fontKey) {
@@ -96,6 +99,7 @@ namespace CSELL { namespace Font {
             delete glyphIt->second;
         }
         FontEngine::fontGlyphMap.erase(glyphMapIt);
+        FT_Done_Face(fontIt->second);
         FontEngine::fontFaceMap.erase(fontIt);
 
         return true;

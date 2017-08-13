@@ -44,6 +44,17 @@ namespace CSEA { namespace Font {
                              "Cannot shutdown uninitialized Rasterizer.");
             return;
         }
+
+        if (FontRasterizer::fontsLoaded.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Font - FontRasterizer",
+                             "Not all Fonts unloaded at time of shutdown.");
+        }
+
+        if (FontRasterizer::rFontMap.size()) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSEA, "Font - FontRasterizer",
+                             "Not all RasterizedFonts unloaded at time of shutdown.");
+        }
+
         CSELL::Font::FontEngine::shutdown();
         FontRasterizer::isInitialized = false;
     }
@@ -152,6 +163,7 @@ namespace CSEA { namespace Font {
 
         FontRasterizer::rFontMap[rFontKey] = new RasterizedFont(glyphMap, lst.size(), packingOrder,
                                                                 glyphs, resultW, resultH);
+
         return true;
     }
 
