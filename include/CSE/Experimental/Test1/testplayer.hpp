@@ -10,6 +10,7 @@
 #include <CSE/CSEA/render/scene.hpp>
 
 #include <CSE/Experimental/Test1/testspriterenderable.hpp>
+#include <CSE/Experimental/FontTest/fontrenderable.hpp>
 
 /*
     The experimental player class.
@@ -26,6 +27,7 @@ namespace Experimental { namespace Test1 {
 
     public:
         Experimental::Test1::TestSpriteRenderable *renderable;
+        Experimental::FontTest::FontRenderable *fRenderable;
 
         const std::string STAND_ANIM_KEY = "stand1";
         const std::string WALK_ANIM_KEY = "walk1";

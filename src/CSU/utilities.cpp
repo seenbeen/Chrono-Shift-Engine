@@ -52,6 +52,7 @@ namespace CSU { namespace Utilities {
             xMark += it->second.first;
             yTemp = std::max(yTemp, it->second.second);
         }
+        yMark += yTemp;
         resultW = dims;
         resultH = yMark;
     }

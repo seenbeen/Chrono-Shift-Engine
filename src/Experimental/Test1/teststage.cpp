@@ -24,6 +24,8 @@
 
 #include <CSE/CSEA/asset/spriteanimationset.hpp>
 
+#include <CSE/CSEA/font/fontrasterizer.hpp>
+
 #include <CSE/Experimental/Test1/testplayer.hpp>
 #include <CSE/Experimental/Test1/testplayercontroller.hpp>
 
@@ -118,6 +120,10 @@ namespace Experimental { namespace Test1 {
         animSet->addAnimation("ladder", 2, this->ladder_frames, this->ladder_originXs, this->ladder_originYs, this->ladder_delays);
         animSet->addAnimation("rope", 2, this->rope_frames, this->rope_originXs, this->rope_originYs, this->rope_delays);
 
+        // fonts
+
+        CSEA::Font::FontRasterizer::loadFont("assets/test1/arial.ttf", "FONT_ARIAL");
+        CSEA::Font::FontRasterizer::rasterizeFont("TEST_STAGE_ARIAL1", "FONT_ARIAL", 48);
         CSU::Logger::log(CSU::Logger::DEBUG, CSU::Logger::EXPERIMENTAL, "Test1 - TestStage", "Assets loaded in!");
     }
 
@@ -136,6 +142,9 @@ namespace Experimental { namespace Test1 {
 
         CSEA::Assets::AssetManager::releaseAsset("assets/test1/toruAnimSet.xml");
         CSEA::Assets::AssetManager::unloadAsset("assets/test1/toruAnimSet.xml");
+
+        CSEA::Font::FontRasterizer::deleteRasterizedFont("TEST_STAGE_ARIAL1");
+        CSEA::Font::FontRasterizer::unloadFont("FONT_ARIAL");
     }
 
     void TestStage::onTransitionInto() {

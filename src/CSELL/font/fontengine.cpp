@@ -139,7 +139,8 @@ namespace CSELL { namespace Font {
             return NULL;
         }
 
-        FontGlyph *newGlyph = new FontGlyph(face->glyph->bitmap_left, face->glyph->bitmap_top,
+        FontGlyph *newGlyph = new FontGlyph(chr,
+                                            face->glyph->bitmap_left, face->glyph->bitmap_top,
                                             face->glyph->bitmap.width, face->glyph->bitmap.rows,
                                             face->glyph->advance.x, face->glyph->bitmap.buffer);
 

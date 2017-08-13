@@ -113,6 +113,7 @@
 		<Unit filename="src/CSEA/core/stage.cpp" />
 		<Unit filename="src/CSEA/core/time.cpp" />
 		<Unit filename="src/CSEA/font/fontrasterizer.cpp" />
+		<Unit filename="src/CSEA/font/rasterizedfont.cpp" />
 		<Unit filename="src/CSEA/input/inputlistener.cpp" />
 		<Unit filename="src/CSEA/input/inputmanager.cpp" />
 		<Unit filename="src/CSEA/render/cachemanager.cpp" />
