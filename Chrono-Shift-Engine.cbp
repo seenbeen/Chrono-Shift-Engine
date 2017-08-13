@@ -33,9 +33,10 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 			<Add directory="include" />
+			<Add directory="include/lib/freetype2" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_net -lfreetype6" />
 			<Add directory="lib" />
 		</Linker>
 		<Unit filename="assets/shaders/fragmentShader1.fs" />
@@ -50,6 +51,8 @@
 		<Unit filename="include/CSE/CSEA/core/gameobject.hpp" />
 		<Unit filename="include/CSE/CSEA/core/stage.hpp" />
 		<Unit filename="include/CSE/CSEA/core/time.hpp" />
+		<Unit filename="include/CSE/CSEA/font/fontrasterizer.hpp" />
+		<Unit filename="include/CSE/CSEA/font/rasterizedfont.hpp" />
 		<Unit filename="include/CSE/CSEA/input/inputlistener.hpp" />
 		<Unit filename="include/CSE/CSEA/input/inputmanager.hpp" />
 		<Unit filename="include/CSE/CSEA/render/cachemanager.hpp" />
@@ -74,6 +77,8 @@
 		<Unit filename="include/CSE/CSELL/core/sdlwindow.hpp" />
 		<Unit filename="include/CSE/CSELL/core/time.hpp" />
 		<Unit filename="include/CSE/CSELL/core/window.hpp" />
+		<Unit filename="include/CSE/CSELL/font/fontengine.hpp" />
+		<Unit filename="include/CSE/CSELL/font/fontglyph.hpp" />
 		<Unit filename="include/CSE/CSELL/math/transform.hpp" />
 		<Unit filename="include/CSE/CSELL/math/vector3f.hpp" />
 		<Unit filename="include/CSE/CSELL/render/gl/glmesh.hpp" />
@@ -89,6 +94,8 @@
 		<Unit filename="include/CSE/CSELL/render/shaders.hpp" />
 		<Unit filename="include/CSE/CSELL/render/texture.hpp" />
 		<Unit filename="include/CSE/CSU/logger.hpp" />
+		<Unit filename="include/CSE/CSU/utilities.hpp" />
+		<Unit filename="include/CSE/Experimental/FontTest/fontrenderable.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testgameobject.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testplayer.hpp" />
 		<Unit filename="include/CSE/Experimental/Test1/testplayercontroller.hpp" />
@@ -105,6 +112,7 @@
 		<Unit filename="src/CSEA/core/gameobject.cpp" />
 		<Unit filename="src/CSEA/core/stage.cpp" />
 		<Unit filename="src/CSEA/core/time.cpp" />
+		<Unit filename="src/CSEA/font/fontrasterizer.cpp" />
 		<Unit filename="src/CSEA/input/inputlistener.cpp" />
 		<Unit filename="src/CSEA/input/inputmanager.cpp" />
 		<Unit filename="src/CSEA/render/cachemanager.cpp" />
@@ -130,6 +138,8 @@
 		<Unit filename="src/CSELL/core/window.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/CSELL/font/fontengine.cpp" />
+		<Unit filename="src/CSELL/font/fontglyph.cpp" />
 		<Unit filename="src/CSELL/math/transform.cpp" />
 		<Unit filename="src/CSELL/math/vector3f.cpp" />
 		<Unit filename="src/CSELL/render/gl/glmesh.cpp" />
@@ -143,6 +153,8 @@
 		<Unit filename="src/CSELL/render/shaderProgram.cpp" />
 		<Unit filename="src/CSELL/render/texture.cpp" />
 		<Unit filename="src/CSU/logger.cpp" />
+		<Unit filename="src/CSU/utilities.cpp" />
+		<Unit filename="src/Experimental/FontTest/fontrenderable.cpp" />
 		<Unit filename="src/Experimental/Test1/testgameobject.cpp" />
 		<Unit filename="src/Experimental/Test1/testplayer.cpp" />
 		<Unit filename="src/Experimental/Test1/testplayercontroller.cpp" />

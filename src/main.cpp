@@ -4,6 +4,12 @@
 
 #include <CSE/Experimental/test1/teststage.hpp>
 
+#include <CSE/CSU/utilities.hpp>
+
+#include <list>
+#include <utility>
+#include <iostream>
+
 static const char *WINDOW_TITLE = "EVABEVAdoesnotSUX";
 static const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 

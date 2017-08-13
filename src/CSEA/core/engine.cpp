@@ -9,6 +9,7 @@
 #include <CSE/CSEA/asset/assetmanager.hpp>
 #include <CSE/CSEA/render/renderer.hpp>
 #include <CSE/CSEA/input/inputmanager.hpp>
+#include <CSE/CSEA/font/fontrasterizer.hpp>
 
 /*
 Notes:
@@ -39,7 +40,14 @@ namespace CSEA { namespace Core {
             CSEA::Core::Time::shutdown();
             return false;
         }
+        if (!CSEA::Font::FontRasterizer::initialize()) {
+            CSEA::Render::Renderer::shutdown();
+            CSEA::Assets::AssetManager::shutdown();
+            CSEA::Core::Time::shutdown();
+            return false;
+        }
         if (!CSEA::Input::InputManager::initialize()) {
+            CSEA::Font::FontRasterizer::shutdown();
             CSEA::Render::Renderer::shutdown();
             CSEA::Assets::AssetManager::shutdown();
             CSEA::Core::Time::shutdown();
@@ -51,6 +59,7 @@ namespace CSEA { namespace Core {
 
     void Engine::shutdownModules() {
         CSEA::Input::InputManager::shutdown();
+        CSEA::Font::FontRasterizer::shutdown();
         CSEA::Render::Renderer::shutdown();
         CSEA::Assets::AssetManager::shutdown();
         CSEA::Core::Time::shutdown();

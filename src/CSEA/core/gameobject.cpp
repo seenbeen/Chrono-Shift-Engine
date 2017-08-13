@@ -20,14 +20,14 @@ namespace CSEA { namespace Core {
     void GameObject::enter() {
         this->onEnter();
         std::list<ControllerBase*>::iterator it;
-        for (it = this->controllers.begin(); it != this->controllers.end(); it++) {
+        for (it = this->controllers.begin(); it != this->controllers.end(); ++it) {
             (*it)->onEnter();
         }
     }
 
     void GameObject::exit() {
         std::list<ControllerBase*>::iterator it;
-        for (it = this->controllers.begin(); it != this->controllers.end(); it++) {
+        for (it = this->controllers.begin(); it != this->controllers.end(); ++it) {
             (*it)->onExit();
         }
         this->onExit();
@@ -35,7 +35,7 @@ namespace CSEA { namespace Core {
 
     void GameObject::update(double deltaTime) {
         std::list<ControllerBase*>::iterator it;
-        for (it = this->controllers.begin(); it != this->controllers.end(); it++) {
+        for (it = this->controllers.begin(); it != this->controllers.end(); ++it) {
             (*it)->onUpdate(deltaTime);
         }
         this->onUpdate(deltaTime);

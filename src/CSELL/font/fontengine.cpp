@@ -92,7 +92,7 @@ namespace CSELL { namespace Font {
         std::map<std::string,std::map<std::pair<char,unsigned int>,FontGlyph*>>::iterator glyphMapIt;
         glyphMapIt = FontEngine::fontGlyphMap.find(fontKey);
         std::map<std::pair<char,unsigned int>,FontGlyph*>::iterator glyphIt;
-        for (glyphIt = glyphMapIt->second.begin(); glyphIt != glyphMapIt->second.end(); glyphIt++) {
+        for (glyphIt = glyphMapIt->second.begin(); glyphIt != glyphMapIt->second.end(); ++glyphIt) {
             delete glyphIt->second;
         }
         FontEngine::fontGlyphMap.erase(glyphMapIt);
@@ -133,13 +133,15 @@ namespace CSELL { namespace Font {
 
         FT_Set_Pixel_Sizes(face, 0, fontSize);
 
-        FontGlyph *newGlyph = new FontGlyph();
-        newGlyph->bearingX = face->glyph->bitmap_left;
-        newGlyph->bearingY = face->glyph->bitmap_top;
-        newGlyph->width = face->glyph->bitmap.width;
-        newGlyph->height = face->glyph->bitmap.rows;
-        newGlyph->advance = face->glyph->advance.x;
-        newGlyph->buffer = face->glyph->bitmap.buffer;
+        if (FT_Load_Char(face, chr, FT_LOAD_RENDER)) {
+            CSU::Logger::log(CSU::Logger::WARN, CSU::Logger::CSELL, "Font - FontEngine",
+                             "Glyph unavailable: \"" + std::string(&chr) + "\"");
+            return NULL;
+        }
+
+        FontGlyph *newGlyph = new FontGlyph(face->glyph->bitmap_left, face->glyph->bitmap_top,
+                                            face->glyph->bitmap.width, face->glyph->bitmap.rows,
+                                            face->glyph->advance.x, face->glyph->bitmap.buffer);
 
         glyphMap[charSizePair] = newGlyph;
 
