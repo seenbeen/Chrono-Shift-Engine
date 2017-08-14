@@ -1,4 +1,5 @@
 #include <CSE/Experimental/FontTest/fontrenderable.hpp>
+#include <string>
 
 #include <CSE/CSEA/font/fontrasterizer.hpp>
 #include <CSE/CSEA/font/rasterizedfont.hpp>
@@ -84,19 +85,11 @@ namespace Experimental { namespace FontTest {
     }
 
     void FontRenderable::onRender(CSEA::Render::Camera *camera) {
-        glm::mat4 tempMat;
+        glm::mat4 tempMat, identity;
 
         this->shaderProgram->useShaderProgram();
 
         CSELL::Math::Transform &xform = *this->xform;
-
-        tempMat = glm::translate(tempMat, glm::vec3(xform.position.x, xform.position.y, xform.position.z));
-
-        tempMat = glm::scale(tempMat, glm::vec3(xform.scale.x, xform.scale.y, 1.0f));
-
-        tempMat = glm::rotate(tempMat, glm::radians(xform.orientation.z), glm::vec3(0.0f,0.0f,1.0f));
-
-        this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 
         camera->getViewMatrix(tempMat);
 
@@ -110,9 +103,28 @@ namespace Experimental { namespace FontTest {
         this->texture->useActiveTexture(0);
         this->mesh->useMesh();
 
+        // start vomiting out characters
         unsigned int offx, offy, advance, idx;
-        this->rFont->queryGlyphData('S',offx,offy,advance,idx);
-        this->mesh->renderMesh(idx*6,(idx+1)*6);
+        std::string seenbeen = "This is sample text";
+
+        unsigned int cursor = xform.position.x;
+        unsigned int baseline = xform.position.y;
+
+        for (unsigned int i = 0; i < seenbeen.length(); i++) {
+            this->rFont->queryGlyphData(seenbeen[i],offx,offy,advance,idx);
+
+            tempMat = glm::translate(identity, glm::vec3(cursor - offx, baseline - offy, xform.position.z));
+
+            tempMat = glm::scale(tempMat, glm::vec3(xform.scale.x, xform.scale.y, 1.0f));
+
+            tempMat = glm::rotate(tempMat, glm::radians(xform.orientation.z), glm::vec3(0.0f,0.0f,1.0f));
+
+            this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
+
+            this->mesh->renderMesh(idx*6,(idx+1)*6);
+
+            cursor += advance;
+        }
     }
 
     FontRenderable::FontRenderable() {
