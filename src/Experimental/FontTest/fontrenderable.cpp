@@ -29,10 +29,10 @@ namespace Experimental { namespace FontTest {
         CSELL::Render::Mesh::Vertex vertices[nVerts];
         unsigned int elements[nElements];
 
-        unsigned int *gX = this->rFont->getGlyphXs();
-        unsigned int *gY = this->rFont->getGlyphYs();
-        unsigned int *gW = this->rFont->getGlyphWidths();
-        unsigned int *gH = this->rFont->getGlyphHeights();
+        int *gX = this->rFont->getGlyphXs();
+        int *gY = this->rFont->getGlyphYs();
+        int *gW = this->rFont->getGlyphWidths();
+        int *gH = this->rFont->getGlyphHeights();
 
         unsigned int texW = this->rFont->getTextureWidth();
         unsigned int texH = this->rFont->getTextureHeight();
@@ -61,14 +61,6 @@ namespace Experimental { namespace FontTest {
             }
         }
 
-        /*
-        CSELL::Render::Mesh::Vertex vertices[4] = {
-            {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},
-            {{0.0f, rFont->getTextureHeight(), 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f,1.0f}},
-            {{rFont->getTextureWidth(), 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f,0.0f}},
-            {{rFont->getTextureWidth(), rFont->getTextureHeight(), 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f,1.0f}}
-        };
-        unsigned int elements[6] = { 0, 3, 1, 0, 2, 3 };*/
         this->mesh = renderer->newMesh(nVerts, vertices, nElements, elements);
         this->texture = renderer->newTexture(texW, texH, this->rFont->getTextureImage());
         this->shaderProgram = cacheManager->retrieveShaderProgram("TestSpriteRenderable->ShaderProgram");
@@ -104,20 +96,18 @@ namespace Experimental { namespace FontTest {
         this->mesh->useMesh();
 
         // start vomiting out characters
-        unsigned int offx, offy, advance, idx;
-        std::string seenbeen = "This is sample text";
+        int offx, offy, advance, idx;
+        std::string seenbeen = "Seenbeen: \"Toppest of kekz\".";
 
-        unsigned int cursor = xform.position.x;
-        unsigned int baseline = xform.position.y;
+        int cursor = xform.position.x;
+        int baseline = xform.position.y;
 
         for (unsigned int i = 0; i < seenbeen.length(); i++) {
             this->rFont->queryGlyphData(seenbeen[i],offx,offy,advance,idx);
 
-            tempMat = glm::translate(identity, glm::vec3(cursor - offx, baseline - offy, xform.position.z));
-
             tempMat = glm::scale(tempMat, glm::vec3(xform.scale.x, xform.scale.y, 1.0f));
-
             tempMat = glm::rotate(tempMat, glm::radians(xform.orientation.z), glm::vec3(0.0f,0.0f,1.0f));
+            tempMat = glm::translate(identity, glm::vec3(cursor + offx, baseline - offy, xform.position.z));
 
             this->shaderProgram->setMat4f("model", glm::value_ptr(tempMat));
 

@@ -18,37 +18,37 @@ namespace CSEA { namespace Font {
     class RasterizedFont {
     friend class FontRasterizer;
         unsigned int nGlyphs;
-        unsigned int textureWidth, textureHeight;
+        int textureWidth, textureHeight;
         unsigned char *textureImage;
 
         std::map<char, unsigned int> glyphMap;
-        unsigned int *offsetXs;
-        unsigned int *offsetYs;
-        unsigned int *advanceXs;
+        int *offsetXs;
+        int *offsetYs;
+        int *advanceXs;
 
-        unsigned int *glyphXs;
-        unsigned int *glyphYs;
-        unsigned int *glyphWidths;
-        unsigned int *glyphHeights;
+        int *glyphXs;
+        int *glyphYs;
+        int *glyphWidths;
+        int *glyphHeights;
 
         RasterizedFont(unsigned int nGlyphs,
                        unsigned int *glyphPackingOrder, CSELL::Font::FontGlyph **glyphs,
                        unsigned int textureWidth, unsigned int textureHeight);
         ~RasterizedFont();
     public:
-        unsigned int getTextureWidth();
-        unsigned int getTextureHeight();
+        int getTextureWidth();
+        int getTextureHeight();
         unsigned char *getTextureImage();
 
         unsigned int getNGlyphs();
-        unsigned int *getGlyphXs();
-        unsigned int *getGlyphYs();
-        unsigned int *getGlyphWidths();
-        unsigned int *getGlyphHeights();
+        int *getGlyphXs();
+        int *getGlyphYs();
+        int *getGlyphWidths();
+        int *getGlyphHeights();
 
         // returns false if glyph isn't available.
-        bool queryGlyphData(char chr, unsigned int &offsetX, unsigned int &offsetY,
-                            unsigned int &advanceX, unsigned int &glyphIndex);
+        bool queryGlyphData(char chr, int &offsetX, int &offsetY,
+                            int &advanceX, int &glyphIndex);
     };
 }}
 #endif // CSEA_FONT_RASTERIZEDFONT_HPP

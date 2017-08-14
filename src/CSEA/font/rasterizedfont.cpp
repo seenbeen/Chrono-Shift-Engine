@@ -15,14 +15,14 @@ namespace CSEA { namespace Font {
         this->textureHeight = textureHeight;
         this->textureImage = new unsigned char[this->textureWidth * this->textureHeight * 4]; // rgba
 
-        this->offsetXs = new unsigned int[this->nGlyphs];
-        this->offsetYs = new unsigned int[this->nGlyphs];
-        this->advanceXs = new unsigned int[this->nGlyphs];
+        this->offsetXs = new int[this->nGlyphs];
+        this->offsetYs = new int[this->nGlyphs];
+        this->advanceXs = new int[this->nGlyphs];
 
-        this->glyphXs = new unsigned int[this->nGlyphs];
-        this->glyphYs = new unsigned int[this->nGlyphs];
-        this->glyphWidths = new unsigned int[this->nGlyphs];
-        this->glyphHeights = new unsigned int[this->nGlyphs];
+        this->glyphXs = new int[this->nGlyphs];
+        this->glyphYs = new int[this->nGlyphs];
+        this->glyphWidths = new int[this->nGlyphs];
+        this->glyphHeights = new int[this->nGlyphs];
 
 
         // time to pack c:
@@ -87,11 +87,11 @@ namespace CSEA { namespace Font {
         return this->nGlyphs;
     }
 
-    unsigned int RasterizedFont::getTextureWidth() {
+    int RasterizedFont::getTextureWidth() {
         return this->textureWidth;
     }
 
-    unsigned int RasterizedFont::getTextureHeight() {
+    int RasterizedFont::getTextureHeight() {
         return this->textureHeight;
     }
 
@@ -99,28 +99,28 @@ namespace CSEA { namespace Font {
         return this->textureImage;
     }
 
-    unsigned int *RasterizedFont::getGlyphXs() {
+    int *RasterizedFont::getGlyphXs() {
         return this->glyphXs;
     }
 
-    unsigned int *RasterizedFont::getGlyphYs() {
+    int *RasterizedFont::getGlyphYs() {
         return this->glyphYs;
     }
 
-    unsigned int *RasterizedFont::getGlyphWidths() {
+    int *RasterizedFont::getGlyphWidths() {
         return this->glyphWidths;
     }
 
-    unsigned int *RasterizedFont::getGlyphHeights() {
+    int *RasterizedFont::getGlyphHeights() {
         return this->glyphHeights;
     }
 
     // returns false if glyph isn't available.
     bool RasterizedFont::queryGlyphData(char chr,
-                                        unsigned int &offsetX,
-                                        unsigned int &offsetY,
-                                        unsigned int &advanceX,
-                                        unsigned int &glyphIndex) {
+                                        int &offsetX,
+                                        int &offsetY,
+                                        int &advanceX,
+                                        int &glyphIndex) {
 
         std::map<char,unsigned int>::iterator it = this->glyphMap.find(chr);
 

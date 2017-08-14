@@ -58,7 +58,6 @@ namespace Experimental { namespace Test1 {
         this->testPlayer1->renderable->getTransform()->position = CSELL::Math::Vector3f(25.0f, 25.0f, 0.0f);
 
         this->testPlayer2 = new Experimental::Test1::TestPlayer(this->uiScene);
-        //this->testPlayer2->fRenderable->getTransform()->position = CSELL::Math::Vector3f(100,100,0);
 
         this->testPlayer3 = new Experimental::Test1::TestPlayer(this->gameScene);
         this->testPlayer3->renderable->getTransform()->position = CSELL::Math::Vector3f(-25.0f, -25.0f, 0.0f);
